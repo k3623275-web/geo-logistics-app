@@ -1,0 +1,16 @@
+﻿# Secrets
+.env
+*.key
+*.pem
+*.pfx
+*.pem
+
+# Wrangler
+.wrangler/
+
+# Node
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db

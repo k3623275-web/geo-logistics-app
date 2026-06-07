@@ -1,0 +1,533 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GEO Visibility — AI Search Presence Analytics 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#05060a;--surface:#0d0f16;--surface2:#151823;--surface3:#1c1f2e;
+    --border:rgba(255,255,255,.06);--border-hover:rgba(255,255,255,.12);
+    --accent:#6366f1;--accent2:#818cf8;--accent-glow:rgba(99,102,241,.25);
+    --green:#10b981;--green-bg:rgba(16,185,129,.1);--green-border:rgba(16,185,129,.3);
+    --red:#ef4444;--red-bg:rgba(239,68,68,.08);--red-border:rgba(239,68,68,.25);
+    --yellow:#f59e0b;--yellow-bg:rgba(245,158,11,.1);
+    --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+    --radius:16px;--radius-sm:10px;
+  }
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6}
+
+  .mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:
+      radial-gradient(ellipse 70% 50% at 15% 10%,rgba(99,102,241,.07),transparent),
+      radial-gradient(ellipse 50% 70% at 85% 90%,rgba(129,140,248,.04),transparent),
+      radial-gradient(ellipse 40% 40% at 50% 50%,rgba(16,185,129,.025),transparent);
+  }
+  .mesh::after{content:'';position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);
+    background-size:80px 80px;
+  }
+
+  .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:48px 28px 120px}
+
+  /* ── Hero ── */
+  .hero{text-align:center;padding:64px 0 56px;position:relative}
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);
+    border-radius:100px;padding:6px 18px;font-size:13px;font-weight:500;
+    color:var(--accent2);margin-bottom:28px;animation:fadeIn .6s ease;
+  }
+  .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .hero h1{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
+  .hero h1 .grad{background:linear-gradient(135deg,var(--accent2),#c084fc,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hero p{font-size:17px;color:var(--text2);max-width:560px;margin:0 auto 36px;line-height:1.7}
+
+  /* ── cards ── */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;transition:border-color .3s}
+  .card:hover{border-color:var(--border-hover)}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+  .card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:20px;display:flex;align-items:center;gap:8px}
+  .card-title .bar{width:3px;height:14px;background:var(--accent);border-radius:2px}
+
+  /* ── model grid ── */
+  .provider-section{margin-bottom:20px}
+  .provider-section:last-child{margin-bottom:0}
+  .provider-label{
+    font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px;
+  }
+  .provider-label .p-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .model-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .model-chip{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:500;
+    background:var(--surface2);border:1px solid var(--border);
+    cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap;
+  }
+  .model-chip:hover{border-color:var(--border-hover);background:var(--surface3)}
+  .model-chip.active{background:rgba(99,102,241,.12);border-color:var(--accent);color:var(--accent2);box-shadow:0 0 0 3px var(--accent-glow)}
+  .model-chip .check{width:15px;height:15px;border-radius:50%;border:2px solid var(--text3);transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:8px;color:transparent}
+  .model-chip.active .check{border-color:var(--accent);background:var(--accent);color:#fff}
+  .model-chip .m-icon{font-size:14px}
+  .model-chip .m-name{font-size:12px}
+  .model-chip .m-badge{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--text3);margin-left:2px}
+
+  /* ── key panel ── */
+  .key-panel{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0}
+  .key-panel.open{max-height:3000px;opacity:1;margin-top:20px}
+  .key-row{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+  .key-row:last-child{border-bottom:none}
+  .key-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
+  .key-label .icon{font-size:18px}
+  .key-input-wrap{position:relative}
+  .key-input{
+    width:100%;padding:10px 42px 10px 14px;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+    color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12.5px;
+    letter-spacing:.4px;outline:none;transition:border-color .2s;
+  }
+  .key-input:focus{border-color:var(--accent)}
+  .key-input::placeholder{color:var(--text3);font-family:'Inter',sans-serif;font-size:11.5px;letter-spacing:0}
+  .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px;transition:color .2s}
+  .eye:hover{color:var(--text2)}
+
+  /* ── brand + run ── */
+  .brand-row{display:grid;grid-template-columns:1fr 200px;gap:16px;align-items:flex-end;margin-top:24px}
+  @media(max-width:640px){.brand-row{grid-template-columns:1fr}}
+  .input-wrap{position:relative}
+  .input-wrap label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px}
+  .input-wrap input{
+    width:100%;padding:14px 18px;background:var(--surface2);
+    border:1px solid var(--border);border-radius:var(--radius-sm);
+    color:var(--text);font-size:15px;outline:none;transition:border-color .2s;
+  }
+  .input-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+
+  .run-btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    width:100%;padding:16px 32px;
+    background:linear-gradient(135deg,var(--accent),#4f46e5);
+    color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--radius-sm);
+    cursor:pointer;transition:all .25s;font-family:inherit;
+    box-shadow:0 8px 32px rgba(99,102,241,.3);position:relative;overflow:hidden;
+  }
+  .run-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .25s}
+  .run-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 40px rgba(99,102,241,.4)}
+  .run-btn:hover:not(:disabled)::after{opacity:1}
+  .run-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .run-btn .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+  /* ── progress ── */
+  .progress-bar-wrap{height:3px;background:var(--surface2);border-radius:2px;margin-top:20px;overflow:hidden;display:none}
+  .progress-bar-wrap.show{display:block}
+  .progress-bar{height:100%;width:0%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2),#c084fc);transition:width .4s}
+  .progress-text{font-size:12px;color:var(--text3);margin-top:8px;display:none}
+  .progress-text.show{display:block}
+
+  /* ── results ── */
+  #results{display:none}
+  #results.show{display:block;animation:fadeUp .6s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+  .score-hero{
+    text-align:center;padding:48px 32px;
+    background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));
+    border:1px solid rgba(99,102,241,.15);border-radius:var(--radius);margin-bottom:32px;
+  }
+  .ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 24px}
+  .ring-wrap svg{transform:rotate(-90deg)}
+  .ring-wrap circle{fill:none;stroke-width:8}
+  .ring-wrap .bg{stroke:rgba(255,255,255,.05)}
+  .ring-wrap .prog{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
+  .ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring-txt .num{font-size:48px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--text),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .ring-txt .sub{font-size:12px;color:var(--text3);margin-top:4px}
+  .score-grade{font-size:20px;font-weight:700;margin-top:8px}
+  .score-meta{font-size:13px;color:var(--text3);margin-top:6px}
+
+  .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
+  .rcard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;transition:all .3s}
+  .rcard:hover{border-color:var(--border-hover)}
+  .rcard.mentioned{border-color:var(--green-border);background:var(--green-bg)}
+  .rcard.not-mentioned{border-color:var(--red-border);background:var(--red-bg)}
+  .rcard.error{background:var(--yellow-bg)}
+  .rcard-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .rcard-head .icon{font-size:22px}
+  .rcard-head .name{font-size:14px;font-weight:600;flex:1}
+  .rcard-head .badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px}
+  .badge.yes{background:var(--green-bg);color:var(--green)}
+  .badge.no{background:var(--red-bg);color:var(--red)}
+  .badge.err{background:var(--yellow-bg);color:var(--yellow)}
+  .rcard-body{font-size:12.5px;color:var(--text2);line-height:1.65;max-height:72px;overflow:hidden;position:relative}
+  .rcard-body::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface2))}
+  .rcard.mentioned .rcard-body::after{background:linear-gradient(transparent,var(--green-bg))}
+
+  .suggest{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.15);border-radius:var(--radius-sm);padding:28px 32px}
+  .suggest h3{font-size:14px;font-weight:700;color:var(--accent2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .suggest p{font-size:14.5px;color:var(--text2);line-height:1.8}
+
+  @media(max-width:640px){.app{padding:28px 14px 80px}.hero{padding:40px 0 32px}.card{padding:20px 16px}.key-row{grid-template-columns:1fr}.results-grid{grid-template-columns:1fr}}
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:transparent}
+  ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+</style>
+</head>
+<body>
+<div class="mesh"></div>
+<div class="app">
+
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span> 22 Models · Updated June 2026</div>
+    <h1>AI Search<br><span class="grad">Visibility Analytics</span></h1>
+    <p>Measure brand mention frequency across 22 leading AI models (2026 mid-year edition). Get actionable GEO insights.</p>
+  </div>
+
+  <div class="card" style="margin-bottom:24px">
+    <div class="card-title"><span class="bar"></span> Select Models</div>
+    <div id="modelList"></div>
+    <div class="key-panel" id="keyPanel">
+      <div class="card-title" style="margin-top:8px"><span class="bar"></span> API Keys</div>
+      <div id="keyRows"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="brand-row">
+      <div class="input-wrap">
+        <label>Brand / Product Name</label>
+        <input type="text" id="brandInput" placeholder="e.g. Huawei, Tesla, ByteDance">
+      </div>
+      <button class="run-btn" id="runBtn" onclick="run()">
+        <span id="runLabel">▶  Run Analysis</span>
+      </button>
+    </div>
+    <div class="progress-bar-wrap" id="progWrap">
+      <div class="progress-bar" id="progBar"></div>
+    </div>
+    <div class="progress-text" id="progText"></div>
+  </div>
+
+  <div id="results">
+    <div class="score-hero">
+      <div class="ring-wrap">
+        <svg width="160" height="160" viewBox="0 0 160 160">
+          <circle class="bg" cx="80" cy="80" r="68"/>
+          <circle class="prog" id="ring" cx="80" cy="80" r="68" stroke-dasharray="427.26" stroke-dashoffset="427.26"/>
+        </svg>
+        <div class="ring-txt">
+          <span class="num" id="scoreNum">0</span>
+          <span class="sub">Visibility Score</span>
+        </div>
+      </div>
+      <div class="score-grade" id="scoreGrade"></div>
+      <div class="score-meta" id="scoreMeta"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:32px">
+      <div class="card-title"><span class="bar"></span> Per-Model Results</div>
+      <div class="results-grid" id="resultsGrid"></div>
+    </div>
+
+    <div class="suggest" id="suggestBox">
+      <h3>💡  Optimization Suggestions</h3>
+      <p id="suggestText"></p>
+    </div>
+
+    <button class="run-btn" onclick="reset()" style="margin-top:24px;background:var(--surface2);color:var(--text2);box-shadow:none;border:1px solid var(--border)">🔄  New Analysis</button>
+  </div>
+</div>
+
+<script>
+// ── 2026 mid-year model catalog (22 models) ──
+const MODELS = [
+  // OpenAI
+  {id:'gpt55',    label:'GPT-5.5',           icon:'🤖', provider:'openai',    model:'gpt-5.5',             badge:'NEW'},
+  {id:'gpt54',    label:'GPT-5.4',           icon:'🤖', provider:'openai',    model:'gpt-5.4',             badge:''},
+  {id:'gpt52',    label:'GPT-5.2',           icon:'🤖', provider:'openai',    model:'gpt-5.2',             badge:''},
+  {id:'o3',       label:'o3',                 icon:'🤖', provider:'openai',    model:'o3',                  badge:''},
+  {id:'o4mini',   label:'o4-mini',            icon:'🤖', provider:'openai',    model:'o4-mini',             badge:''},
+  // Claude
+  {id:'opus47',   label:'Claude Opus 4.7',   icon:'🧩', provider:'claude',    model:'claude-opus-4-7',      badge:'NEW'},
+  {id:'sonnet46', label:'Claude Sonnet 4.6',  icon:'🧩', provider:'claude',    model:'claude-sonnet-4-6',    badge:''},
+  {id:'opus45',   label:'Claude Opus 4.5',   icon:'🧩', provider:'claude',    model:'claude-opus-4-5',      badge:'★Top'},
+  // Gemini
+  {id:'gemini31p',label:'Gemini 3.1 Pro',    icon:'✨', provider:'gemini',   model:'gemini-3.1-pro',       badge:'NEW'},
+  {id:'gemini31f',label:'Gemini 3.1 Flash',  icon:'✨', provider:'gemini',   model:'gemini-3.1-flash',     badge:''},
+  // DeepSeek
+  {id:'dsv4',     label:'DeepSeek V4',        icon:'🔵', provider:'deepseek',  model:'deepseek-chat',        badge:'NEW'},
+  {id:'dsv32',    label:'DeepSeek V3.2',     icon:'🔵', provider:'deepseek',  model:'deepseek-chat',        badge:''},
+  {id:'dsr1',     label:'DeepSeek R1',        icon:'🔵', provider:'deepseek',  model:'deepseek-reasoner',    badge:''},
+  // Qwen
+  {id:'qwen37',   label:'Qwen3.7-Max',      icon:'🐎', provider:'qwen',     model:'qwen3-max',            badge:'NEW'},
+  {id:'qwen3',    label:'Qwen3-235B',        icon:'🐎', provider:'qwen',     model:'qwen3-235b',          badge:''},
+  {id:'qwenplus', label:'Qwen3-Plus',        icon:'🐎', provider:'qwen',     model:'qwen-plus',            badge:''},
+  // GLM (Zhipu)
+  {id:'glm5',     label:'GLM-5',              icon:'🔬', provider:'zhipu',    model:'glm-5',               badge:'NEW'},
+  {id:'glmz1',    label:'GLM-Z1-Flash',      icon:'🔬', provider:'zhipu',    model:'glm-z1-flash',        badge:'Free'},
+  // Moonshot (Kimi)
+  {id:'kimi26',   label:'Kimi 2.6',          icon:'🌙', provider:'moonshot', model:'moonshot-v2-128k',    badge:'NEW'},
+  // Mistral
+  {id:'mistrall2',label:'Mistral Large 2',   icon:'🌊', provider:'mistral',  model:'mistral-large-2',      badge:''},
+  // Grok
+  {id:'grok3',    label:'Grok-3',             icon:'🌟', provider:'grok',     model:'grok-3',               badge:'NEW'},
+  // Yi
+  {id:'yil2',     label:'Yi-Lightning 2',     icon:'🦅', provider:'yi',       model:'yi-lightning-2',       badge:'NEW'},
+];
+
+const PROVIDERS = {
+  openai:   { endpoint:'https://api.openai.com/v1/chat/completions',                   auth:'Bearer', name:'OpenAI' },
+  claude:   { endpoint:'https://api.anthropic.com/v1/messages',                        auth:'x-api-key', name:'Claude' },
+  gemini:   { endpoint:'https://generativelanguage.googleapis.com/v1beta/models',        auth:'key',     name:'Gemini' },
+  deepseek: { endpoint:'https://api.deepseek.com/v1/chat/completions',                  auth:'Bearer', name:'DeepSeek' },
+  qwen:     { endpoint:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', auth:'Bearer', name:'Qwen' },
+  zhipu:    { endpoint:'https://open.bigmodel.cn/api/paas/v4/chat/completions',         auth:'Bearer', name:'GLM' },
+  moonshot: { endpoint:'https://api.moonshot.cn/v1/chat/completions',                  auth:'Bearer', name:'Kimi' },
+  mistral:  { endpoint:'https://api.mistral.ai/v1/chat/completions',                   auth:'Bearer', name:'Mistral' },
+  grok:     { endpoint:'https://api.x.ai/v1/chat/completions',                         auth:'Bearer', name:'Grok' },
+  yi:       { endpoint:'https://api.lingyiwanwu.com/v1/chat/completions',              auth:'Bearer', name:'Yi' },
+};
+
+const PROVIDER_COLORS = {
+  openai:'#10a37f', claude:'#d4a574', gemini:'#4285f4', deepseek:'#4a90d9',
+  qwen:'#ff6a00', zhipu:'#6c5ce7', moonshot:'#00b4d8', mistral:'#ff7000',
+  grok:'#111111', yi:'#e63946'
+};
+
+let selected = new Set(['gpt55','opus47','gemini31p','dsv4','qwen37','glm5','kimi26']);
+
+// ── Render models grouped by provider ──
+function renderModels(){
+  const list = document.getElementById('modelList');
+  list.innerHTML = '';
+  const grouped = {};
+  MODELS.forEach(m => { if(!grouped[m.provider]) grouped[m.provider]=[]; grouped[m.provider].push(m); });
+
+  Object.entries(grouped).forEach(([prov, models]) => {
+    const section = document.createElement('div');
+    section.className = 'provider-section';
+    const provInfo = PROVIDERS[prov];
+    section.innerHTML = `<div class="provider-label"><span class="p-dot" style="background:${PROVIDER_COLORS[prov]||'#666'}"></span>${provInfo.name} — ${models.length} models</div>`;
+    const chips = document.createElement('div');
+    chips.className = 'model-chips';
+    models.forEach(m => {
+      const chip = document.createElement('div');
+      chip.className = 'model-chip' + (selected.has(m.id)?' active':'');
+      chip.onclick = () => toggleModel(m.id);
+      chip.innerHTML = `
+        <span class="check">✓</span>
+        <span class="m-icon">${m.icon}</span>
+        <span class="m-name">${m.label}</span>
+        ${m.badge?'<span class="m-badge" style="background:'+(m.badge==='NEW'?'rgba(99,102,241,.2);color:var(--accent2)':'rgba(16,185,129,.2);color:var(--green)')+'">'+m.badge+'</span>':''}
+      `;
+      chips.appendChild(chip);
+    });
+    section.appendChild(chips);
+    list.appendChild(section);
+  });
+}
+
+function toggleModel(id){
+  if(selected.has(id)) selected.delete(id); else selected.add(id);
+  renderModels(); renderKeys();
+  document.getElementById('keyPanel').classList.toggle('open', selected.size>0);
+}
+
+// ── Render key inputs ──
+function renderKeys(){
+  const wrap = document.getElementById('keyRows');
+  wrap.innerHTML = '';
+  const providers = [...new Set([...selected].map(id=>MODELS.find(m=>m.id===id).provider))];
+  providers.forEach(p => {
+    const info = PROVIDERS[p];
+    const row = document.createElement('div');
+    row.className = 'key-row';
+    row.innerHTML = `
+      <div class="key-label"><span class="icon">${MODELS.find(m=>m.provider===p).icon}</span><span>${info.name} API Key</span></div>
+      <div class="key-input-wrap">
+        <input class="key-input" type="password" id="key_${p}" placeholder="Enter ${info.name} API key...">
+        <button class="eye" onclick="toggleEye('${p}')">👁</button>
+      </div>`;
+    wrap.appendChild(row);
+  });
+}
+
+function toggleEye(p){
+  const el = document.getElementById('key_'+p);
+  el.type = el.type==='password'?'text':'password';
+}
+
+// ── Call proxy ──
+async function callModel(modelId, brand, apiKeys){
+  const m = MODELS.find(x=>x.id===modelId);
+  const prov = PROVIDERS[m.provider];
+  const apiKey = apiKeys[m.provider];
+  if(!apiKey) return {ok:false, error:'No API key for '+prov.name};
+
+  const prompt = `The user wants to know: is "${brand}" a well-known brand? If yes, briefly describe what it does in 1-2 sentences. Answer in Chinese.`;
+
+  try {
+    let url = prov.endpoint;
+    let headers = {'Content-Type':'application/json'};
+    let body;
+
+    switch(m.provider){
+      case 'openai': case 'deepseek': case 'qwen': case 'mistral': case 'grok': case 'yi':
+        headers['Authorization'] = `Bearer ${apiKey}`;
+        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150, temperature:0.3});
+        break;
+      case 'gemini':
+        url = `${prov.endpoint}/${m.model}:generateContent?key=${apiKey}`;
+        body = JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{maxOutputTokens:150}});
+        break;
+      case 'claude':
+        headers['x-api-key'] = apiKey;
+        headers['anthropic-version'] = '2023-06-01';
+        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150});
+        break;
+      case 'zhipu':
+        headers['Authorization'] = `Bearer ${apiKey}`;
+        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150});
+        break;
+      case 'moonshot':
+        headers['Authorization'] = `Bearer ${apiKey}`;
+        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150, temperature:0.3});
+        break;
+    }
+
+    const resp = await fetch('/api/proxy', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({platform:m.provider, endpoint:url, model:m.model, messages:[{role:'user',content:prompt}], apiKey})
+    });
+
+    if(!resp.ok){ const t = await resp.text(); throw new Error(`HTTP ${resp.status}: ${t.slice(0,120)}`); }
+    const data = await resp.json();
+    return {ok:true, text: data.content||''};
+  } catch(e){ return {ok:false, error:e.message}; }
+}
+
+// ── Analyze mention ──
+function analyze(text, brand){
+  if(!text||text.length<5) return false;
+  const lo=text.toLowerCase(), bl=brand.toLowerCase();
+  const neg=['不知道','没听过','不了解','不存在','没听说过','don\'t know','not found','no information','unknown','is not a','unfamiliar'];
+  if(neg.some(p=>lo.includes(p)) && !lo.includes(bl)) return false;
+  return lo.includes(bl) || text.includes(brand);
+}
+
+// ── Run ──
+async function run(){
+  const brand = document.getElementById('brandInput').value.trim();
+  if(!brand){alert('Enter a brand name');return}
+  if(selected.size===0){alert('Select at least one model');return}
+
+  const apiKeys={};
+  const providers=[...new Set([...selected].map(id=>MODELS.find(m=>m.id===id).provider))];
+  for(const p of providers){
+    const k=document.getElementById('key_'+p)?.value?.trim();
+    if(!k){alert(`Enter API key for ${PROVIDERS[p].name}`);return}
+    apiKeys[p]=k;
+  }
+
+  const btn=document.getElementById('runBtn');
+  btn.disabled=true;
+  document.getElementById('runLabel').innerHTML='<span class="spinner"></span> Analyzing...';
+  document.getElementById('progWrap').classList.add('show');
+  document.getElementById('progText').classList.add('show');
+  document.getElementById('results').classList.remove('show');
+
+  const ids=[...selected]; let done=0;
+  const promises=ids.map(async(id)=>{
+    const res=await callModel(id,brand,apiKeys);
+    done++;
+    const pct=Math.round((done/ids.length)*100);
+    document.getElementById('progBar').style.width=pct+'%';
+    document.getElementById('progText').textContent=`Processing... ${done}/${ids.length} (${pct}%)`;
+    return {id,...res};
+  });
+
+  const results=await Promise.allSettled(promises);
+  const entries=results.map(r=>r.value||{id:null,ok:false,error:r.reason});
+
+  const mentioned=entries.filter(e=>e.ok&&analyze(e.text,brand)).length;
+  const score=Math.round((mentioned/ids.length)*100);
+
+  showResults(score,entries,brand,ids.length,mentioned);
+}
+
+// ── Show results ──
+function showResults(score,entries,brand,total,mentioned){
+  document.getElementById('results').classList.add('show');
+  document.getElementById('progWrap').classList.remove('show');
+  document.getElementById('progText').classList.remove('show');
+  document.getElementById('runBtn').disabled=false;
+  document.getElementById('runLabel').textContent='▶  Run Analysis';
+
+  const circ=2*Math.PI*68;
+  const offset=circ-(score/100)*circ;
+  setTimeout(()=>{
+    document.getElementById('ring').style.strokeDashoffset=offset;
+    document.getElementById('scoreNum').textContent=score;
+  },80);
+
+  const gradeEl=document.getElementById('scoreGrade');
+  if(score>=80){gradeEl.textContent='🌟 Highly Visible';gradeEl.style.color='var(--green)'}
+  else if(score>=60){gradeEl.textContent='✅ Well Recognized';gradeEl.style.color='var(--accent2)'}
+  else if(score>=40){gradeEl.textContent='⚡ Moderate Presence';gradeEl.style.color='var(--yellow)'}
+  else if(score>=20){gradeEl.textContent='⚠️  Low Visibility';gradeEl.style.color='var(--yellow)'}
+  else{gradeEl.textContent='❌ Not Discoverable';gradeEl.style.color='var(--red)'}
+
+  document.getElementById('scoreMeta').textContent=`${mentioned}/${total} models mention "${brand}"`;
+
+  const grid=document.getElementById('resultsGrid');
+  grid.innerHTML='';
+  entries.forEach(e=>{
+    const m=MODELS.find(x=>x.id===e.id);
+    if(!m) return;
+    const isYes=e.ok&&analyze(e.text,brand);
+    const card=document.createElement('div');
+    card.className='rcard '+(e.ok?(isYes?'mentioned':'not-mentioned'):'error');
+    const badge=e.ok?(isYes?'yes':'no'):'err';
+    const badgeTxt=e.ok?(isYes?'Mentioned':'Not Mentioned'):'Error';
+    card.innerHTML=`
+      <div class="rcard-head">
+        <span class="icon">${m.icon}</span>
+        <span class="name">${m.label}</span>
+        <span class="badge ${badge}">${badgeTxt}</span>
+      </div>
+      <div class="rcard-body">${e.ok?escapeHtml(e.text.slice(0,200)):'Error: '+escapeHtml(e.error||'')}</div>`;
+    grid.appendChild(card);
+  });
+
+  document.getElementById('suggestText').textContent=getSuggestion(score,brand);
+  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),100);
+}
+
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function getSuggestion(score,brand){
+  if(score>=80) return `「${brand}」has strong AI visibility across ${score}% of models. Maintain: publish regular updates, engage media, monitor sentiment.`;
+  if(score>=60) return `「${brand}」is well recognized but has room to grow. Strengthen Wikipedia/encyclopedia entries, publish thought leadership, increase mentions in developer communities.`;
+  if(score>=40) return `「${brand}」has limited AI visibility. Prioritize: (1) Create/improve Wikipedia and Baidu Baike entries; (2) Publish expert articles on Zhihu/Juejin; (3) Build consistent social media narrative.`;
+  if(score>=20) return `「${brand}」is barely visible in AI. Action: (1) Build comprehensive Wikipedia/Baidu Baike; (2) Partner with KOLs; (3) Distribute press releases to tech media; (4) Create high-quality long-form brand content.`;
+  return `「${brand}」is essentially invisible to AI. Urgent: (1) Create Wikipedia/Baidu Baike immediately; (2) Publish founder interviews and brand story; (3) Get mainstream tech media coverage; (4) Consider professional GEO services.`;
+}
+function reset(){
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('brandInput').value='';
+  document.getElementById('ring').style.strokeDashoffset='427.26';
+  document.getElementById('scoreNum').textContent='0';
+  document.getElementById('brandInput').focus();
+}
+
+// ── Init ──
+renderModels();
+</script>
+</body>
+</html>

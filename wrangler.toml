@@ -1,0 +1,6 @@
+name = "geo-logistics-app"
+compatibility_date = "2024-06-06"
+pages_build_output_dir = "./"
+
+[vars]
+# 环境变量将在Cloudflare Dashboard中设置
