@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GEO Visibility — AI Search Presence Analytics 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>GEO可见性 — AI搜索存在感分析 2026</title>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
@@ -18,31 +17,38 @@
     --radius:16px;--radius-sm:10px;
   }
   html{scroll-behavior:smooth}
-  body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6}
+  body{font-family:'Segoe UI','Microsoft YaHei',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6;transition:margin-right .35s cubic-bezier(.4,0,.2,1)}
 
-  .mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
-    background:
-      radial-gradient(ellipse 70% 50% at 15% 10%,rgba(99,102,241,.07),transparent),
-      radial-gradient(ellipse 50% 70% at 85% 90%,rgba(129,140,248,.04),transparent),
-      radial-gradient(ellipse 40% 40% at 50% 50%,rgba(16,185,129,.025),transparent);
-  }
-  .mesh::after{content:'';position:absolute;inset:0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);
-    background-size:80px 80px;
-  }
+  /* ── Sidebar ── */
+  .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s}
+  .sidebar-overlay.open{opacity:1;pointer-events:auto}
+  .sidebar{position:fixed;top:0;right:-340px;width:320px;height:100vh;z-index:1000;background:var(--surface);border-left:1px solid var(--border);padding:28px 22px;overflow-y:auto;transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:20px}
+  .sidebar.open{right:0}
+  .sidebar-close{align-self:flex-end;background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s}
+  .sidebar-close:hover{color:var(--text)}
+  .sidebar-title{font-size:15px;font-weight:700;letter-spacing:.5px;color:var(--accent2);display:flex;align-items:center;gap:8px}
+  .sidebar-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px}
+  .sidebar-section h4{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
+  .lang-options{display:flex;gap:8px}
+  .lang-btn{padding:7px 16px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .2s}
+  .lang-btn.active,.lang-btn:hover{border-color:var(--accent);color:var(--accent2);background:rgba(99,102,241,.1)}
+  .setting-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
+  .setting-row:last-child{border-bottom:none}
+  .setting-label{font-size:13px;color:var(--text2)}
+  .toggle{width:40px;height:22px;border-radius:11px;background:var(--surface3);position:relative;cursor:pointer;transition:background .25s;border:none;padding:0}
+  .toggle.on{background:var(--accent)}
+  .toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .25s}
+  .toggle.on::after{transform:translateX(18px)}
+  .sidebar-footer{margin-top:auto;font-size:11px;color:var(--text3);text-align:center;line-height:1.6}
+  body.sidebar-open{margin-right:320px}
 
-  .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:48px 28px 120px}
-
+  .mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 10%,rgba(99,102,241,.07),transparent),radial-gradient(ellipse 50% 70% at 85% 90%,rgba(129,140,248,.04),transparent),radial-gradient(ellipse 40% 40% at 50% 50%,rgba(16,185,129,.025),transparent)}
+  .mesh::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);background-size:80px 80px}
+  .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:48px 28px 120px;transition:margin-right .35s cubic-bezier(.4,0,.2,1)}
+  .app.sidebar-open{margin-right:340px}
   /* ── Hero ── */
   .hero{text-align:center;padding:64px 0 56px;position:relative}
-  .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);
-    border-radius:100px;padding:6px 18px;font-size:13px;font-weight:500;
-    color:var(--accent2);margin-bottom:28px;animation:fadeIn .6s ease;
-  }
+  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:6px 18px;font-size:13px;font-weight:500;color:var(--accent2);margin-bottom:28px;animation:fadeIn .6s ease}
   .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
   @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
   .hero h1{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
@@ -52,25 +58,17 @@
   /* ── cards ── */
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;transition:border-color .3s}
   .card:hover{border-color:var(--border-hover)}
-  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
   .card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:20px;display:flex;align-items:center;gap:8px}
   .card-title .bar{width:3px;height:14px;background:var(--accent);border-radius:2px}
 
   /* ── model grid ── */
   .provider-section{margin-bottom:20px}
   .provider-section:last-child{margin-bottom:0}
-  .provider-label{
-    font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
-    color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px;
-  }
+  .provider-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
   .provider-label .p-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
   .model-chips{display:flex;flex-wrap:wrap;gap:8px}
-  .model-chip{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:500;
-    background:var(--surface2);border:1px solid var(--border);
-    cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap;
-  }
+  .model-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:500;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap}
   .model-chip:hover{border-color:var(--border-hover);background:var(--surface3)}
   .model-chip.active{background:rgba(99,102,241,.12);border-color:var(--accent);color:var(--accent2);box-shadow:0 0 0 3px var(--accent-glow)}
   .model-chip .check{width:15px;height:15px;border-radius:50%;border:2px solid var(--text3);transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:8px;color:transparent}
@@ -87,14 +85,9 @@
   .key-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
   .key-label .icon{font-size:18px}
   .key-input-wrap{position:relative}
-  .key-input{
-    width:100%;padding:10px 42px 10px 14px;
-    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
-    color:var(--text);font-family:'JetBrains Mono',monospace;font-size:12.5px;
-    letter-spacing:.4px;outline:none;transition:border-color .2s;
-  }
+  .key-input{width:100%;padding:10px 42px 10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:"Courier New",monospace;font-size:12.5px;letter-spacing:.4px;outline:none;transition:border-color .2s}
   .key-input:focus{border-color:var(--accent)}
-  .key-input::placeholder{color:var(--text3);font-family:'Inter',sans-serif;font-size:11.5px;letter-spacing:0}
+  .key-input::placeholder{color:var(--text3);font-family:"Segoe UI",sans-serif;font-size:11.5px;letter-spacing:0}
   .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px;transition:color .2s}
   .eye:hover{color:var(--text2)}
 
@@ -103,22 +96,10 @@
   @media(max-width:640px){.brand-row{grid-template-columns:1fr}}
   .input-wrap{position:relative}
   .input-wrap label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px}
-  .input-wrap input{
-    width:100%;padding:14px 18px;background:var(--surface2);
-    border:1px solid var(--border);border-radius:var(--radius-sm);
-    color:var(--text);font-size:15px;outline:none;transition:border-color .2s;
-  }
+  .input-wrap input{width:100%;padding:14px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;outline:none;transition:border-color .2s}
   .input-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-
-  .run-btn{
-    display:inline-flex;align-items:center;justify-content:center;gap:10px;
-    width:100%;padding:16px 32px;
-    background:linear-gradient(135deg,var(--accent),#4f46e5);
-    color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--radius-sm);
-    cursor:pointer;transition:all .25s;font-family:inherit;
-    box-shadow:0 8px 32px rgba(99,102,241,.3);position:relative;overflow:hidden;
-  }
-  .run-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .25s}
+  .run-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 32px;background:linear-gradient(135deg,var(--accent),#4f46e5);color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all .25s;font-family:inherit;box-shadow:0 8px 32px rgba(99,102,241,.3);position:relative;overflow:hidden}
+  .run-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .25s}
   .run-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 40px rgba(99,102,241,.4)}
   .run-btn:hover:not(:disabled)::after{opacity:1}
   .run-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
@@ -136,11 +117,7 @@
   #results.show{display:block;animation:fadeUp .6s ease}
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 
-  .score-hero{
-    text-align:center;padding:48px 32px;
-    background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));
-    border:1px solid rgba(99,102,241,.15);border-radius:var(--radius);margin-bottom:32px;
-  }
+  .score-hero{text-align:center;padding:48px 32px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.15);border-radius:var(--radius);margin-bottom:32px}
   .ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 24px}
   .ring-wrap svg{transform:rotate(-90deg)}
   .ring-wrap circle{fill:none;stroke-width:8}
@@ -166,7 +143,7 @@
   .badge.no{background:var(--red-bg);color:var(--red)}
   .badge.err{background:var(--yellow-bg);color:var(--yellow)}
   .rcard-body{font-size:12.5px;color:var(--text2);line-height:1.65;max-height:72px;overflow:hidden;position:relative}
-  .rcard-body::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface2))}
+  .rcard-body::after{content:"";position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface2))}
   .rcard.mentioned .rcard-body::after{background:linear-gradient(transparent,var(--green-bg))}
 
   .suggest{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.15);border-radius:var(--radius-sm);padding:28px 32px}
@@ -181,353 +158,515 @@
 </head>
 <body>
 <div class="mesh"></div>
-<div class="app">
+
+<!-- Sidebar -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
+  <div class="sidebar-title">⚙️ 设置</div>
+
+  <div class="sidebar-section">
+    <h4>语言 / Language</h4>
+    <div class="lang-options">
+      <button class="lang-btn active" onclick="switchLang("zh")">中文</button>
+      <button class="lang-btn" onclick="switchLang("en")">English</button>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <h4>显示选项</h4>
+    <div class="setting-row">
+      <span class="setting-label">显示分数动画</span>
+      <button class="toggle on" id="toggleAnim" onclick="this.classList.toggle("on")"></button>
+    </div>
+    <div class="setting-row">
+      <span class="setting-label">深色模式</span>
+      <button class="toggle on" id="toggleDark"></button>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <h4>关于</h4>
+    <p style="font-size:12.5px;color:var(--text2);line-height:1.7">
+      GEO 可见性分析工具 2026 版<br>
+      检测品牌在 22 个主流 AI 模型中的提及情况。<br>
+      版本：v2.1 · 更新于 2026-06
+    </p>
+  </div>
+
+  <div class="sidebar-footer">
+    Powered by Cloudflare Pages · 开源项目
+  </div>
+</div>
+
+<div class="app" id="app">
+  <!-- Settings button -->
+  <div style="display:flex;justify-content:flex-end;margin-bottom:-12px">
+    <button onclick="toggleSidebar()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:10px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;transition:border-color .2s">
+      ⚙️ 设置
+    </button>
+  </div>
 
   <div class="hero">
-    <div class="hero-badge"><span class="dot"></span> 22 Models · Updated June 2026</div>
-    <h1>AI Search<br><span class="grad">Visibility Analytics</span></h1>
-    <p>Measure brand mention frequency across 22 leading AI models (2026 mid-year edition). Get actionable GEO insights.</p>
+    <div class="hero-badge"><span class="dot"></span> <span id="t_badge">22 个模型 · 2026 年中版</span></div>
+    <h1><span id="t_title">AI 搜索<br><span class="grad">可见性分析</span></span></h1>
+    <p id="t_subtitle">测量品牌在 22 个主流 AI 模型中的提及频率（2026 年中版）。获取可操作的 GEO 洞察。</p>
   </div>
+  <!-- Model Selection -->
+  <div class="card" style="margin-bottom:28px">
+    <div class="card-title"><span class="bar"></span><span id="t_selectModels">选择模型（多选）</span><span style="flex:1"></span><span id="t_selectedCount" style="font-size:12px;color:var(--accent2);font-weight:600">0 已选</span></div>
 
-  <div class="card" style="margin-bottom:24px">
-    <div class="card-title"><span class="bar"></span> Select Models</div>
-    <div id="modelList"></div>
-    <div class="key-panel" id="keyPanel">
-      <div class="card-title" style="margin-top:8px"><span class="bar"></span> API Keys</div>
-      <div id="keyRows"></div>
+    <!-- OpenAI -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#10a37f"></span> OpenAI</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="gpt-5.5" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GPT-5.5</span><span class="m-badge">旗舰</span></div>
+        <div class="model-chip" data-model="gpt-5.4" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GPT-5.4</span></div>
+        <div class="model-chip" data-model="gpt-5.1" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GPT-5.1</span></div>
+      </div>
+    </div>
+
+    <!-- DeepSeek -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#4d6bfe"></span> DeepSeek</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="deepseek-v4" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">DeepSeek V4</span><span class="m-badge">最新</span></div>
+        <div class="model-chip" data-model="deepseek-v3.2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">DeepSeek V3.2</span></div>
+      </div>
+    </div>
+
+    <!-- Google -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#4285f4"></span> Google</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="gemini-3.1-pro" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Gemini 3.1 Pro</span><span class="m-badge">旗舰</span></div>
+        <div class="model-chip" data-model="gemini-3.1-ultra" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Gemini 3.1 Ultra</span></div>
+        <div class="model-chip" data-model="gemini-3.0-flash" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Gemini 3.0 Flash</span></div>
+      </div>
+    </div>
+
+    <!-- Anthropic -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#d4a574"></span> Anthropic</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="claude-opus-4.7" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Claude Opus 4.7</span><span class="m-badge">最强</span></div>
+        <div class="model-chip" data-model="claude-sonnet-4.6" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Claude Sonnet 4.6</span></div>
+      </div>
+    </div>
+
+    <!-- xAI -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#1a1a2e"></span> xAI</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="grok-3" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Grok-3</span></div>
+        <div class="model-chip" data-model="grok-2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Grok-2</span></div>
+      </div>
+    </div>
+
+    <!-- 阿里 -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#ff6a00"></span> 阿里巴巴</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="qwen-3.7-max" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Qwen3.7-Max</span><span class="m-badge">旗舰</span></div>
+        <div class="model-chip" data-model="qwen-3.5-plus" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Qwen3.5-Plus</span></div>
+      </div>
+    </div>
+
+    <!-- 智谱 -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#7c3aed"></span> 智谱</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="glm-5" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GLM-5</span><span class="m-badge">最新</span></div>
+        <div class="model-chip" data-model="glm-4-plus" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GLM-4-Plus</span></div>
+      </div>
+    </div>
+
+    <!-- Moonshot -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#ff2d55"></span> Moonshot</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="kimi-2.6" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Kimi 2.6</span><span class="m-badge">最新</span></div>
+      </div>
+    </div>
+
+    <!-- 01.AI -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#f59e0b"></span> 01.AI</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="yi-lightning-2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Yi-Lightning 2</span></div>
+      </div>
+    </div>
+
+    <!-- Mistral -->
+    <div class="provider-section">
+      <div class="provider-label"><span class="p-dot" style="background:#ff7000"></span> Mistral</div>
+      <div class="model-chips">
+        <div class="model-chip" data-model="mistral-large-2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Mistral Large 2</span></div>
+      </div>
     </div>
   </div>
 
-  <div class="card">
+  <!-- API Keys -->
+  <div class="card" style="margin-bottom:28px">
+    <div class="card-title"><span class="bar"></span><span id="t_apiKeys">API 密钥</span><span style="flex:1"></span><button onclick="toggleKeyPanel()" style="background:var(--surface3);border:1px solid var(--border);color:var(--text2);padding:5px 14px;border-radius:8px;cursor:pointer;font-size:12px" id="t_toggleKeys">展开</button></div>
+    <div class="key-panel" id="keyPanel">
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_openaiKey">OpenAI API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-openai" placeholder="sk-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_deepseekKey">DeepSeek API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-deepseek" placeholder="sk-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_geminiKey">Gemini API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-gemini" placeholder="AIza..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_claudeKey">Claude API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-claude" placeholder="sk-ant-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_grokKey">Grok API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-grok" placeholder="xai-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_qwenKey">通义千问 API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-qwen" placeholder="sk-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_glmKey">智谱 GLM API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-glm" placeholder="..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_kimiKey">Kimi API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-kimi" placeholder="..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
+      <p style="font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.7" id="t_keyHint">🔒 密钥仅保存在浏览器本地，不会上传到服务器。<br>留空的平台将使用内置免费额度进行检测。</p>
+    </div>
+  </div>
+
+  <!-- Brand + Run -->
+  <div class="card" style="margin-bottom:36px">
     <div class="brand-row">
       <div class="input-wrap">
-        <label>Brand / Product Name</label>
-        <input type="text" id="brandInput" placeholder="e.g. Huawei, Tesla, ByteDance">
+        <label for="brandInput" id="t_brandLabel">品牌 / 产品名称</label>
+        <input type="text" id="brandInput" placeholder="例如：华为、Nike、Notion" id="t_brandPlaceholder">
       </div>
-      <button class="run-btn" id="runBtn" onclick="run()">
-        <span id="runLabel">▶  Run Analysis</span>
+      <button class="run-btn" id="runBtn" onclick="runAnalysis()">
+        <span id="t_runBtn">▶ 开始分析</span>
       </button>
     </div>
-    <div class="progress-bar-wrap" id="progWrap">
-      <div class="progress-bar" id="progBar"></div>
+    <div class="progress-bar-wrap" id="progressWrap">
+      <div class="progress-bar" id="progressBar"></div>
     </div>
-    <div class="progress-text" id="progText"></div>
+    <div class="progress-text" id="progressText"></div>
   </div>
 
+  <!-- Results -->
   <div id="results">
     <div class="score-hero">
       <div class="ring-wrap">
         <svg width="160" height="160" viewBox="0 0 160 160">
           <circle class="bg" cx="80" cy="80" r="68"/>
-          <circle class="prog" id="ring" cx="80" cy="80" r="68" stroke-dasharray="427.26" stroke-dashoffset="427.26"/>
+          <circle class="prog" id="ring" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
         </svg>
         <div class="ring-txt">
           <span class="num" id="scoreNum">0</span>
-          <span class="sub">Visibility Score</span>
+          <span class="sub" id="t_scoreSub">可见性评分</span>
         </div>
       </div>
       <div class="score-grade" id="scoreGrade"></div>
       <div class="score-meta" id="scoreMeta"></div>
     </div>
 
-    <div class="card" style="margin-bottom:32px">
-      <div class="card-title"><span class="bar"></span> Per-Model Results</div>
-      <div class="results-grid" id="resultsGrid"></div>
-    </div>
+    <div class="results-grid" id="resultsGrid"></div>
 
-    <div class="suggest" id="suggestBox">
-      <h3>💡  Optimization Suggestions</h3>
+    <div class="suggest" id="suggestCard">
+      <h3>💡 <span id="t_suggestTitle">优化建议</span></h3>
       <p id="suggestText"></p>
     </div>
-
-    <button class="run-btn" onclick="reset()" style="margin-top:24px;background:var(--surface2);color:var(--text2);box-shadow:none;border:1px solid var(--border)">🔄  New Analysis</button>
   </div>
 </div>
 
 <script>
-// ── 2026 mid-year model catalog (22 models) ──
-const MODELS = [
-  // OpenAI
-  {id:'gpt55',    label:'GPT-5.5',           icon:'🤖', provider:'openai',    model:'gpt-5.5',             badge:'NEW'},
-  {id:'gpt54',    label:'GPT-5.4',           icon:'🤖', provider:'openai',    model:'gpt-5.4',             badge:''},
-  {id:'gpt52',    label:'GPT-5.2',           icon:'🤖', provider:'openai',    model:'gpt-5.2',             badge:''},
-  {id:'o3',       label:'o3',                 icon:'🤖', provider:'openai',    model:'o3',                  badge:''},
-  {id:'o4mini',   label:'o4-mini',            icon:'🤖', provider:'openai',    model:'o4-mini',             badge:''},
-  // Claude
-  {id:'opus47',   label:'Claude Opus 4.7',   icon:'🧩', provider:'claude',    model:'claude-opus-4-7',      badge:'NEW'},
-  {id:'sonnet46', label:'Claude Sonnet 4.6',  icon:'🧩', provider:'claude',    model:'claude-sonnet-4-6',    badge:''},
-  {id:'opus45',   label:'Claude Opus 4.5',   icon:'🧩', provider:'claude',    model:'claude-opus-4-5',      badge:'★Top'},
-  // Gemini
-  {id:'gemini31p',label:'Gemini 3.1 Pro',    icon:'✨', provider:'gemini',   model:'gemini-3.1-pro',       badge:'NEW'},
-  {id:'gemini31f',label:'Gemini 3.1 Flash',  icon:'✨', provider:'gemini',   model:'gemini-3.1-flash',     badge:''},
-  // DeepSeek
-  {id:'dsv4',     label:'DeepSeek V4',        icon:'🔵', provider:'deepseek',  model:'deepseek-chat',        badge:'NEW'},
-  {id:'dsv32',    label:'DeepSeek V3.2',     icon:'🔵', provider:'deepseek',  model:'deepseek-chat',        badge:''},
-  {id:'dsr1',     label:'DeepSeek R1',        icon:'🔵', provider:'deepseek',  model:'deepseek-reasoner',    badge:''},
-  // Qwen
-  {id:'qwen37',   label:'Qwen3.7-Max',      icon:'🐎', provider:'qwen',     model:'qwen3-max',            badge:'NEW'},
-  {id:'qwen3',    label:'Qwen3-235B',        icon:'🐎', provider:'qwen',     model:'qwen3-235b',          badge:''},
-  {id:'qwenplus', label:'Qwen3-Plus',        icon:'🐎', provider:'qwen',     model:'qwen-plus',            badge:''},
-  // GLM (Zhipu)
-  {id:'glm5',     label:'GLM-5',              icon:'🔬', provider:'zhipu',    model:'glm-5',               badge:'NEW'},
-  {id:'glmz1',    label:'GLM-Z1-Flash',      icon:'🔬', provider:'zhipu',    model:'glm-z1-flash',        badge:'Free'},
-  // Moonshot (Kimi)
-  {id:'kimi26',   label:'Kimi 2.6',          icon:'🌙', provider:'moonshot', model:'moonshot-v2-128k',    badge:'NEW'},
-  // Mistral
-  {id:'mistrall2',label:'Mistral Large 2',   icon:'🌊', provider:'mistral',  model:'mistral-large-2',      badge:''},
-  // Grok
-  {id:'grok3',    label:'Grok-3',             icon:'🌟', provider:'grok',     model:'grok-3',               badge:'NEW'},
-  // Yi
-  {id:'yil2',     label:'Yi-Lightning 2',     icon:'🦅', provider:'yi',       model:'yi-lightning-2',       badge:'NEW'},
-];
+// ── Sidebar ──
+let sidebarOpen = false;
+function toggleSidebar(){
+  sidebarOpen = !sidebarOpen;
+  document.getElementById("sidebar").classList.toggle("open", sidebarOpen);
+  document.getElementById("sidebarOverlay").classList.toggle("open", sidebarOpen);
+  document.body.classList.toggle("sidebar-open", sidebarOpen);
+  document.getElementById("app").classList.toggle("sidebar-open", sidebarOpen);
+}
 
-const PROVIDERS = {
-  openai:   { endpoint:'https://api.openai.com/v1/chat/completions',                   auth:'Bearer', name:'OpenAI' },
-  claude:   { endpoint:'https://api.anthropic.com/v1/messages',                        auth:'x-api-key', name:'Claude' },
-  gemini:   { endpoint:'https://generativelanguage.googleapis.com/v1beta/models',        auth:'key',     name:'Gemini' },
-  deepseek: { endpoint:'https://api.deepseek.com/v1/chat/completions',                  auth:'Bearer', name:'DeepSeek' },
-  qwen:     { endpoint:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', auth:'Bearer', name:'Qwen' },
-  zhipu:    { endpoint:'https://open.bigmodel.cn/api/paas/v4/chat/completions',         auth:'Bearer', name:'GLM' },
-  moonshot: { endpoint:'https://api.moonshot.cn/v1/chat/completions',                  auth:'Bearer', name:'Kimi' },
-  mistral:  { endpoint:'https://api.mistral.ai/v1/chat/completions',                   auth:'Bearer', name:'Mistral' },
-  grok:     { endpoint:'https://api.x.ai/v1/chat/completions',                         auth:'Bearer', name:'Grok' },
-  yi:       { endpoint:'https://api.lingyiwanwu.com/v1/chat/completions',              auth:'Bearer', name:'Yi' },
+// ── Language ──
+let currentLang = "zh";
+const texts = {
+  zh: {
+    badge:"22 个模型 · 2026 年中版",
+    title:"AI 搜索<br><span class="grad">可见性分析</span>",
+    subtitle:"测量品牌在 22 个主流 AI 模型中的提及频率（2026 年中版）。获取可操作的 GEO 洞察。",
+    selectModels:"选择模型（多选）",
+    selectedCount:"已选",
+    apiKeys:"API 密钥",
+    toggleKeys:"展开",
+    toggleKeysHide:"收起",
+    openaiKey:"OpenAI API Key",
+    deepseekKey:"DeepSeek API Key",
+    geminiKey:"Gemini API Key",
+    claudeKey:"Claude API Key",
+    grokKey:"Grok API Key",
+    qwenKey:"通义千问 API Key",
+    glmKey:"智谱 GLM API Key",
+    kimiKey:"Kimi API Key",
+    keyHint:"🔒 密钥仅保存在浏览器本地，不会上传到服务器。<br>留空的平台将使用内置免费额度进行检测。",
+    brandLabel:"品牌 / 产品名称",
+    brandPlaceholder:"例如：华为、Nike、Notion",
+    runBtn:"▶ 开始分析",
+    scoreSub:"可见性评分",
+    suggestTitle:"优化建议",
+    running:"分析中...",
+    done:"分析完成！",
+    error:"请求失败",
+    noKey:"未配置密钥",
+    noModel:"请至少选择一个模型",
+    noBrand:"请输入品牌名称",
+    mentionYes:"已提及",
+    mentionNo:"未提及",
+    mentionErr:"请求出错"
+  },
+  en: {
+    badge:"22 Models · Mid-2026 Edition",
+    title:"AI Search<br><span class="grad">Visibility Analysis</span>",
+    subtitle:"Measure your brand's mention frequency across 22 leading AI models (Mid-2026). Get actionable GEO insights.",
+    selectModels:"Select Models (Multi)",
+    selectedCount:"selected",
+    apiKeys:"API Keys",
+    toggleKeys:"Expand",
+    toggleKeysHide:"Collapse",
+    openaiKey:"OpenAI API Key",
+    deepseekKey:"DeepSeek API Key",
+    geminiKey:"Gemini API Key",
+    claudeKey:"Claude API Key",
+    grokKey:"Grok API Key",
+    qwenKey:"Qwen API Key",
+    glmKey:"GLM API Key",
+    kimiKey:"Kimi API Key",
+    keyHint:"🔒 Keys are saved only in your browser, never uploaded.<br>Empty keys will use built-in free quota.",
+    brandLabel:"Brand / Product Name",
+    brandPlaceholder:"e.g. Huawei, Nike, Notion",
+    runBtn:"▶ Run Analysis",
+    scoreSub:"Visibility Score",
+    suggestTitle:"Optimization Suggestions",
+    running:"Analyzing...",
+    done:"Analysis Complete!",
+    error:"Request Failed",
+    noKey:"No key configured",
+    noModel:"Select at least one model",
+    noBrand:"Enter a brand name",
+    mentionYes:"Mentioned",
+    mentionNo:"Not Mentioned",
+    mentionErr:"Request Error"
+  }
 };
 
-const PROVIDER_COLORS = {
-  openai:'#10a37f', claude:'#d4a574', gemini:'#4285f4', deepseek:'#4a90d9',
-  qwen:'#ff6a00', zhipu:'#6c5ce7', moonshot:'#00b4d8', mistral:'#ff7000',
-  grok:'#111111', yi:'#e63946'
+function switchLang(lang){
+  currentLang = lang;
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.textContent === (lang==="zh"?"中文":"English")));
+  const t = texts[lang];
+  document.getElementById("t_badge").innerHTML = t.badge;
+  document.getElementById("t_title").innerHTML = t.title;
+  document.getElementById("t_subtitle").innerHTML = t.subtitle;
+  document.getElementById("t_selectModels").textContent = t.selectModels;
+  document.getElementById("t_apiKeys").textContent = t.apiKeys;
+  document.getElementById("t_toggleKeys").textContent = document.getElementById("keyPanel").classList.contains("open") ? t.toggleKeysHide : t.toggleKeys;
+  document.getElementById("t_openaiKey").textContent = t.openaiKey;
+  document.getElementById("t_deepseekKey").textContent = t.deepseekKey;
+  document.getElementById("t_geminiKey").textContent = t.geminiKey;
+  document.getElementById("t_claudeKey").textContent = t.claudeKey;
+  document.getElementById("t_grokKey").textContent = t.grokKey;
+  document.getElementById("t_qwenKey").textContent = t.qwenKey;
+  document.getElementById("t_glmKey").textContent = t.glmKey;
+  document.getElementById("t_kimiKey").textContent = t.kimiKey;
+  document.getElementById("t_keyHint").innerHTML = t.keyHint;
+  document.getElementById("t_brandLabel").textContent = t.brandLabel;
+  document.getElementById("t_brandPlaceholder").textContent = t.brandPlaceholder;
+  document.getElementById("t_runBtn").textContent = t.runBtn;
+  document.getElementById("t_scoreSub").textContent = t.scoreSub;
+  document.getElementById("t_suggestTitle").textContent = t.suggestTitle;
+}
+
+// ── Model chips ──
+function toggleChip(el){ el.classList.toggle("active"); updateSelectedCount(); }
+function updateSelectedCount(){
+  const n = document.querySelectorAll(".model-chip.active").length;
+  document.getElementById("t_selectedCount").textContent = n + " " + texts[currentLang].selectedCount;
+}
+function getSelectedModels(){
+  return Array.from(document.querySelectorAll(".model-chip.active")).map(c=>c.dataset.model);
+}
+
+// ── Key panel ──
+function toggleKeyPanel(){
+  const panel = document.getElementById("keyPanel");
+  const btn = document.getElementById("t_toggleKeys");
+  panel.classList.toggle("open");
+  btn.textContent = panel.classList.contains("open") ? texts[currentLang].toggleKeysHide : texts[currentLang].toggleKeys;
+}
+
+// ── Eye toggle ──
+function toggleEye(btn){
+  const input = btn.parentElement.querySelector("input");
+  if(input.type === "password"){ input.type = "text"; btn.textContent = "🔒"; }
+  else { input.type = "password"; btn.textContent = "👁"; }
+}
+
+// ── Model config ──
+const MODEL_CONFIG = {
+  "gpt-5.5":        {provider:"openai",  model:"gpt-5.5",           keyId:"key-openai"},
+  "gpt-5.4":        {provider:"openai",  model:"gpt-5.4",           keyId:"key-openai"},
+  "gpt-5.1":        {provider:"openai",  model:"gpt-5.1",           keyId:"key-openai"},
+  "deepseek-v4":     {provider:"deepseek",model:"deepseek-v4",        keyId:"key-deepseek"},
+  "deepseek-v3.2":   {provider:"deepseek",model:"deepseek-v3.2",      keyId:"key-deepseek"},
+  "gemini-3.1-pro":  {provider:"gemini",  model:"gemini-3.1-pro",   keyId:"key-gemini"},
+  "gemini-3.1-ultra":{provider:"gemini",  model:"gemini-3.1-ultra", keyId:"key-gemini"},
+  "gemini-3.0-flash":{provider:"gemini",  model:"gemini-3.0-flash", keyId:"key-gemini"},
+  "claude-opus-4.7": {provider:"claude",  model:"claude-opus-4.7",  keyId:"key-claude"},
+  "claude-sonnet-4.6":{provider:"claude", model:"claude-sonnet-4.6",keyId:"key-claude"},
+  "grok-3":          {provider:"grok",    model:"grok-3",            keyId:"key-grok"},
+  "grok-2":          {provider:"grok",    model:"grok-2",            keyId:"key-grok"},
+  "qwen-3.7-max":    {provider:"qwen",    model:"qwen-3.7-max",     keyId:"key-qwen"},
+  "qwen-3.5-plus":   {provider:"qwen",    model:"qwen-3.5-plus",    keyId:"key-qwen"},
+  "glm-5":           {provider:"glm",     model:"glm-5",             keyId:"key-glm"},
+  "glm-4-plus":      {provider:"glm",     model:"glm-4-plus",        keyId:"key-glm"},
+  "kimi-2.6":       {provider:"kimi",    model:"kimi-2.6",         keyId:"key-kimi"},
+  "yi-lightning-2":  {provider:"yi",      model:"yi-lightning-2",    keyId:null},
+  "mistral-large-2":  {provider:"mistral", model:"mistral-large-2",   keyId:null},
+  "baidu-ernie-5.0": {provider:"baidu",   model:"ernie-5.0",        keyId:null}
 };
 
-let selected = new Set(['gpt55','opus47','gemini31p','dsv4','qwen37','glm5','kimi26']);
+// ── Province endpoint ──
+const PROXY = "/api/proxy";
 
-// ── Render models grouped by provider ──
-function renderModels(){
-  const list = document.getElementById('modelList');
-  list.innerHTML = '';
-  const grouped = {};
-  MODELS.forEach(m => { if(!grouped[m.provider]) grouped[m.provider]=[]; grouped[m.provider].push(m); });
+// ── Run analysis ──
+async function runAnalysis(){
+  const brand = document.getElementById("brandInput").value.trim();
+  const models = getSelectedModels();
+  const t = texts[currentLang];
 
-  Object.entries(grouped).forEach(([prov, models]) => {
-    const section = document.createElement('div');
-    section.className = 'provider-section';
-    const provInfo = PROVIDERS[prov];
-    section.innerHTML = `<div class="provider-label"><span class="p-dot" style="background:${PROVIDER_COLORS[prov]||'#666'}"></span>${provInfo.name} — ${models.length} models</div>`;
-    const chips = document.createElement('div');
-    chips.className = 'model-chips';
-    models.forEach(m => {
-      const chip = document.createElement('div');
-      chip.className = 'model-chip' + (selected.has(m.id)?' active':'');
-      chip.onclick = () => toggleModel(m.id);
-      chip.innerHTML = `
-        <span class="check">✓</span>
-        <span class="m-icon">${m.icon}</span>
-        <span class="m-name">${m.label}</span>
-        ${m.badge?'<span class="m-badge" style="background:'+(m.badge==='NEW'?'rgba(99,102,241,.2);color:var(--accent2)':'rgba(16,185,129,.2);color:var(--green)')+'">'+m.badge+'</span>':''}
-      `;
-      chips.appendChild(chip);
-    });
-    section.appendChild(chips);
-    list.appendChild(section);
-  });
-}
+  if(!brand){ alert(t.noBrand); return; }
+  if(models.length === 0){ alert(t.noModel); return; }
 
-function toggleModel(id){
-  if(selected.has(id)) selected.delete(id); else selected.add(id);
-  renderModels(); renderKeys();
-  document.getElementById('keyPanel').classList.toggle('open', selected.size>0);
-}
+  const btn = document.getElementById("runBtn");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> ${t.running}`;
 
-// ── Render key inputs ──
-function renderKeys(){
-  const wrap = document.getElementById('keyRows');
-  wrap.innerHTML = '';
-  const providers = [...new Set([...selected].map(id=>MODELS.find(m=>m.id===id).provider))];
-  providers.forEach(p => {
-    const info = PROVIDERS[p];
-    const row = document.createElement('div');
-    row.className = 'key-row';
-    row.innerHTML = `
-      <div class="key-label"><span class="icon">${MODELS.find(m=>m.provider===p).icon}</span><span>${info.name} API Key</span></div>
-      <div class="key-input-wrap">
-        <input class="key-input" type="password" id="key_${p}" placeholder="Enter ${info.name} API key...">
-        <button class="eye" onclick="toggleEye('${p}')">👁</button>
-      </div>`;
-    wrap.appendChild(row);
-  });
-}
+  document.getElementById("progressWrap").classList.add("show");
+  document.getElementById("progressText").classList.add("show");
+  document.getElementById("results").classList.remove("show");
 
-function toggleEye(p){
-  const el = document.getElementById('key_'+p);
-  el.type = el.type==='password'?'text':'password';
-}
+  const total = models.length;
+  let completed = 0;
+  const results = [];
 
-// ── Call proxy ──
-async function callModel(modelId, brand, apiKeys){
-  const m = MODELS.find(x=>x.id===modelId);
-  const prov = PROVIDERS[m.provider];
-  const apiKey = apiKeys[m.provider];
-  if(!apiKey) return {ok:false, error:'No API key for '+prov.name};
+  const updateProgress = () => {
+    completed++;
+    const pct = Math.round((completed / total) * 100);
+    document.getElementById("progressBar").style.width = pct + "%";
+    document.getElementById("progressText").textContent = `${t.done} ${completed}/${total} (${pct}%)`;
+  };
 
-  const prompt = `The user wants to know: is "${brand}" a well-known brand? If yes, briefly describe what it does in 1-2 sentences. Answer in Chinese.`;
+  await Promise.all(models.map(async (modelKey) => {
+    const cfg = MODEL_CONFIG[modelKey];
+    const keyInput = cfg.keyId ? document.getElementById(cfg.keyId).value.trim() : "";
+    let mentioned = false, snippet = "", error = null;
 
-  try {
-    let url = prov.endpoint;
-    let headers = {'Content-Type':'application/json'};
-    let body;
-
-    switch(m.provider){
-      case 'openai': case 'deepseek': case 'qwen': case 'mistral': case 'grok': case 'yi':
-        headers['Authorization'] = `Bearer ${apiKey}`;
-        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150, temperature:0.3});
-        break;
-      case 'gemini':
-        url = `${prov.endpoint}/${m.model}:generateContent?key=${apiKey}`;
-        body = JSON.stringify({contents:[{parts:[{text:prompt}]}], generationConfig:{maxOutputTokens:150}});
-        break;
-      case 'claude':
-        headers['x-api-key'] = apiKey;
-        headers['anthropic-version'] = '2023-06-01';
-        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150});
-        break;
-      case 'zhipu':
-        headers['Authorization'] = `Bearer ${apiKey}`;
-        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150});
-        break;
-      case 'moonshot':
-        headers['Authorization'] = `Bearer ${apiKey}`;
-        body = JSON.stringify({model:m.model, messages:[{role:'user',content:prompt}], max_tokens:150, temperature:0.3});
-        break;
+    try {
+      const resp = await fetch(PROXY, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+          provider: cfg.provider,
+          model: cfg.model,
+          brand: brand,
+          apiKey: keyInput
+        })
+      });
+      const data = await resp.json();
+      if(data.error){ error = data.error; }
+      else { mentioned = data.mentioned; snippet = data.snippet || ""; }
+    } catch(e){
+      error = e.message;
     }
 
-    const resp = await fetch('/api/proxy', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({platform:m.provider, endpoint:url, model:m.model, messages:[{role:'user',content:prompt}], apiKey})
-    });
+    results.push({ modelKey, mentioned, snippet, error });
+    updateProgress();
+  }));
 
-    if(!resp.ok){ const t = await resp.text(); throw new Error(`HTTP ${resp.status}: ${t.slice(0,120)}`); }
-    const data = await resp.json();
-    return {ok:true, text: data.content||''};
-  } catch(e){ return {ok:false, error:e.message}; }
+  renderResults(brand, results);
+  btn.disabled = false;
+  btn.innerHTML = `<span id="t_runBtn">${t.runBtn}</span>`;
 }
 
-// ── Analyze mention ──
-function analyze(text, brand){
-  if(!text||text.length<5) return false;
-  const lo=text.toLowerCase(), bl=brand.toLowerCase();
-  const neg=['不知道','没听过','不了解','不存在','没听说过','don\'t know','not found','no information','unknown','is not a','unfamiliar'];
-  if(neg.some(p=>lo.includes(p)) && !lo.includes(bl)) return false;
-  return lo.includes(bl) || text.includes(brand);
-}
+// ── Render results ──
+function renderResults(brand, results){
+  const t = texts[currentLang];
+  const mentionedCount = results.filter(r => r.mentioned).length;
+  const total = results.length;
+  const score = total > 0 ? Math.round((mentionedCount / total) * 100) : 0;
 
-// ── Run ──
-async function run(){
-  const brand = document.getElementById('brandInput').value.trim();
-  if(!brand){alert('Enter a brand name');return}
-  if(selected.size===0){alert('Select at least one model');return}
+  // Ring
+  const circumference = 2 * Math.PI * 68;
+  const offset = circumference - (score / 100) * circumference;
+  const ring = document.getElementById("ring");
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = offset;
 
-  const apiKeys={};
-  const providers=[...new Set([...selected].map(id=>MODELS.find(m=>m.id===id).provider))];
-  for(const p of providers){
-    const k=document.getElementById('key_'+p)?.value?.trim();
-    if(!k){alert(`Enter API key for ${PROVIDERS[p].name}`);return}
-    apiKeys[p]=k;
-  }
+  // Animate number
+  const numEl = document.getElementById("scoreNum");
+  let current = 0;
+  const interval = setInterval(() => {
+    current += 1;
+    if(current >= score){ clearInterval(interval); current = score; }
+    numEl.textContent = current;
+  }, 1200 / score);
 
-  const btn=document.getElementById('runBtn');
-  btn.disabled=true;
-  document.getElementById('runLabel').innerHTML='<span class="spinner"></span> Analyzing...';
-  document.getElementById('progWrap').classList.add('show');
-  document.getElementById('progText').classList.add('show');
-  document.getElementById('results').classList.remove('show');
+  // Grade
+  let grade = "", gradeColor = "";
+  if(score >= 80){ grade = "优秀 · 品牌 AI 认知度极高"; gradeColor = "var(--green)"; }
+  else if(score >= 50){ grade = "一般 · 仍有较大提升空间"; gradeColor = "var(--yellow)"; }
+  else { grade = "较低 · 需 urgently 优化 GEO"; gradeColor = "var(--red)"; }
+  const gradeEl = document.getElementById("scoreGrade");
+  gradeEl.textContent = grade;
+  gradeEl.style.color = gradeColor;
 
-  const ids=[...selected]; let done=0;
-  const promises=ids.map(async(id)=>{
-    const res=await callModel(id,brand,apiKeys);
-    done++;
-    const pct=Math.round((done/ids.length)*100);
-    document.getElementById('progBar').style.width=pct+'%';
-    document.getElementById('progText').textContent=`Processing... ${done}/${ids.length} (${pct}%)`;
-    return {id,...res};
-  });
+  document.getElementById("scoreMeta").textContent = `${brand} 在 ${total} 个模型中被提及 ${mentionedCount} 次`;
 
-  const results=await Promise.allSettled(promises);
-  const entries=results.map(r=>r.value||{id:null,ok:false,error:r.reason});
+  // Cards
+  const grid = document.getElementById("resultsGrid");
+  grid.innerHTML = "";
+  results.forEach(r => {
+    const cfg = MODEL_CONFIG[r.modelKey];
+    const mName = r.modelKey;
+    let cls = "rcard ", badge = "", badgeCls = "";
+    if(r.error){ cls += "error"; badge = t.mentionErr; badgeCls = "err"; }
+    else if(r.mentioned){ cls += "mentioned"; badge = t.mentionYes; badgeCls = "yes"; }
+    else { cls += "not-mentioned"; badge = t.mentionNo; badgeCls = "no"; }
 
-  const mentioned=entries.filter(e=>e.ok&&analyze(e.text,brand)).length;
-  const score=Math.round((mentioned/ids.length)*100);
-
-  showResults(score,entries,brand,ids.length,mentioned);
-}
-
-// ── Show results ──
-function showResults(score,entries,brand,total,mentioned){
-  document.getElementById('results').classList.add('show');
-  document.getElementById('progWrap').classList.remove('show');
-  document.getElementById('progText').classList.remove('show');
-  document.getElementById('runBtn').disabled=false;
-  document.getElementById('runLabel').textContent='▶  Run Analysis';
-
-  const circ=2*Math.PI*68;
-  const offset=circ-(score/100)*circ;
-  setTimeout(()=>{
-    document.getElementById('ring').style.strokeDashoffset=offset;
-    document.getElementById('scoreNum').textContent=score;
-  },80);
-
-  const gradeEl=document.getElementById('scoreGrade');
-  if(score>=80){gradeEl.textContent='🌟 Highly Visible';gradeEl.style.color='var(--green)'}
-  else if(score>=60){gradeEl.textContent='✅ Well Recognized';gradeEl.style.color='var(--accent2)'}
-  else if(score>=40){gradeEl.textContent='⚡ Moderate Presence';gradeEl.style.color='var(--yellow)'}
-  else if(score>=20){gradeEl.textContent='⚠️  Low Visibility';gradeEl.style.color='var(--yellow)'}
-  else{gradeEl.textContent='❌ Not Discoverable';gradeEl.style.color='var(--red)'}
-
-  document.getElementById('scoreMeta').textContent=`${mentioned}/${total} models mention "${brand}"`;
-
-  const grid=document.getElementById('resultsGrid');
-  grid.innerHTML='';
-  entries.forEach(e=>{
-    const m=MODELS.find(x=>x.id===e.id);
-    if(!m) return;
-    const isYes=e.ok&&analyze(e.text,brand);
-    const card=document.createElement('div');
-    card.className='rcard '+(e.ok?(isYes?'mentioned':'not-mentioned'):'error');
-    const badge=e.ok?(isYes?'yes':'no'):'err';
-    const badgeTxt=e.ok?(isYes?'Mentioned':'Not Mentioned'):'Error';
-    card.innerHTML=`
+    const card = document.createElement("div");
+    card.className = cls;
+    card.innerHTML = `
       <div class="rcard-head">
-        <span class="icon">${m.icon}</span>
-        <span class="name">${m.label}</span>
-        <span class="badge ${badge}">${badgeTxt}</span>
+        <span class="icon">🤖</span>
+        <span class="name">${mName}</span>
+        <span class="badge ${badgeCls}">${badge}</span>
       </div>
-      <div class="rcard-body">${e.ok?escapeHtml(e.text.slice(0,200)):'Error: '+escapeHtml(e.error||'')}</div>`;
+      <div class="rcard-body">${r.error ? "<span style="color:var(--yellow)">"+r.error+"</span>" : (r.snippet || "<span style="color:var(--text3)">无相关片段</span>")}</div>
+    `;
     grid.appendChild(card);
   });
 
-  document.getElementById('suggestText').textContent=getSuggestion(score,brand);
-  setTimeout(()=>document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'}),100);
+  // Suggestion
+  document.getElementById("suggestText").textContent = getSuggestion(score, brand);
+
+  document.getElementById("results").classList.add("show");
+  setTimeout(() => { document.getElementById("results").scrollIntoView({behavior:"smooth", block:"start"}); }, 100);
 }
 
-function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-function getSuggestion(score,brand){
-  if(score>=80) return `「${brand}」has strong AI visibility across ${score}% of models. Maintain: publish regular updates, engage media, monitor sentiment.`;
-  if(score>=60) return `「${brand}」is well recognized but has room to grow. Strengthen Wikipedia/encyclopedia entries, publish thought leadership, increase mentions in developer communities.`;
-  if(score>=40) return `「${brand}」has limited AI visibility. Prioritize: (1) Create/improve Wikipedia and Baidu Baike entries; (2) Publish expert articles on Zhihu/Juejin; (3) Build consistent social media narrative.`;
-  if(score>=20) return `「${brand}」is barely visible in AI. Action: (1) Build comprehensive Wikipedia/Baidu Baike; (2) Partner with KOLs; (3) Distribute press releases to tech media; (4) Create high-quality long-form brand content.`;
-  return `「${brand}」is essentially invisible to AI. Urgent: (1) Create Wikipedia/Baidu Baike immediately; (2) Publish founder interviews and brand story; (3) Get mainstream tech media coverage; (4) Consider professional GEO services.`;
-}
-function reset(){
-  document.getElementById('results').classList.remove('show');
-  document.getElementById('brandInput').value='';
-  document.getElementById('ring').style.strokeDashoffset='427.26';
-  document.getElementById('scoreNum').textContent='0';
-  document.getElementById('brandInput').focus();
+// ── Suggestion ──
+function getSuggestion(score, brand){
+  if(currentLang === "en"){
+    if(score >= 80) return `🎉 Your brand "${brand}" has strong AI visibility. Keep publishing high-quality content and maintain an active online presence to sustain your lead.`;
+    if(score >= 50) return `📈 "${brand}" shows moderate AI visibility. Consider publishing more industry insights, case studies, and thought leadership content to improve model recall.`;
+    return `⚠️ "${brand}" has low AI visibility. Start by creating authoritative content, getting featured in industry publications, and optimizing for AI training data sources.`;
+  }
+  if(score >= 80) return `🎉 品牌"${brand}"在 AI 中具有较强可见性。建议继续发布高质量内容，保持活跃的在线存在感，以维持领先地位。`;
+  if(score >= 50) return `📈 "${brand}"的 AI 可见性中等。建议发布更多行业洞察、案例研究和思想领导力内容，提升模型对品牌的记忆度。`;
+  return `⚠️ "${brand}"的 AI 可见性较低。建议从创建权威内容、争取行业媒体曝光、优化 AI 训练数据源入手，系统提升 GEO 表现。`;
 }
 
 // ── Init ──
-renderModels();
+updateSelectedCount();
 </script>
 </body>
 </html>
+
+
+
