@@ -13,45 +13,70 @@
   --green:#22c55e;--red:#ef4444;--orange:#f59e0b;
   --topbar-h:54px;--sidebar-w:200px;--sidebar-collapsed:56px;
 }
+:root.light{
+  --bg:#f5f5fa;--surface:#ffffff;--surface2:#f0f0f5;--surface3:#e8e8f0;
+  --border:#e0e0ea;--border2:#cccce0;--text:#1a1a2e;--text2:#6666aa;--text3:#9999cc;
+}
 html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;user-select:none}
 
 /* ── Top Bar ── */
 .topbar{
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
-  background:rgba(13,13,20,0.9);backdrop-filter:blur(24px);
+  background:var(--surface);backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:0 18px;z-index:100;
 }
-.topbar-brand{display:flex;align-items:center;gap:10px;margin-right:24px}
+.topbar-brand{display:flex;align-items:center;gap:10px;margin-right:20px}
 .logo-hex svg{width:28px;height:28px;display:block}
 .brand-text{font-size:16px;font-weight:700;letter-spacing:-.3px}
-.brand-text span{background:linear-gradient(135deg,#c4b5fd,#f0abfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.brand-text span{background:linear-gradient(135deg,#7c6aef,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
 .topbar-nav{display:flex;gap:3px;flex:1}
 .nav-item{
-  padding:7px 16px;border-radius:7px;font-size:13px;font-weight:500;
+  padding:7px 15px;border-radius:7px;font-size:13px;font-weight:500;
   color:var(--text2);cursor:pointer;transition:all .15s;border:1px solid transparent;
 }
 .nav-item:hover{color:var(--text);background:var(--surface2)}
-.nav-item.active{color:#fff;background:var(--surface2);border-color:var(--border2)}
+.nav-item.active{color:var(--text);background:var(--surface2);border-color:var(--border2)}
 
-.topbar-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
+
+/* Widget Button */
+.widget-btn{
+  width:32px;height:32px;border-radius:7px;background:var(--surface2);
+  border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--text2);transition:all .15s;
+}
+.widget-btn:hover{color:var(--text);border-color:var(--accent)}
+.widget-btn svg{width:16px;height:16px}
+
+/* Widget Panel */
+.widget-panel{
+  position:fixed;top:calc(var(--topbar-h) + 8px);right:18px;
+  width:240px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:8px;z-index:200;display:none;
+  box-shadow:0 8px 32px rgba(0,0,0,.3);
+}
+.widget-panel.open{display:block}
+.widget-panel-item{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;
+  border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .12s;
+}
+.widget-panel-item:hover{background:var(--surface2);color:var(--text)}
+.widget-panel-item svg{width:15px;height:15px;flex-shrink:0;opacity:.65}
+.widget-panel-divider{height:1px;background:var(--border);margin:6px 0}
+
+/* Btn styles */
 .btn-ghost{
-  padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;
+  padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;
   border:1px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;
 }
 .btn-ghost:hover{color:var(--text);border-color:var(--accent2)}
 .btn-primary{
-  padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;
+  padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;
   background:var(--accent);color:#fff;cursor:pointer;border:none;transition:all .15s;
 }
 .btn-primary:hover{background:var(--accent2);box-shadow:0 2px 12px var(--accent-glow)}
-.btn-lang{
-  padding:6px 10px;border-radius:5px;font-size:11px;font-weight:600;
-  border:1px solid var(--border2);background:var(--surface2);color:var(--text2);
-  cursor:pointer;transition:all .15s;
-}
-.btn-lang:hover{color:var(--text);border-color:var(--accent)}
 
 /* ── Layout ── */
 .body{display:flex;height:100vh;padding-top:var(--topbar-h)}
@@ -72,7 +97,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 }
 .sidebar-toggle:hover{color:var(--text);border-color:var(--accent)}
 .sidebar.collapsed .sidebar-toggle{transform:translateY(-50%) rotate(180deg)}
-
 .sidebar-label{
   padding:16px 14px 10px;font-size:10px;font-weight:600;letter-spacing:1.2px;
   color:var(--text3);text-transform:uppercase;white-space:nowrap;
@@ -89,12 +113,10 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .side-item.active svg{opacity:1}
 .sidebar.collapsed .side-item span{display:none}
 .sidebar.collapsed .sidebar-label{display:none}
-
 .sidebar-placeholder{
   flex:1;display:flex;align-items:center;justify-content:center;
   color:var(--text3);font-size:13px;text-align:center;padding:20px;
 }
-.sidebar-placeholder svg{width:32px;height:32px;margin-bottom:10px;opacity:.3}
 
 /* ── Main Content ── */
 .main{flex:1;overflow-y:auto;padding:28px 32px}
@@ -104,11 +126,11 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .page{display:none}
 .page.active{display:block}
 
-/* ── Home ── */
+/* ── Hero ── */
 .hero{margin-bottom:28px}
 .hero h1{
   font-size:28px;font-weight:700;margin-bottom:8px;
-  background:linear-gradient(135deg,#c4b5fd,#f0abfc,#fda4af);
+  background:linear-gradient(135deg,#7c6aef,#a78bfa);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.35;
 }
 .hero p{font-size:14px;color:var(--text2);line-height:1.7;max-width:520px}
@@ -182,9 +204,24 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .calc-row input:focus{border-color:var(--accent)}
 #calcResults{margin-top:10px;font-size:12px;color:var(--text2);line-height:1.75}
 
+/* ── File Manager ── */
+.file-list{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:560px}
+.file-item{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  border-bottom:1px solid var(--border);font-size:13px;transition:background .1s;
+}
+.file-item:last-child{border-bottom:none}
+.file-item:hover{background:var(--surface2)}
+.file-item svg{width:18px;height:18px;opacity:.5;flex-shrink:0}
+.file-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-meta{color:var(--text3);font-size:12px;flex-shrink:0}
+.file-empty{text-align:center;padding:32px;color:var(--text3);font-size:13px}
+.file-toolbar{display:flex;gap:8px;margin-bottom:14px;max-width:560px}
+.file-toolbar .btn-action{padding:8px 16px;font-size:12px}
+
 /* ── Auth Modal ── */
 .modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;
+  display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;
   align-items:center;justify-content:center;
 }
 .modal-overlay.open{display:flex}
@@ -198,11 +235,10 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .modal-switch{text-align:center;margin-top:14px;font-size:13px;color:var(--text2)}
 .modal-switch a{color:var(--accent2);cursor:pointer}
 
-/* ── Responsive ── */
+/* Responsive */
 @media(max-width:768px){
   .sidebar{display:none}
   .topbar-nav .nav-item{padding:7px 10px;font-size:12px}
-  .topbar-right .btn-ghost,.topbar-right .btn-primary{padding:5px 10px;font-size:11px}
 }
 </style>
 </head>
@@ -212,9 +248,8 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 <div class="topbar">
   <div class="topbar-brand">
     <div class="logo-hex">
-      <!-- 白色六芒星：6顶点，尖顶朝上 -->
       <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="14,1 18.2,8 26,10 21,16 22,24 14,20.5 6,24 7,16 2,10 9.8,8" stroke="white" stroke-width="1.1" fill="none"/>
+        <polygon points="14,1 18.2,8 26,10 21,16 22,24 14,20.5 6,24 7,16 2,10 9.8,8" stroke="var(--text)" stroke-width="1.1" fill="none"/>
       </svg>
     </div>
     <div class="brand-text"><span>科AI</span></div>
@@ -224,20 +259,58 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
     <div class="nav-item active" data-nav="home"><span data-i18n="navHome">首页</span></div>
     <div class="nav-item" data-nav="ai"><span data-i18n="navAI">AI</span></div>
     <div class="nav-item" data-nav="tools"><span data-i18n="navTools">工具</span></div>
-    <div class="nav-item" data-nav="trade"><span data-i18n="navTrade">贸易</span></div>
-    <div class="nav-item" data-nav="exchange"><span data-i18n="navExchange">交易</span></div>
+    <div class="nav-item" data-nav="trade"><span data-i18n="navTrade">交易</span></div>
+    <div class="nav-item" data-nav="exchange"><span data-i18n="navExchange">交易所</span></div>
+    <div class="nav-item" data-nav="community"><span data-i18n="navCommunity">社区</span></div>
+    <div class="nav-item" data-nav="personal"><span data-i18n="navPersonal">个人</span></div>
   </div>
   
   <div class="topbar-right">
+    <!-- Widget Button -->
+    <button class="widget-btn" id="widgetBtn" title="更多">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="2.2"/>
+        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
+      </svg>
+    </button>
     <button class="btn-ghost" id="loginBtn" data-i18n="login">登录</button>
     <button class="btn-primary" id="registerBtn" data-i18n="register">注册</button>
-    <button class="btn-lang" id="langBtn">EN</button>
+  </div>
+</div>
+
+<!-- Widget Panel -->
+<div class="widget-panel" id="widgetPanel">
+  <div class="widget-panel-item" id="wpContact">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12V4.5L8 2l6 2.5V12l-5 3-1-1.5M8 8v3M6 10.5h4"/></svg>
+    <span data-i18n="wpContact">联系客服</span>
+  </div>
+  <div class="widget-panel-item" id="wpFeedback">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/><path d="M5 6h6M5 9h4"/></svg>
+    <span data-i18n="wpFeedback">意见反馈</span>
+  </div>
+  <div class="widget-panel-item" id="wpMessage">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h12v8H9l-3 2v-2H2V3z"/></svg>
+    <span data-i18n="wpMessage">站内消息</span>
+  </div>
+  <div class="widget-panel-item" id="wpNotice">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a5 5 0 00-5 5v3l-1.5 2h13L13 10V7a5 5 0 00-5-5zM6.5 13h3"/></svg>
+    <span data-i18n="wpNotice">系统公告</span>
+  </div>
+  <div class="widget-panel-divider"></div>
+  <div class="widget-panel-item" id="wpLang">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/></svg>
+    <span data-i18n="wpLang">语言切换</span>
+    <span style="margin-left:auto;font-size:11px;color:var(--text3)" id="langCurrent">中文</span>
+  </div>
+  <div class="widget-panel-item" id="wpTheme">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5a6.5 6.5 0 100 13A6.5 6.5 0 008 1.5z"/><path d="M8 1.5V3M8 13v1.5M1.5 8H3M13 8h1.5M3 3l1 1M12 12l1 1M3 13l1-1M12 4l1-1"/></svg>
+    <span data-i18n="wpTheme">切换深浅色</span>
+    <span style="margin-left:auto;font-size:11px;color:var(--text3)" id="themeCurrent">深色</span>
   </div>
 </div>
 
 <!-- Body -->
 <div class="body">
-
   <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <button class="sidebar-toggle" id="sidebarToggle">◀</button>
@@ -248,7 +321,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
   <!-- Main -->
   <div class="main">
     
-    <!-- Home -->
     <div class="page active" id="pageHome">
       <div class="hero">
         <h1 data-i18n="heroTitle">AI赋能品牌<br>洞察搜索可见性</h1>
@@ -256,12 +328,10 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
       </div>
     </div>
 
-    <!-- AI -->
     <div class="page" id="pageAI">
       <div class="hero"><h1 data-i18n="aiTitle">AI智能体</h1><p data-i18n="aiSub">AI大栏目内容，敬请期待。</p></div>
     </div>
 
-    <!-- Tools: GEO -->
     <div class="page" id="pageGeo">
       <div class="hero" style="margin-bottom:18px">
         <h1 style="font-size:20px" data-i18n="geoTitle">GEO可见性检测</h1>
@@ -281,7 +351,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
       <div class="geo-results" id="geoResults"></div>
     </div>
 
-    <!-- Tools: Compare -->
     <div class="page" id="pageCompare">
       <div class="hero" style="margin-bottom:18px">
         <h1 style="font-size:20px" data-i18n="compareTitle">AI模型比价</h1>
@@ -296,14 +365,28 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
       </div>
     </div>
 
-    <!-- Trade -->
     <div class="page" id="pageTrade">
-      <div class="hero"><h1 data-i18n="tradeTitle">贸易</h1><p data-i18n="tradeSub">贸易大栏目内容，敬请期待。</p></div>
+      <div class="hero"><h1 data-i18n="tradeTitle">交易</h1><p data-i18n="tradeSub">交易大栏目内容，敬请期待。</p></div>
     </div>
 
-    <!-- Exchange -->
     <div class="page" id="pageExchange">
-      <div class="hero"><h1 data-i18n="exchangeTitle">交易</h1><p data-i18n="exchangeSub">交易大栏目内容，敬请期待。</p></div>
+      <div class="hero"><h1 data-i18n="exchangeTitle">交易所</h1><p data-i18n="exchangeSub">交易所大栏目内容，敬请期待。</p></div>
+    </div>
+
+    <div class="page" id="pageCommunity">
+      <div class="hero"><h1 data-i18n="communityTitle">社区</h1><p data-i18n="communitySub">社区大栏目内容，敬请期待。</p></div>
+    </div>
+
+    <div class="page" id="pagePersonal">
+      <div class="hero" style="margin-bottom:14px">
+        <h1 style="font-size:20px" data-i18n="personalTitle">个人中心</h1>
+        <p style="font-size:13px" data-i18n="personalSub">管理您的文件和账户。</p>
+      </div>
+      <div class="file-toolbar">
+        <button class="btn-action" id="newFileBtn" data-i18n="newFile">新建文件</button>
+        <button class="btn-action" style="background:var(--surface3);color:var(--text2)" id="importFileBtn" data-i18n="importFile">导入文件</button>
+      </div>
+      <div class="file-list" id="fileList"></div>
     </div>
 
   </div>
@@ -357,6 +440,10 @@ const SIDEBAR_MAP={
   ],
   trade:[],
   exchange:[],
+  community:[],
+  personal:[
+    {id:'files',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>',labelKey:'fileManage'},
+  ],
 };
 
 // ── State ──
@@ -365,10 +452,11 @@ let currentTool='geo';
 let selectedModels=new Set();
 let authMode='login';
 let lang=localStorage.getItem('lang')||'zh';
+let theme=localStorage.getItem('theme')||'dark';
 
 const I18N={
   zh:{
-    navHome:'首页',navAI:'AI',navTools:'工具',navTrade:'贸易',navExchange:'交易',
+    navHome:'首页',navAI:'AI',navTools:'工具',navTrade:'交易',navExchange:'交易所',navCommunity:'社区',navPersonal:'个人',
     subTools:'子工具',login:'登录',register:'注册',
     heroTitle:'AI赋能品牌\n洞察搜索可见性',
     heroSub:'一站式AI工具聚合平台，检测品牌在AI搜索中的可见性，对比模型定价，赋能商业决策。',
@@ -378,17 +466,21 @@ const I18N={
     startBtn:'开始检测',detecting:'检测中…',
     compareTitle:'AI模型比价',compareSub:'各平台模型定价，每百万Token美元。',
     calcTitle:'成本计算器',inputTok:'输入Token',outputTok:'输出Token',
-    tradeTitle:'贸易',tradeSub:'贸易大栏目内容，敬请期待。',
-    exchangeTitle:'交易',exchangeSub:'交易大栏目内容，敬请期待。',
+    tradeTitle:'交易',tradeSub:'交易大栏目内容，敬请期待。',
+    exchangeTitle:'交易所',exchangeSub:'交易所大栏目内容，敬请期待。',
+    communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',
+    personalTitle:'个人中心',personalSub:'管理您的文件和账户。',
+    geo:'GEO检测',compare:'AI比价',fileManage:'文件管理',
     mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',
     userPh:'用户名',passPh:'密码',noAccount:'还没有账号？',
-    geo:'GEO检测',compare:'AI比价',
+    newFile:'新建文件',importFile:'导入文件',
+    wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',wpTheme:'切换深浅色',
   },
   en:{
-    navHome:'Home',navAI:'AI',navTools:'Tools',navTrade:'Trade',navExchange:'Exchange',
+    navHome:'Home',navAI:'AI',navTools:'Tools',navTrade:'Trade',navExchange:'Exchange',navCommunity:'Community',navPersonal:'Personal',
     subTools:'Sub Tools',login:'Login',register:'Register',
     heroTitle:'AI-Empowered Brand\nSearch Visibility Insights',
-    heroSub:'One-stop AI tools platform. Check brand visibility in AI search, compare model pricing, empower business decisions.',
+    heroSub:'One-stop AI tools platform. Check brand visibility in AI search, compare model pricing.',
     aiTitle:'AI Agents',aiSub:'AI section coming soon.',
     geoTitle:'GEO Visibility',geoSub:'Enter brand, select models, detect AI search mentions.',
     brandLabel:'Brand Name',brandPh:'e.g. Huawei, Tesla',modelLabel:'Select Models (multi-select)',
@@ -397,44 +489,61 @@ const I18N={
     calcTitle:'Cost Calculator',inputTok:'Input Tokens',outputTok:'Output Tokens',
     tradeTitle:'Trade',tradeSub:'Trade section coming soon.',
     exchangeTitle:'Exchange',exchangeSub:'Exchange section coming soon.',
+    communityTitle:'Community',communitySub:'Community section coming soon.',
+    personalTitle:'Personal Center',personalSub:'Manage your files and account.',
+    geo:'GEO Detect',compare:'Compare',fileManage:'File Manager',
     mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',
     userPh:'Username',passPh:'Password',noAccount:"Don't have an account?",
-    geo:'GEO Detect',compare:'Compare',
+    newFile:'New File',importFile:'Import File',
+    wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',wpTheme:'Toggle Theme',
   }
 };
 
 // ── Init ──
 function init(){
+  applyTheme();
   renderSidebar();
   renderModelChips();
   renderCompareGrid();
+  renderFileList();
   bindEvents();
   applyLang();
   loadUser();
+  applyThemeUI();
 }
 
 function bindEvents(){
-  // Top nav
   document.querySelectorAll('.nav-item').forEach(n=>{
     n.addEventListener('click',()=>navigateTo(n.dataset.nav));
   });
-  // Sidebar toggle
   document.getElementById('sidebarToggle').addEventListener('click',()=>{
     document.getElementById('sidebar').classList.toggle('collapsed');
   });
-  // GEO
   document.getElementById('geoStartBtn').addEventListener('click',startGeo);
-  // Calc
   document.getElementById('calcInput').addEventListener('input',calcCosts);
   document.getElementById('calcOutput').addEventListener('input',calcCosts);
+  // Widget
+  document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('#widgetPanel')&&!e.target.closest('#widgetBtn')){
+      document.getElementById('widgetPanel').classList.remove('open');
+    }
+  });
+  document.getElementById('wpContact').addEventListener('click',()=>alert(lang==='zh'?'客服功能即将上线':'Support coming soon'));
+  document.getElementById('wpFeedback').addEventListener('click',()=>alert(lang==='zh'?'反馈功能即将上线':'Feedback coming soon'));
+  document.getElementById('wpMessage').addEventListener('click',()=>alert(lang==='zh'?'暂无站内消息':'No messages'));
+  document.getElementById('wpNotice').addEventListener('click',()=>alert(lang==='zh'?'暂无系统公告':'No announcements'));
+  document.getElementById('wpLang').addEventListener('click',toggleLang);
+  document.getElementById('wpTheme').addEventListener('click',toggleTheme);
   // Auth
   document.getElementById('loginBtn').addEventListener('click',()=>openAuth('login'));
   document.getElementById('registerBtn').addEventListener('click',()=>openAuth('register'));
   document.getElementById('authToggleLink').addEventListener('click',toggleAuthMode);
   document.getElementById('authSubmitBtn').addEventListener('click',submitAuth);
   document.getElementById('authModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuth();});
-  // Lang
-  document.getElementById('langBtn').addEventListener('click',toggleLang);
+  // Files
+  document.getElementById('newFileBtn').addEventListener('click',newFile);
+  document.getElementById('importFileBtn').addEventListener('click',importFile);
 }
 
 // ── Navigation ──
@@ -442,12 +551,9 @@ function navigateTo(nav){
   currentNav=nav;
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.nav===nav));
   renderSidebar();
-  
-  // Decide which page to show
   let pageId='page'+capitalize(nav);
-  if(nav==='tools'){
-    pageId='page'+capitalize(currentTool);
-  }
+  if(nav==='tools') pageId='page'+capitalize(currentTool);
+  if(nav==='personal') pageId='pagePersonal';
   showPage(pageId);
 }
 
@@ -464,27 +570,27 @@ function renderSidebar(){
   const items=SIDEBAR_MAP[currentNav]||[];
   const labelEl=document.getElementById('sidebarLabel');
   const contentEl=document.getElementById('sidebarContent');
-  
   if(items.length===0){
     labelEl.style.display='none';
     contentEl.innerHTML=`<div class="sidebar-placeholder">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;opacity:.3">
         <rect x="2" y="2" width="12" height="12" rx="2"/>
         <path d="M6 6h4M6 10h4"/>
       </svg>
-      <span data-i18n="noSub">暂无子功能</span>
+      <span data-i18n="noSub" style="display:block;margin-top:8px">暂无子功能</span>
     </div>`;
   }else{
     labelEl.style.display='block';
     labelEl.textContent=I18N[lang].subTools;
     contentEl.innerHTML=items.map(item=>`
-      <div class="side-item ${item.id===currentTool?'active':''}" data-tool="${item.id}">
+      <div class="side-item" data-tool="${item.id}">
         ${item.icon}
         <span data-i18n="${item.labelKey}">${I18N[lang][item.labelKey]}</span>
       </div>
     `).join('');
     contentEl.querySelectorAll('.side-item').forEach(si=>{
       si.addEventListener('click',()=>{
+        if(si.dataset.tool==='files'){showPage('pagePersonal');return}
         currentTool=si.dataset.tool;
         document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));
         si.classList.add('active');
@@ -584,6 +690,52 @@ function calcCosts(){
   }).join('');
 }
 
+// ── Files ──
+function renderFileList(){
+  const el=document.getElementById('fileList');
+  const files=JSON.parse(localStorage.getItem('files')||'[]');
+  if(files.length===0){
+    el.innerHTML=`<div class="file-empty" data-i18n="noFiles">暂无文件，点击新建文件开始</div>`;
+  }else{
+    el.innerHTML=files.map((f,i)=>`
+      <div class="file-item">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>
+        <span class="file-name">${f.name}</span>
+        <span class="file-meta">${f.date||''}</span>
+      </div>
+    `).join('');
+  }
+  applyLang();
+}
+
+function newFile(){
+  const name=prompt(lang==='zh'?'输入文件名：':'Enter filename:','新文档.txt');
+  if(!name)return;
+  const files=JSON.parse(localStorage.getItem('files')||'[]');
+  files.unshift({name,content:'',date:new Date().toLocaleDateString()});
+  localStorage.setItem('files',JSON.stringify(files));
+  renderFileList();
+}
+
+function importFile(){
+  const inp=document.createElement('input');
+  inp.type='file';
+  inp.accept='.txt,.md,.json,.csv';
+  inp.onchange=()=>{
+    const file=inp.files[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+      const files=JSON.parse(localStorage.getItem('files')||'[]');
+      files.unshift({name:file.name,content:reader.result,date:new Date().toLocaleDateString()});
+      localStorage.setItem('files',JSON.stringify(files));
+      renderFileList();
+    };
+    reader.readAsText(file);
+  };
+  inp.click();
+}
+
 // ── Auth ──
 function openAuth(mode){
   authMode=mode;
@@ -600,15 +752,15 @@ function updateAuthUI(){
   const t=I18N[lang];
   document.getElementById('authTitle').textContent=authMode==='login'?t.login:t.register;
   document.getElementById('authSubmitBtn').textContent=authMode==='login'?t.login:t.register;
-  document.getElementById('authSwitch').innerHTML=`<span>${authMode==='login'?t.noAccount:t.hasAccount||'已有账号？'}</span> <a id="authToggleLink">${authMode==='login'?t.register:t.login}</a>`;
+  document.getElementById('authSwitch').innerHTML=`<span>${authMode==='login'?t.noAccount:'已有账号？'}</span> <a id="authToggleLink">${authMode==='login'?t.register:t.login}</a>`;
   document.getElementById('authToggleLink').addEventListener('click',toggleAuthMode);
 }
-async function submitAuth(){
+function submitAuth(){
   const user=document.getElementById('authUser').value.trim();
   const pass=document.getElementById('authPass').value;
   if(!user||!pass)return;
   if(authMode==='login'){
-    const saved=JSON.parse(localStorage.getItem('u_'+user));
+    const saved=JSON.parse(localStorage.getItem('u_'+user)||'null');
     if(!saved||saved.p!==pass){alert(lang==='zh'?'用户名或密码错误':'Wrong username or password');return}
     localStorage.setItem('currentUser',user);
   }else{
@@ -622,15 +774,44 @@ function loadUser(){
   const u=localStorage.getItem('currentUser');
   const right=document.querySelector('.topbar-right');
   if(u){
-    right.innerHTML=`<span style="color:var(--text2);font-size:12px">${u}</span><button class="btn-ghost" id="logoutBtn" data-i18n="logout">退出</button><button class="btn-lang" id="langBtn">${lang==='zh'?'EN':'中文'}</button>`;
+    right.innerHTML=`<button class="widget-btn" id="widgetBtn" title="更多">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
+      </svg>
+    </button><span style="font-size:12px;color:var(--text2)">${u}</span><button class="btn-ghost" id="logoutBtn" data-i18n="logout">退出</button>`;
+    document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
     document.getElementById('logoutBtn').addEventListener('click',()=>{localStorage.removeItem('currentUser');loadUser();});
-    document.getElementById('langBtn').addEventListener('click',toggleLang);
   }else{
-    right.innerHTML=`<button class="btn-ghost" id="loginBtn" data-i18n="login">登录</button><button class="btn-primary" id="registerBtn" data-i18n="register">注册</button><button class="btn-lang" id="langBtn">${lang==='zh'?'EN':'中文'}</button>`;
+    right.innerHTML=`<button class="widget-btn" id="widgetBtn" title="更多">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
+      </svg>
+    </button><button class="btn-ghost" id="loginBtn" data-i18n="login">登录</button><button class="btn-primary" id="registerBtn" data-i18n="register">注册</button>`;
+    document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
     document.getElementById('loginBtn').addEventListener('click',()=>openAuth('login'));
     document.getElementById('registerBtn').addEventListener('click',()=>openAuth('register'));
-    document.getElementById('langBtn').addEventListener('click',toggleLang);
   }
+}
+
+// ── Widget Panel ──
+function toggleWidget(e){
+  e.stopPropagation();
+  document.getElementById('widgetPanel').classList.toggle('open');
+}
+function applyThemeUI(){
+  document.getElementById('themeCurrent').textContent=theme==='dark'
+    ?(lang==='zh'?'深色':'Dark'):(lang==='zh'?'浅色':'Light');
+  document.getElementById('langCurrent').textContent=lang==='zh'?'中文':'English';
+}
+function toggleTheme(){
+  theme=theme==='dark'?'light':'dark';
+  localStorage.setItem('theme',theme);
+  applyTheme();
+  applyThemeUI();
+  document.getElementById('widgetPanel').classList.remove('open');
+}
+function applyTheme(){
+  document.documentElement.classList.toggle('light',theme==='light');
 }
 
 // ── Lang ──
@@ -638,16 +819,18 @@ function toggleLang(){
   lang=lang==='zh'?'en':'zh';
   localStorage.setItem('lang',lang);
   applyLang();
-  loadUser();
+  applyThemeUI();
   renderSidebar();
+  loadUser();
+  document.getElementById('widgetPanel').classList.remove('open');
 }
 function applyLang(){
   const t=I18N[lang];
-  document.getElementById('langBtn').textContent=lang==='zh'?'EN':'中文';
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key=el.dataset.i18n;
     if(t[key]){
-      if(key==='heroTitle'||key==='aiTitle'||key==='geoTitle'||key==='compareTitle'||key==='tradeTitle'||key==='exchangeTitle'){
+      if(key==='heroTitle'||key==='aiTitle'||key==='geoTitle'||key==='compareTitle'||
+         key==='tradeTitle'||key==='exchangeTitle'||key==='communityTitle'||key==='personalTitle'){
         el.innerHTML=t[key].replace('\n','<br>');
       }else{
         el.textContent=t[key];
