@@ -18,44 +18,22 @@
   --border:#e0e0ea;--border2:#cccce0;--text:#1a1a2e;--text2:#6666aa;--text3:#9999cc;
 }
 html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;user-select:none}
-
-/* Top Bar */
-.topbar{
-  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
-  background:var(--surface);backdrop-filter:blur(24px);
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;padding:0 18px;z-index:100;
-}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--topbar-h);background:var(--surface);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 18px;z-index:100}
 .topbar-brand{display:flex;align-items:center;gap:10px;margin-right:16px}
 .logo-hex svg{width:28px;height:28px;display:block}
 .brand-text{font-size:16px;font-weight:700;letter-spacing:-.3px}
 .brand-text span{background:linear-gradient(135deg,#7c6aef,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .topbar-nav{display:flex;gap:2px;flex:1}
-.nav-item{
-  padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;
-  color:var(--text2);cursor:pointer;transition:all .15s;border:1px solid transparent;
-}
+.nav-item{padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all .15s;border:1px solid transparent}
 .nav-item:hover{color:var(--text);background:var(--surface2)}
 .nav-item.active{color:var(--text);background:var(--surface2);border-color:var(--border2)}
 .topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
-.widget-btn{
-  width:32px;height:32px;border-radius:7px;background:var(--surface2);
-  border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;
-  color:var(--text2);transition:all .15s;
-}
+.widget-btn{width:32px;height:32px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:all .15s}
 .widget-btn:hover{color:var(--text);border-color:var(--accent)}
 .widget-btn svg{width:16px;height:16px}
-.widget-panel{
-  position:fixed;top:calc(var(--topbar-h) + 8px);right:18px;
-  width:240px;background:var(--surface);border:1px solid var(--border);
-  border-radius:12px;padding:8px;z-index:200;display:none;
-  box-shadow:0 8px 32px rgba(0,0,0,.3);
-}
+.widget-panel{position:fixed;top:calc(var(--topbar-h) + 8px);right:18px;width:240px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px;z-index:200;display:none;box-shadow:0 8px 32px rgba(0,0,0,.3)}
 .widget-panel.open{display:block}
-.widget-panel-item{
-  display:flex;align-items:center;gap:10px;padding:9px 10px;
-  border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .12s;
-}
+.widget-panel-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:7px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .12s}
 .widget-panel-item:hover{background:var(--surface2);color:var(--text)}
 .widget-panel-item svg{width:15px;height:15px;flex-shrink:0;opacity:.65}
 .widget-panel-divider{height:1px;background:var(--border);margin:6px 0}
@@ -63,8 +41,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .btn-ghost:hover{color:var(--text);border-color:var(--accent2)}
 .btn-primary{padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;background:var(--accent);color:#fff;cursor:pointer;border:none;transition:all .15s}
 .btn-primary:hover{background:var(--accent2);box-shadow:0 2px 12px var(--accent-glow)}
-
-/* Layout */
 .body{display:flex;height:100vh;padding-top:var(--topbar-h)}
 .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .2s ease;overflow:hidden;position:relative}
 .sidebar.collapsed{width:var(--sidebar-collapsed)}
@@ -83,48 +59,25 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .main{flex:1;overflow-y:auto;padding:28px 32px}
 .main::-webkit-scrollbar{width:5px}
 .main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-.page{display:none}
-.page.active{display:block}
-
-/* Home - AI Chat */
-.home-chat{
-  max-width:600px;margin:0 auto 32px;background:var(--surface);
-  border:1px solid var(--border);border-radius:14px;padding:20px;
-}
+.page{display:none}.page.active{display:block}
+.home-chat{max-width:600px;margin:0 auto 32px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px}
 .chat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .chat-header svg{width:24px;height:24px;color:var(--accent)}
 .chat-header h2{font-size:16px;font-weight:600}
 .chat-input-wrap{display:flex;gap:8px}
-.chat-input{
-  flex:1;padding:12px 14px;border-radius:8px;border:1px solid var(--border2);
-  background:var(--surface2);color:var(--text);font-size:14px;outline:none;resize:none;
-}
+.chat-input{flex:1;padding:12px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:14px;outline:none;resize:none}
 .chat-input:focus{border-color:var(--accent)}
-.chat-send{
-  padding:12px 18px;border-radius:8px;background:var(--accent);color:#fff;
-  border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;
-}
+.chat-send{padding:12px 18px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
 .chat-send:hover{background:var(--accent2)}
-.chat-response{
-  margin-top:14px;padding:14px;background:var(--surface2);
-  border-radius:8px;font-size:14px;line-height:1.7;color:var(--text);
-  display:none;
-}
+.chat-response{margin-top:14px;padding:14px;background:var(--surface2);border-radius:8px;font-size:14px;line-height:1.7;color:var(--text);display:none}
 .chat-response.open{display:block}
-
-/* Home - Features */
 .home-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.feature-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;
-}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:all .2s}
 .feature-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
 .feature-card .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .feature-card .icon svg{width:20px;height:20px}
 .feature-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
 .feature-card p{font-size:12px;color:var(--text2);line-height:1.5}
-
-/* GEO */
 .geo-form{display:flex;flex-direction:column;gap:14px;max-width:520px}
 .form-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;letter-spacing:.3px}
 .form-input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:14px;outline:none;transition:border .15s}
@@ -141,17 +94,12 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .result-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;animation:fadeUp .25s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .score-ring{width:46px;height:46px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:2.5px solid}
-.s-high{border-color:var(--green);color:var(--green)}
-.s-mid{border-color:var(--orange);color:var(--orange)}
-.s-low{border-color:var(--red);color:var(--red)}
+.s-high{border-color:var(--green);color:var(--green)}.s-mid{border-color:var(--orange);color:var(--orange)}.s-low{border-color:var(--red);color:var(--red)}
 .result-info{flex:1;min-width:0}
 .result-name{font-size:13px;font-weight:600;margin-bottom:4px}
 .result-snippet{font-size:12px;color:var(--text2);line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .result-tag{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;flex-shrink:0}
-.t-yes{background:rgba(34,197,94,.12);color:var(--green)}
-.t-no{background:rgba(239,68,68,.12);color:var(--red)}
-
-/* Compare - Model Selection */
+.t-yes{background:rgba(34,197,94,.12);color:var(--green)}.t-no{background:rgba(239,68,68,.12);color:var(--red)}
 .compare-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .compare-header h3{font-size:14px;font-weight:600}
 .compare-counter{font-size:12px;color:var(--text3)}
@@ -168,18 +116,13 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .price-row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0}
 .price-row span:first-child{color:var(--text2)}
 .price-row span:last-child{color:var(--text);font-family:monospace}
-
-/* Compare - Table */
-.compare-table-wrap{margin-top:20px;display:none}
-.compare-table-wrap.open{display:block}
+.compare-table-wrap{margin-top:20px;display:none}.compare-table-wrap.open{display:block}
 .compare-table{width:100%;border-collapse:collapse;font-size:12px}
 .compare-table th,.compare-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
 .compare-table th{font-weight:600;color:var(--text2);background:var(--surface2)}
 .compare-table td{color:var(--text)}
 .compare-table tr:hover td{background:var(--surface2)}
 .compare-table .model-name{font-weight:600}
-
-/* Compare - Suggestions */
 .compare-suggestions{margin-top:18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
 .compare-suggestions h4{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text2)}
 .suggestion-list{display:flex;flex-direction:column;gap:8px}
@@ -188,8 +131,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .suggestion-item .content{flex:1}
 .suggestion-item .title{font-size:12px;font-weight:600;margin-bottom:3px}
 .suggestion-item .desc{font-size:11px;color:var(--text2);line-height:1.5}
-
-/* Files */
 .file-list{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:560px}
 .file-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
 .file-item:last-child{border-bottom:none}
@@ -200,8 +141,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .file-empty{text-align:center;padding:32px;color:var(--text3);font-size:13px}
 .file-toolbar{display:flex;gap:8px;margin-bottom:14px;max-width:560px}
 .file-toolbar .btn-action{padding:8px 16px;font-size:12px}
-
-/* Auth Modal */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:340px;max-width:90vw}
@@ -210,29 +149,105 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .modal-box .btn-action{width:100%;text-align:center;margin-top:8px}
 .modal-switch{text-align:center;margin-top:14px;font-size:13px;color:var(--text2)}
 .modal-switch a{color:var(--accent2);cursor:pointer}
-
-/* Hero */
 .hero{margin-bottom:28px}
 .hero h1{font-size:28px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#7c6aef,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.35}
 .hero p{font-size:14px;color:var(--text2);line-height:1.7;max-width:520px}
 
-/* Responsive */
+/* ── Trading Styles ── */
+.trade-layout{display:flex;gap:16px;min-height:calc(100vh - var(--topbar-h) - 56px)}
+.trade-main{flex:1;min-width:0}
+.trade-side{width:280px;flex-shrink:0;display:flex;flex-direction:column;gap:12px}
+.trade-ctrl{display:flex;gap:8px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.trade-ctrl .form-input{width:180px;flex:none}
+.trade-ctrl select{padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:13px;outline:none}
+.trade-ctrl select:focus{border-color:var(--accent)}
+.indicator-chips{display:flex;gap:4px}
+.ind-chip{padding:4px 10px;border-radius:16px;font-size:11px;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all .12s;user-select:none}
+.ind-chip.active{background:var(--accent);border-color:var(--accent);color:#fff}
+.chart-wrap{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.chart-wrap canvas{display:block;width:100%;cursor:crosshair}
+.chart-tooltip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--border2);border-radius:8px;padding:8px 12px;font-size:11px;z-index:10;display:none;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.chart-tooltip .ct-row{display:flex;justify-content:space-between;gap:12px;padding:1px 0}
+.chart-tooltip .ct-label{color:var(--text3)}
+.stock-info{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.stock-info .si-name{font-size:16px;font-weight:700;margin-bottom:2px}
+.stock-info .si-code{font-size:12px;color:var(--text3)}
+.stock-info .si-price{font-size:22px;font-weight:700;margin:8px 0 4px}
+.stock-info .si-change{font-size:13px;font-weight:600}
+.si-up{color:var(--green)}.si-down{color:var(--red)}
+.ind-panel{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.ind-panel h4{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.ind-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+.ind-row .ir-val{font-family:monospace;color:var(--text)}
+.ai-signal{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px}
+.ai-signal h4{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px}
+.signal-item{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;margin-bottom:4px;font-size:12px}
+.signal-buy{background:rgba(34,197,94,.08);border-left:3px solid var(--green)}
+.signal-sell{background:rgba(239,68,68,.08);border-left:3px solid var(--red)}
+.signal-hold{background:rgba(245,158,11,.08);border-left:3px solid var(--orange)}
+.signal-badge{padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600;flex-shrink:0}
+.sb-buy{background:rgba(34,197,94,.15);color:var(--green)}.sb-sell{background:rgba(239,68,68,.15);color:var(--red)}.sb-hold{background:rgba(245,158,11,.15);color:var(--orange)}
+.signal-conf{margin-left:auto;font-size:11px;color:var(--text3);font-family:monospace}
+
+/* Backtest */
+.bt-config{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;max-width:500px;margin-bottom:16px}
+.bt-config .form-row{display:flex;gap:12px;margin-bottom:12px}
+.bt-config .form-row .form-group{flex:1}
+.bt-config .form-group label{display:block;font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px}
+.bt-config select,.bt-config input[type="number"]{width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:13px;outline:none}
+.bt-results{display:none}
+.bt-results.open{display:block}
+.bt-metrics{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px}
+.bt-metric{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.bt-metric .bm-val{font-size:20px;font-weight:700;margin-bottom:4px}
+.bt-metric .bm-label{font-size:11px;color:var(--text2)}
+.bt-metric.positive .bm-val{color:var(--green)}.bt-metric.negative .bm-val{color:var(--red)}
+.bt-curve{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:16px}
+.bt-curve canvas{width:100%;display:block}
+.bt-trades{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.bt-trades table{width:100%;border-collapse:collapse;font-size:12px}
+.bt-trades th,.bt-trades td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.bt-trades th{font-weight:600;color:var(--text2);background:var(--surface2)}
+
+/* Simulate */
+.sim-status{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.sim-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center}
+.sim-card .sc-val{font-size:18px;font-weight:700;margin-bottom:3px}
+.sim-card .sc-label{font-size:11px;color:var(--text2)}
+.sim-order{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:16px;display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap}
+.sim-order .so-group{display:flex;flex-direction:column;gap:4px}
+.sim-order .so-group label{font-size:11px;font-weight:600;color:var(--text2)}
+.sim-order input,.sim-order select{padding:8px 12px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:13px;outline:none;width:120px}
+.sim-order input:focus,.sim-order select:focus{border-color:var(--accent)}
+.btn-buy{padding:8px 20px;border-radius:8px;background:var(--green);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer}
+.btn-buy:hover{opacity:.85}
+.btn-sell{padding:8px 20px;border-radius:8px;background:var(--red);color:#fff;border:none;font-size:13px;font-weight:600;cursor:pointer}
+.btn-sell:hover{opacity:.85}
+.sim-holdings{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.sim-holdings table{width:100%;border-collapse:collapse;font-size:12px}
+.sim-holdings th,.sim-holdings td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.sim-holdings th{font-weight:600;color:var(--text2);background:var(--surface2)}
+.sim-holdings .sell-sm{padding:3px 10px;border-radius:5px;background:var(--red);color:#fff;border:none;font-size:11px;cursor:pointer}
+.sim-history{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.sim-history table{width:100%;border-collapse:collapse;font-size:12px}
+.sim-history th,.sim-history td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.sim-history th{font-weight:600;color:var(--text2);background:var(--surface2)}
+
 @media(max-width:768px){
   .sidebar{display:none}
   .topbar-nav .nav-item{padding:6px 10px;font-size:12px}
   .home-features{grid-template-columns:1fr}
+  .trade-layout{flex-direction:column}
+  .trade-side{width:100%}
+  .sim-status{grid-template-columns:repeat(3,1fr)}
 }
 </style>
 </head>
 <body>
-
-<!-- Top Bar -->
 <div class="topbar">
   <div class="topbar-brand">
     <div class="logo-hex">
-      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="14,1 18.2,8 26,10 21,16 22,24 14,20.5 6,24 7,16 2,10 9.8,8" stroke="var(--text)" stroke-width="1.1" fill="none"/>
-      </svg>
+      <svg viewBox="0 0 28 28" fill="none"><polygon points="14,1 18.2,8 26,10 21,16 22,24 14,20.5 6,24 7,16 2,10 9.8,8" stroke="var(--text)" stroke-width="1.1" fill="none"/></svg>
     </div>
     <div class="brand-text"><span>科AI</span></div>
   </div>
@@ -246,17 +261,11 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
     <div class="nav-item" data-nav="personal"><span data-i18n="navPersonal">个人</span></div>
   </div>
   <div class="topbar-right">
-    <button class="widget-btn" id="widgetBtn" title="更多">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
-      </svg>
-    </button>
+    <button class="widget-btn" id="widgetBtn" title="更多"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button>
     <button class="btn-ghost" id="loginBtn" data-i18n="login">登录</button>
     <button class="btn-primary" id="registerBtn" data-i18n="register">注册</button>
   </div>
 </div>
-
-<!-- Widget Panel -->
 <div class="widget-panel" id="widgetPanel">
   <div class="widget-panel-item" id="wpContact"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12V4.5L8 2l6 2.5V12l-5 3-1-1.5M8 8v3M6 10.5h4"/></svg><span data-i18n="wpContact">联系客服</span></div>
   <div class="widget-panel-item" id="wpFeedback"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/><path d="M5 6h6M5 9h4"/></svg><span data-i18n="wpFeedback">意见反馈</span></div>
@@ -267,39 +276,24 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
   <div class="widget-panel-item" id="wpTheme"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg><span id="themeLabel" data-i18n="wpThemeDark">切换浅色</span></div>
 </div>
 
-<!-- Body -->
 <div class="body">
   <div class="sidebar" id="sidebar">
     <button class="sidebar-toggle" id="sidebarToggle">◀</button>
     <div class="sidebar-label" id="sidebarLabel" data-i18n="subTools">子工具</div>
     <div class="sidebar-section" id="sidebarContent"></div>
   </div>
-
   <div class="main">
-    <!-- Home -->
     <div class="page active" id="pageHome">
       <div class="home-chat">
-        <div class="chat-header">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a8 8 0 00-8 8v4l-2 2h20l-2-2v-4a8 8 0 00-8-8z"/><path d="M9 14v2M15 14v2"/></svg>
-          <h2 data-i18n="chatTitle">智能AI助手</h2>
-        </div>
-        <div class="chat-input-wrap">
-          <textarea class="chat-input" id="chatInput" rows="2" data-placeholder="chatPh" placeholder="输入您的问题，按回车发送..."></textarea>
-          <button class="chat-send" id="chatSend" data-i18n="send">发送</button>
-        </div>
+        <div class="chat-header"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a8 8 0 00-8 8v4l-2 2h20l-2-2v-4a8 8 0 00-8-8z"/><path d="M9 14v2M15 14v2"/></svg><h2 data-i18n="chatTitle">智能AI助手</h2></div>
+        <div class="chat-input-wrap"><textarea class="chat-input" id="chatInput" rows="2" data-placeholder="chatPh" placeholder="输入您的问题，按回车发送..."></textarea><button class="chat-send" id="chatSend" data-i18n="send">发送</button></div>
         <div class="chat-response" id="chatResponse"></div>
       </div>
       <div class="home-features" id="homeFeatures"></div>
     </div>
-
     <div class="page" id="pageAI"><div class="hero"><h1 data-i18n="aiTitle">AI智能体</h1><p data-i18n="aiSub">AI大栏目内容，敬请期待。</p></div></div>
-
-    <!-- GEO -->
     <div class="page" id="pageGeo">
-      <div class="hero" style="margin-bottom:18px">
-        <h1 style="font-size:20px" data-i18n="geoTitle">GEO可见性检测</h1>
-        <p style="font-size:13px" data-i18n="geoSub">输入品牌，选择模型，检测AI搜索提及情况。</p>
-      </div>
+      <div class="hero" style="margin-bottom:18px"><h1 style="font-size:20px" data-i18n="geoTitle">GEO可见性检测</h1><p style="font-size:13px" data-i18n="geoSub">输入品牌，选择模型，检测AI搜索提及情况。</p></div>
       <div class="geo-form">
         <div><div class="form-label" data-i18n="brandLabel">品牌名称</div><input class="form-input" id="brandInput" data-placeholder="brandPh" placeholder="例如：华为、特斯拉"></div>
         <div><div class="form-label" data-i18n="modelLabel">选择模型（可多选）</div><div class="model-chips" id="modelChips"></div></div>
@@ -307,36 +301,105 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
       </div>
       <div class="geo-results" id="geoResults"></div>
     </div>
-
-    <!-- Compare -->
     <div class="page" id="pageCompare">
-      <div class="hero" style="margin-bottom:18px">
-        <h1 style="font-size:20px" data-i18n="compareTitle">AI模型比价</h1>
-        <p style="font-size:13px" data-i18n="compareSub">选择最多6个模型进行全方位对比。</p>
-      </div>
-      <div class="compare-header">
-        <h3 data-i18n="selectModels">选择模型对比</h3>
-        <span class="compare-counter"><span id="selectedCount">0</span>/6</span>
-      </div>
+      <div class="hero" style="margin-bottom:18px"><h1 style="font-size:20px" data-i18n="compareTitle">AI模型比价</h1><p style="font-size:13px" data-i18n="compareSub">选择最多6个模型进行全方位对比。</p></div>
+      <div class="compare-header"><h3 data-i18n="selectModels">选择模型对比</h3><span class="compare-counter"><span id="selectedCount">0</span>/6</span></div>
       <div class="compare-grid" id="compareGrid"></div>
-      <div class="compare-table-wrap" id="compareTableWrap">
-        <table class="compare-table" id="compareTable"></table>
+      <div class="compare-table-wrap" id="compareTableWrap"><table class="compare-table" id="compareTable"></table></div>
+      <div class="compare-suggestions" id="compareSuggestions" style="display:none"><h4 data-i18n="suggestions">模型定位与建议</h4><div class="suggestion-list" id="suggestionList"></div></div>
+    </div>
+    <div class="page" id="pageMarket"><div class="hero"><h1 data-i18n="marketTitle">市场</h1><p data-i18n="marketSub">市场大栏目内容，敬请期待。</p></div></div>
+
+    <!-- ── Trade Sub-Pages ── -->
+    <div class="page" id="pageChart">
+      <div class="trade-ctrl">
+        <input class="form-input" id="chartSymbol" data-placeholder="stockPh" placeholder="输入股票代码 如 600519">
+        <select id="chartPeriod"><option value="day">日K</option><option value="week">周K</option><option value="month">月K</option><option value="1h">1h</option><option value="15m">15m</option></select>
+        <div class="indicator-chips">
+          <span class="ind-chip active" data-ind="ma">MA</span>
+          <span class="ind-chip" data-ind="macd">MACD</span>
+          <span class="ind-chip" data-ind="rsi">RSI</span>
+          <span class="ind-chip" data-ind="boll">BOLL</span>
+        </div>
+        <button class="btn-action" id="chartLoadBtn" data-i18n="loadData">加载数据</button>
       </div>
-      <div class="compare-suggestions" id="compareSuggestions" style="display:none">
-        <h4 data-i18n="suggestions">模型定位与建议</h4>
-        <div class="suggestion-list" id="suggestionList"></div>
+      <div class="trade-layout">
+        <div class="trade-main">
+          <div class="chart-wrap" id="chartWrap">
+            <canvas id="chartCanvas" height="400"></canvas>
+            <div class="chart-tooltip" id="chartTooltip"></div>
+          </div>
+          <div class="chart-wrap" id="macdWrap" style="margin-top:8px;height:120px">
+            <canvas id="macdCanvas" height="120"></canvas>
+          </div>
+        </div>
+        <div class="trade-side">
+          <div class="stock-info">
+            <div class="si-name" id="siName">贵州茅台</div>
+            <div class="si-code" id="siCode">600519.SH</div>
+            <div class="si-price" id="siPrice">--</div>
+            <div class="si-change" id="siChange">--</div>
+          </div>
+          <div class="ind-panel">
+            <h4 data-i18n="indicators">技术指标</h4>
+            <div id="indValues"></div>
+          </div>
+          <div class="ai-signal">
+            <h4 data-i18n="aiSignal">AI 信号</h4>
+            <div id="signalList"></div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="page" id="pageMarket"><div class="hero"><h1 data-i18n="marketTitle">市场</h1><p data-i18n="marketSub">市场大栏目内容，敬请期待。</p></div></div>
-    <div class="page" id="pageTrade"><div class="hero"><h1 data-i18n="tradeTitle">交易</h1><p data-i18n="tradeSub">交易大栏目内容，敬请期待。</p></div></div>
-    <div class="page" id="pageCommunity"><div class="hero"><h1 data-i18n="communityTitle">社区</h1><p data-i18n="communitySub">社区大栏目内容，敬请期待。</p></div></div>
-
-    <div class="page" id="pagePersonal">
-      <div class="hero" style="margin-bottom:14px">
-        <h1 style="font-size:20px" data-i18n="personalTitle">个人中心</h1>
-        <p style="font-size:13px" data-i18n="personalSub">管理您的文件和账户。</p>
+    <div class="page" id="pageBacktest">
+      <div class="hero" style="margin-bottom:18px"><h1 style="font-size:20px" data-i18n="btTitle">策略回测</h1><p style="font-size:13px" data-i18n="btSub">配置策略参数，验证历史表现。</p></div>
+      <div class="bt-config">
+        <div class="form-row">
+          <div class="form-group"><label data-i18n="btStock">股票代码</label><input class="form-input" id="btSymbol" placeholder="600519"></div>
+          <div class="form-group"><label data-i18n="btStrategy">策略</label><select id="btStrategy"><option value="ma_cross">MA交叉</option><option value="macd_cross">MACD金叉死叉</option><option value="rsi_obos">RSI超买超卖</option><option value="boll_break">BOLL突破</option></select></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label data-i18n="btStart">起始日期</label><input type="date" class="form-input" id="btStart" value="2025-01-01"></div>
+          <div class="form-group"><label data-i18n="btEnd">结束日期</label><input type="date" class="form-input" id="btEnd" value="2026-06-08"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label data-i18n="btCapital">初始资金(万)</label><input type="number" class="form-input" id="btCapital" value="100" min="1"></div>
+          <div class="form-group"><label data-i18n="btParam">策略参数</label><input class="form-input" id="btParam" placeholder="如: 5,20"></div>
+        </div>
+        <button class="btn-action" id="btRunBtn" data-i18n="btRun">开始回测</button>
       </div>
+      <div class="bt-results" id="btResults">
+        <div class="bt-metrics" id="btMetrics"></div>
+        <div class="bt-curve"><canvas id="btCurveCanvas" height="200"></canvas></div>
+        <div class="bt-trades"><table><thead><tr><th data-i18n="btDate">日期</th><th data-i18n="btType">类型</th><th data-i18n="btPrice">价格</th><th data-i18n="btQty">数量</th><th data-i18n="btPnl">盈亏</th></tr></thead><tbody id="btTradeBody"></tbody></table></div>
+      </div>
+    </div>
+
+    <div class="page" id="pageSimulate">
+      <div class="hero" style="margin-bottom:18px"><h1 style="font-size:20px" data-i18n="simTitle">模拟交易</h1><p style="font-size:13px" data-i18n="simSub">虚拟资金实战演练，零风险体验交易。</p></div>
+      <div class="sim-status">
+        <div class="sim-card"><div class="sc-val" id="simTotal">--</div><div class="sc-label" data-i18n="simTotalAsset">总资产</div></div>
+        <div class="sim-card"><div class="sc-val" id="simCash">--</div><div class="sc-label" data-i18n="simAvailCash">可用资金</div></div>
+        <div class="sim-card"><div class="sc-val" id="simHoldVal">--</div><div class="sc-label" data-i18n="simHoldVal">持仓市值</div></div>
+        <div class="sim-card"><div class="sc-val" id="simPnl">--</div><div class="sc-label" data-i18n="simPnl">总盈亏</div></div>
+        <div class="sim-card"><div class="sc-val" id="simPnlPct">--</div><div class="sc-label" data-i18n="simPnlPct">收益率</div></div>
+      </div>
+      <div class="sim-order">
+        <div class="so-group"><label data-i18n="simStock">股票代码</label><input id="simStock" placeholder="600519"></div>
+        <div class="so-group"><label data-i18n="simPrice">价格</label><input id="simPrice" type="number" placeholder="0.00"></div>
+        <div class="so-group"><label data-i18n="simQty">数量(手)</label><input id="simQty" type="number" value="1" min="1"></div>
+        <button class="btn-buy" id="simBuyBtn" data-i18n="buy">买入</button>
+        <button class="btn-sell" id="simSellBtn" data-i18n="sell">卖出</button>
+        <button class="btn-action" style="margin-left:auto;font-size:11px;padding:8px 14px" id="simResetBtn" data-i18n="simReset">重置资金</button>
+      </div>
+      <div class="sim-holdings"><table><thead><tr><th data-i18n="simCode">代码</th><th data-i18n="simName">名称</th><th data-i18n="simQty2">持仓</th><th data-i18n="simCost">成本</th><th data-i18n="simCur">现价</th><th data-i18n="simPnl2">盈亏</th><th data-i18n="simPnlPct2">盈亏率</th><th></th></tr></thead><tbody id="simHoldBody"></tbody></table></div>
+      <div class="sim-history"><table><thead><tr><th data-i18n="simTime">时间</th><th data-i18n="simType2">类型</th><th data-i18n="simCode2">代码</th><th data-i18n="simPrice2">价格</th><th data-i18n="simQty3">数量</th><th data-i18n="simAmount">金额</th></tr></thead><tbody id="simHistBody"></tbody></table></div>
+    </div>
+
+    <div class="page" id="pageCommunity"><div class="hero"><h1 data-i18n="communityTitle">社区</h1><p data-i18n="communitySub">社区大栏目内容，敬请期待。</p></div></div>
+    <div class="page" id="pagePersonal">
+      <div class="hero" style="margin-bottom:14px"><h1 style="font-size:20px" data-i18n="personalTitle">个人中心</h1><p style="font-size:13px" data-i18n="personalSub">管理您的文件和账户。</p></div>
       <div class="file-toolbar">
         <button class="btn-action" id="newFileBtn" data-i18n="newFile">新建文件</button>
         <button class="btn-action" style="background:var(--surface3);color:var(--text2)" id="importFileBtn" data-i18n="importFile">导入文件</button>
@@ -346,7 +409,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
   </div>
 </div>
 
-<!-- Auth Modal -->
 <div class="modal-overlay" id="authModal">
   <div class="modal-box">
     <h2 id="authTitle" data-i18n="login">登录</h2>
@@ -359,33 +421,11 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 
 <script>
 // ── Data ──
-const MODELS=[
-  {id:'gpt-5.5',name:'GPT-5.5',provider:'openai',in:2.50,out:10,ctx:256,bench:{mmlu:92.3,humaneval:96.8,math:91.5,swe:72.1},positioning:'旗舰通用',advice:'最强综合能力，适合高精度任务和复杂推理'},
-  {id:'gpt-5.1',name:'GPT-5.1',provider:'openai',in:0.50,out:2,ctx:128,bench:{mmlu:88.6,humaneval:92.1,math:85.2,swe:58.3},positioning:'高性价比',advice:'日常任务首选，性价比极高'},
-  {id:'gpt-4.1-mini',name:'GPT-4.1 Mini',provider:'openai',in:0.40,out:1.60,ctx:64,bench:{mmlu:82.1,humaneval:85.4,math:72.3,swe:41.2},positioning:'轻量快速',advice:'轻量场景，响应速度快'},
-  {id:'claude-opus-4-7',name:'Claude Opus 4.7',provider:'claude',in:15,out:75,ctx:200,bench:{mmlu:93.1,humaneval:97.2,math:92.8,swe:75.6},positioning:'顶尖推理',advice:'代码和推理任务的最强选择'},
-  {id:'claude-sonnet-4-6',name:'Claude Sonnet 4.6',provider:'claude',in:3,out:15,ctx:200,bench:{mmlu:89.2,humaneval:93.5,math:87.1,swe:62.4},positioning:'平衡之选',advice:'性能与成本的完美平衡'},
-  {id:'claude-haiku-3-5',name:'Claude Haiku 3.5',provider:'claude',in:0.80,out:4,ctx:200,bench:{mmlu:79.8,humaneval:82.3,math:68.5,swe:35.8},positioning:'快速轻量',advice:'简单任务和快速响应场景'},
-  {id:'gemini-3.1-pro',name:'Gemini 3.1 Pro',provider:'gemini',in:1.25,out:5,ctx:100,bench:{mmlu:90.2,humaneval:94.1,math:88.9,swe:65.2},positioning:'多模态强',advice:'图文混合任务和多模态场景'},
-  {id:'gemini-3.1-flash',name:'Gemini 3.1 Flash',provider:'gemini',in:0.15,out:0.60,ctx:100,bench:{mmlu:78.5,humaneval:79.8,math:65.2,swe:32.1},positioning:'极速响应',advice:'速度优先，成本敏感场景'},
-  {id:'deepseek-v4',name:'DeepSeek V4',provider:'deepseek',in:0.27,out:1.10,ctx:64,bench:{mmlu:85.3,humaneval:88.6,math:82.1,swe:52.8},positioning:'国产性价比',advice:'中文友好，性价比出色'},
-  {id:'deepseek-r2',name:'DeepSeek R2',provider:'deepseek',in:0.55,out:2.19,ctx:64,bench:{mmlu:87.8,humaneval:91.2,math:85.6,swe:58.1},positioning:'推理增强',advice:'复杂推理任务，接近顶级性能'},
-  {id:'qwen3-7-max',name:'Qwen3.7-Max',provider:'qwen',in:0.40,out:1.20,ctx:32,bench:{mmlu:84.6,humaneval:86.9,math:80.5,swe:48.3},positioning:'中文首选',advice:'中文理解最佳，国内场景首选'},
-  {id:'kimi-2-6',name:'Kimi 2.6',provider:'kimi',in:0.24,out:0.96,ctx:200,bench:{mmlu:81.2,humaneval:83.5,math:74.8,swe:42.6},positioning:'长文本专家',advice:'超长文档处理，200K上下文'},
-  {id:'glm-5',name:'GLM-5',provider:'zhipu',in:0.30,out:1.20,ctx:32,bench:{mmlu:80.5,humaneval:82.1,math:73.2,swe:39.8},positioning:'国产通用',advice:'中文通用任务，性价比不错'},
-  {id:'yi-lightning-2',name:'Yi-Lightning 2',provider:'yi',in:0.10,out:0.40,ctx:32,bench:{mmlu:76.8,humaneval:78.2,math:68.5,swe:31.2},positioning:'超低成本',advice:'成本敏感场景，最低价格'},
-  {id:'mistral-large-3',name:'Mistral Large 3',provider:'mistral',in:2,out:6,ctx:32,bench:{mmlu:86.5,humaneval:89.8,math:81.2,swe:55.6},positioning:'欧洲旗舰',advice:'欧洲数据合规，多语言支持'},
-  {id:'llama-4-herd',name:'Llama 4 Herd',provider:'meta',in:0.20,out:0.60,ctx:64,bench:{mmlu:83.2,humaneval:85.6,math:76.8,swe:46.5},positioning:'开源首选',advice:'可自部署，数据隐私保护'},
-];
-const PROVIDERS={
-  openai:{name:'OpenAI',color:'#10a37f'},claude:{name:'Claude',color:'#d97706'},
-  gemini:{name:'Gemini',color:'#4285f4'},deepseek:{name:'DeepSeek',color:'#4d6bfe'},
-  qwen:{name:'通义千问',color:'#6366f1'},kimi:{name:'Kimi',color:'#8b5cf6'},
-  zhipu:{name:'智谱',color:'#3b82f6'},yi:{name:'零一万物',color:'#06b6d4'},
-  mistral:{name:'Mistral',color:'#f97316'},meta:{name:'Meta',color:'#0081fb'},
-};
+const MODELS=[{id:'gpt-5.5',name:'GPT-5.5',provider:'openai',in:2.50,out:10,ctx:256,bench:{mmlu:92.3,humaneval:96.8,math:91.5,swe:72.1},positioning:'旗舰通用',advice:'最强综合能力，适合高精度任务和复杂推理'},{id:'gpt-5.1',name:'GPT-5.1',provider:'openai',in:0.50,out:2,ctx:128,bench:{mmlu:88.6,humaneval:92.1,math:85.2,swe:58.3},positioning:'高性价比',advice:'日常任务首选，性价比极高'},{id:'gpt-4.1-mini',name:'GPT-4.1 Mini',provider:'openai',in:0.40,out:1.60,ctx:64,bench:{mmlu:82.1,humaneval:85.4,math:72.3,swe:41.2},positioning:'轻量快速',advice:'轻量场景，响应速度快'},{id:'claude-opus-4-7',name:'Claude Opus 4.7',provider:'claude',in:15,out:75,ctx:200,bench:{mmlu:93.1,humaneval:97.2,math:92.8,swe:75.6},positioning:'顶尖推理',advice:'代码和推理任务的最强选择'},{id:'claude-sonnet-4-6',name:'Claude Sonnet 4.6',provider:'claude',in:3,out:15,ctx:200,bench:{mmlu:89.2,humaneval:93.5,math:87.1,swe:62.4},positioning:'平衡之选',advice:'性能与成本的完美平衡'},{id:'claude-haiku-3-5',name:'Claude Haiku 3.5',provider:'claude',in:0.80,out:4,ctx:200,bench:{mmlu:79.8,humaneval:82.3,math:68.5,swe:35.8},positioning:'快速轻量',advice:'简单任务和快速响应场景'},{id:'gemini-3.1-pro',name:'Gemini 3.1 Pro',provider:'gemini',in:1.25,out:5,ctx:100,bench:{mmlu:90.2,humaneval:94.1,math:88.9,swe:65.2},positioning:'多模态强',advice:'图文混合任务和多模态场景'},{id:'gemini-3.1-flash',name:'Gemini 3.1 Flash',provider:'gemini',in:0.15,out:0.60,ctx:100,bench:{mmlu:78.5,humaneval:79.8,math:65.2,swe:32.1},positioning:'极速响应',advice:'速度优先，成本敏感场景'},{id:'deepseek-v4',name:'DeepSeek V4',provider:'deepseek',in:0.27,out:1.10,ctx:64,bench:{mmlu:85.3,humaneval:88.6,math:82.1,swe:52.8},positioning:'国产性价比',advice:'中文友好，性价比出色'},{id:'deepseek-r2',name:'DeepSeek R2',provider:'deepseek',in:0.55,out:2.19,ctx:64,bench:{mmlu:87.8,humaneval:91.2,math:85.6,swe:58.1},positioning:'推理增强',advice:'复杂推理任务，接近顶级性能'},{id:'qwen3-7-max',name:'Qwen3.7-Max',provider:'qwen',in:0.40,out:1.20,ctx:32,bench:{mmlu:84.6,humaneval:86.9,math:80.5,swe:48.3},positioning:'中文首选',advice:'中文理解最佳，国内场景首选'},{id:'kimi-2-6',name:'Kimi 2.6',provider:'kimi',in:0.24,out:0.96,ctx:200,bench:{mmlu:81.2,humaneval:83.5,math:74.8,swe:42.6},positioning:'长文本专家',advice:'超长文档处理，200K上下文'},{id:'glm-5',name:'GLM-5',provider:'zhipu',in:0.30,out:1.20,ctx:32,bench:{mmlu:80.5,humaneval:82.1,math:73.2,swe:39.8},positioning:'国产通用',advice:'中文通用任务，性价比不错'},{id:'yi-lightning-2',name:'Yi-Lightning 2',provider:'yi',in:0.10,out:0.40,ctx:32,bench:{mmlu:76.8,humaneval:78.2,math:68.5,swe:31.2},positioning:'超低成本',advice:'成本敏感场景，最低价格'},{id:'mistral-large-3',name:'Mistral Large 3',provider:'mistral',in:2,out:6,ctx:32,bench:{mmlu:86.5,humaneval:89.8,math:81.2,swe:55.6},positioning:'欧洲旗舰',advice:'欧洲数据合规，多语言支持'},{id:'llama-4-herd',name:'Llama 4 Herd',provider:'meta',in:0.20,out:0.60,ctx:64,bench:{mmlu:83.2,humaneval:85.6,math:76.8,swe:46.5},positioning:'开源首选',advice:'可自部署，数据隐私保护'}];
+const PROVIDERS={openai:{name:'OpenAI',color:'#10a37f'},claude:{name:'Claude',color:'#d97706'},gemini:{name:'Gemini',color:'#4285f4'},deepseek:{name:'DeepSeek',color:'#4d6bfe'},qwen:{name:'通义千问',color:'#6366f1'},kimi:{name:'Kimi',color:'#8b5cf6'},zhipu:{name:'智谱',color:'#3b82f6'},yi:{name:'零一万物',color:'#06b6d4'},mistral:{name:'Mistral',color:'#f97316'},meta:{name:'Meta',color:'#0081fb'}};
 const GEO_MODELS=MODELS.slice(0,10);
-const GEO_PROMPT=b=>`请列出你认为在${b}行业中最重要的5个品牌或公司，并简要说明每个品牌的特点和优势。请直接回答，不要提及这是AI生成的内容。`;
+const GEO_PROMPT=b=>'请列出你认为在'+b+'行业中最重要的5个品牌或公司，并简要说明每个品牌的特点和优势。请直接回答，不要提及这是AI生成的内容。';
+const STOCK_NAMES={'600519':'贵州茅台','000001':'平安银行','000858':'五粮液','601318':'中国平安','600036':'招商银行','000333':'美的集团','002415':'海康威视','600900':'长江电力','601899':'紫金矿业','000568':'泸州老窖'};
 
 const SIDEBAR_MAP={
   home:[],ai:[],
@@ -393,88 +433,489 @@ const SIDEBAR_MAP={
     {id:'geo',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M2 8h12M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/></svg>',labelKey:'geo'},
     {id:'compare',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="4" height="9" rx="1"/><rect x="6.5" y="1.5" width="4" height="11.5" rx="1"/><rect x="11" y="6.5" width="4" height="6.5" rx="1"/></svg>',labelKey:'compare'},
   ],
-  market:[],trade:[],community:[],
+  market:[],
+  trade:[
+    {id:'chart',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,12 5,7 8,9 11,4 14,6"/><polyline points="10,4 14,6 14,2"/></svg>',labelKey:'chart'},
+    {id:'backtest',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><polyline points="4,10 6,6 9,8 12,4"/><line x1="2" y1="12" x2="14" y2="12"/></svg>',labelKey:'backtest'},
+    {id:'simulate',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l4-4 3 3 5-5"/><path d="M12 3h3v3"/></svg>',labelKey:'simulate'},
+  ],
+  community:[],
   personal:[{id:'files',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>',labelKey:'fileManage'}],
 };
-
 const FEATURES=[
   {id:'geo',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#a78bfa" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M2 10h16M10 2c-2.5 2.5-4 5.5-4 8s1.5 5.5 4 8M10 2c2.5 2.5 4 5.5 4 8s-1.5 5.5-4 8"/></svg>',bg:'rgba(124,106,239,0.12)',titleKey:'fGeoTitle',descKey:'fGeoDesc',nav:'tools',tool:'geo'},
-  {id:'compare',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#22c55e" stroke-width="1.5"><rect x="3" y="5" width="5" height="11" rx="1"/><rect x="8" y="2" width="5" height="14" rx="1"/><rect x="13" y="8" width="5" height="8" rx="1"/></svg>',bg:'rgba(34,197,94,0.1)',titleKey:'fCompareTitle',descKey:'fCompareDesc',nav:'tools',tool:'compare'},
+  {id:'compare',icon:'<svg viewBox="0 0 20 20" fill="none" stroke "#22c55e" stroke-width="1.5"><rect x="3" y="5" width="5" height="11" rx="1"/><rect x="8" y="2" width="5" height="14" rx="1"/><rect x="13" y="8" width="5" height="8" rx="1"/></svg>',bg:'rgba(34,197,94,0.1)',titleKey:'fCompareTitle',descKey:'fCompareDesc',nav:'tools',tool:'compare'},
   {id:'market',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M3 3h14v14H3V3z"/><path d="M7 10h6M10 7v6"/></svg>',bg:'rgba(245,158,11,0.1)',titleKey:'fMarketTitle',descKey:'fMarketDesc',nav:'market'},
+  {id:'trade',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#ef4444" stroke-width="1.5"><polyline points="3,14 7,8 10,11 14,5 17,8"/><circle cx="10" cy="10" r="8"/></svg>',bg:'rgba(239,68,68,0.08)',titleKey:'fTradeTitle',descKey:'fTradeDesc',nav:'trade'},
   {id:'community',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="6" cy="8" r="3"/><circle cx="14" cy="8" r="3"/><path d="M2 16c0-2.5 2-4 4-4s4 1.5 4 4M10 16c0-2.5 2-4 4-4s4 1.5 4 4"/></svg>',bg:'rgba(59,130,246,0.1)',titleKey:'fCommunityTitle',descKey:'fCommunityDesc',nav:'community'},
 ];
 
 const I18N={
-  zh:{
-    navHome:'首页',navAI:'AI',navTools:'工具',navMarket:'市场',navTrade:'交易',navCommunity:'社区',navPersonal:'个人',
-    subTools:'子工具',login:'登录',register:'注册',logout:'退出',
-    chatTitle:'智能AI助手',chatPh:'输入您的问题，按回车发送...',send:'发送',
-    fGeoTitle:'GEO可见性检测',fGeoDesc:'检测品牌在主流AI模型中的提及率与可见性评分',
-    fCompareTitle:'AI模型比价',fCompareDesc:'对比16+模型价格与性能，智能推荐最优选择',
-    fMarketTitle:'AI服务市场',fMarketDesc:'一站式采购各类AI能力与工具服务',
-    fCommunityTitle:'AI开发者社区',fCommunityDesc:'交流经验、分享项目、协作创新',
-    geoTitle:'GEO可见性检测',geoSub:'输入品牌，选择模型，检测AI搜索提及情况。',
-    brandLabel:'品牌名称',brandPh:'例如：华为、特斯拉',modelLabel:'选择模型（可多选）',
-    startBtn:'开始检测',detecting:'检测中…',
-    compareTitle:'AI模型比价',compareSub:'选择最多6个模型进行全方位对比。',
-    selectModels:'选择模型对比',suggestions:'模型定位与建议',
-    geo:'GEO检测',compare:'AI比价',fileManage:'文件管理',
-    mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',
-    userPh:'用户名',passPh:'密码',noAccount:'还没有账号？',
-    newFile:'新建文件',importFile:'导入文件',
-    wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',
-    wpThemeDark:'切换浅色',wpThemeLight:'切换深色',
-    aiTitle:'AI智能体',aiSub:'AI大栏目内容，敬请期待。',
-    marketTitle:'市场',marketSub:'市场大栏目内容，敬请期待。',
-    tradeTitle:'交易',tradeSub:'交易大栏目内容，敬请期待。',
-    communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',
-    personalTitle:'个人中心',personalSub:'管理您的文件和账户。',
-  },
-  en:{
-    navHome:'Home',navAI:'AI',navTools:'Tools',navMarket:'Market',navTrade:'Trade',navCommunity:'Community',navPersonal:'Personal',
-    subTools:'Sub Tools',login:'Login',register:'Register',logout:'Logout',
-    chatTitle:'AI Assistant',chatPh:'Type your question, press Enter to send...',send:'Send',
-    fGeoTitle:'GEO Visibility',fGeoDesc:'Check brand mentions across AI models with visibility scores',
-    fCompareTitle:'AI Model Compare',fCompareDesc:'Compare 16+ models, smart recommendations',
-    fMarketTitle:'AI Service Market',fMarketDesc:'One-stop shop for AI capabilities and tools',
-    fCommunityTitle:'AI Developer Community',fCommunityDesc:'Share, collaborate, innovate together',
-    geoTitle:'GEO Visibility Detection',geoSub:'Enter brand, select models, detect AI search mentions.',
-    brandLabel:'Brand Name',brandPh:'e.g. Huawei, Tesla',modelLabel:'Select Models (multi-select)',
-    startBtn:'Start Detection',detecting:'Detecting…',
-    compareTitle:'AI Model Pricing',compareSub:'Select up to 6 models for full comparison.',
-    selectModels:'Select Models to Compare',suggestions:'Model Positioning & Advice',
-    geo:'GEO Detect',compare:'Compare',fileManage:'File Manager',
-    mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',
-    userPh:'Username',passPh:'Password',noAccount:"Don't have an account?",
-    newFile:'New File',importFile:'Import File',
-    wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',
-    wpThemeDark:'Switch to Light',wpThemeLight:'Switch to Dark',
-    aiTitle:'AI Agents',aiSub:'AI section coming soon.',
-    marketTitle:'Market',marketSub:'Market section coming soon.',
-    tradeTitle:'Trade',tradeSub:'Trade section coming soon.',
-    communityTitle:'Community',communitySub:'Community section coming soon.',
-    personalTitle:'Personal Center',personalSub:'Manage your files and account.',
-  }
+  zh:{navHome:'首页',navAI:'AI',navTools:'工具',navMarket:'市场',navTrade:'交易',navCommunity:'社区',navPersonal:'个人',subTools:'子工具',login:'登录',register:'注册',logout:'退出',chatTitle:'智能AI助手',chatPh:'输入您的问题，按回车发送...',send:'发送',fGeoTitle:'GEO可见性检测',fGeoDesc:'检测品牌在主流AI模型中的提及率与可见性评分',fCompareTitle:'AI模型比价',fCompareDesc:'对比16+模型价格与性能，智能推荐最优选择',fMarketTitle:'AI服务市场',fMarketDesc:'一站式采购各类AI能力与工具服务',fTradeTitle:'量化交易',fTradeDesc:'K线分析、策略回测、模拟交易一体化',fCommunityTitle:'AI开发者社区',fCommunityDesc:'交流经验、分享项目、协作创新',geoTitle:'GEO可见性检测',geoSub:'输入品牌，选择模型，检测AI搜索提及情况。',brandLabel:'品牌名称',brandPh:'例如：华为、特斯拉',modelLabel:'选择模型（可多选）',startBtn:'开始检测',detecting:'检测中…',compareTitle:'AI模型比价',compareSub:'选择最多6个模型进行全方位对比。',selectModels:'选择模型对比',suggestions:'模型定位与建议',geo:'GEO检测',compare:'AI比价',fileManage:'文件管理',chart:'行情图表',backtest:'策略回测',simulate:'模拟交易',mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',userPh:'用户名',passPh:'密码',noAccount:'还没有账号？',newFile:'新建文件',importFile:'导入文件',wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',wpThemeDark:'切换浅色',wpThemeLight:'切换深色',aiTitle:'AI智能体',aiSub:'AI大栏目内容，敬请期待。',marketTitle:'市场',marketSub:'市场大栏目内容，敬请期待。',communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',personalTitle:'个人中心',personalSub:'管理您的文件和账户。',stockPh:'输入股票代码 如 600519',loadData:'加载数据',indicators:'技术指标',aiSignal:'AI 信号',btTitle:'策略回测',btSub:'配置策略参数，验证历史表现。',btStock:'股票代码',btStrategy:'策略',btStart:'起始日期',btEnd:'结束日期',btCapital:'初始资金(万)',btParam:'策略参数',btRun:'开始回测',btDate:'日期',btType:'类型',btPrice:'价格',btQty:'数量',btPnl:'盈亏',simTitle:'模拟交易',simSub:'虚拟资金实战演练，零风险体验交易。',simTotalAsset:'总资产',simAvailCash:'可用资金',simHoldVal:'持仓市值',simPnl:'总盈亏',simPnlPct:'收益率',simStock:'股票代码',simPrice:'价格',simQty:'数量(手)',buy:'买入',sell:'卖出',simReset:'重置资金',simCode:'代码',simName:'名称',simQty2:'持仓',simCost:'成本',simCur:'现价',simPnl2:'盈亏',simPnlPct2:'盈亏率',simTime:'时间',simType2:'类型',simCode2:'代码',simPrice2:'价格',simQty3:'数量',simAmount:'金额'},
+  en:{navHome:'Home',navAI:'AI',navTools:'Tools',navMarket:'Market',navTrade:'Trade',navCommunity:'Community',navPersonal:'Personal',subTools:'Sub Tools',login:'Login',register:'Register',logout:'Logout',chatTitle:'AI Assistant',chatPh:'Type your question, press Enter...',send:'Send',fGeoTitle:'GEO Visibility',fGeoDesc:'Check brand mentions across AI models',fCompareTitle:'AI Model Compare',fCompareDesc:'Compare 16+ models pricing & performance',fMarketTitle:'AI Service Market',fMarketDesc:'One-stop AI capabilities marketplace',fTradeTitle:'Quant Trading',fTradeDesc:'K-line analysis, backtesting, paper trading',fCommunityTitle:'AI Developer Community',fCommunityDesc:'Share, collaborate, innovate together',geoTitle:'GEO Visibility Detection',geoSub:'Enter brand, select models, detect AI mentions.',brandLabel:'Brand Name',brandPh:'e.g. Huawei, Tesla',modelLabel:'Select Models (multi-select)',startBtn:'Start Detection',detecting:'Detecting…',compareTitle:'AI Model Pricing',compareSub:'Select up to 6 models for comparison.',selectModels:'Select Models',suggestions:'Model Positioning & Advice',geo:'GEO Detect',compare:'Compare',fileManage:'File Manager',chart:'K-Line Chart',backtest:'Backtest',simulate:'Paper Trading',mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',userPh:'Username',passPh:'Password',noAccount:"Don't have an account?",newFile:'New File',importFile:'Import File',wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',wpThemeDark:'Switch to Light',wpThemeLight:'Switch to Dark',aiTitle:'AI Agents',aiSub:'AI section coming soon.',marketTitle:'Market',marketSub:'Market section coming soon.',communityTitle:'Community',communitySub:'Community section coming soon.',personalTitle:'Personal Center',personalSub:'Manage your files and account.',stockPh:'Stock code e.g. 600519',loadData:'Load Data',indicators:'Indicators',aiSignal:'AI Signals',btTitle:'Strategy Backtest',btSub:'Configure strategy, verify with history.',btStock:'Stock Code',btStrategy:'Strategy',btStart:'Start Date',btEnd:'End Date',btCapital:'Capital(10K)',btParam:'Params',btRun:'Run Backtest',btDate:'Date',btType:'Type',btPrice:'Price',btQty:'Qty',btPnl:'P&L',simTitle:'Paper Trading',simSub:'Practice with virtual funds, zero risk.',simTotalAsset:'Total Asset',simAvailCash:'Available Cash',simHoldVal:'Holdings Value',simPnl:'Total P&L',simPnlPct:'Return',simStock:'Stock Code',simPrice:'Price',simQty:'Qty(lots)',buy:'Buy',sell:'Sell',simReset:'Reset',simCode:'Code',simName:'Name',simQty2:'Holding',simCost:'Cost',simCur:'Current',simPnl2:'P&L',simPnlPct2:'P&L%',simTime:'Time',simType2:'Type',simCode2:'Code',simPrice2:'Price',simQty3:'Qty',simAmount:'Amount'}
 };
 
 // ── State ──
-let currentNav='home',currentTool='geo',selectedGeoModels=new Set(),selectedCompareModels=new Set();
+let currentNav='home',currentTool='geo',currentTradeTool='chart';
+let selectedGeoModels=new Set(),selectedCompareModels=new Set();
 let authMode='login',lang=localStorage.getItem('lang')||'zh',theme=localStorage.getItem('theme')||'dark';
+let chartData=[],activeIndicators=new Set(['ma']),chartHover=-1;
 
-// ── Init ──
-function init(){
-  applyTheme();
-  renderSidebar();
-  renderModelChips();
-  renderCompareGrid();
-  renderFileList();
-  renderFeatures();
-  bindEvents();
-  applyLang();
-  loadUser();
-  applyThemeUI();
+// ── K-Line Generator ──
+function genKline(n,base){
+  const d=[];let p=base;
+  for(let i=0;i<n;i++){
+    const chg=(Math.random()-.48)*p*.04;
+    const o=p,c=p+chg;
+    const h=Math.max(o,c)+Math.random()*p*.015;
+    const l=Math.min(o,c)-Math.random()*p*.015;
+    const v=Math.floor(Math.random()*80000+20000);
+    d.push({o:+o.toFixed(2),h:+h.toFixed(2),l:+l.toFixed(2),c:+c.toFixed(2),v});
+    p=c;
+  }
+  return d;
 }
 
+// ── Indicator Calculations ──
+function calcMA(data,period){
+  const r=[];
+  for(let i=0;i<data.length;i++){
+    if(i<period-1){r.push(null);continue}
+    let s=0;for(let j=0;j<period;j++)s+=data[i-j].c;
+    r.push(+(s/period).toFixed(2));
+  }
+  return r;
+}
+function calcMACD(data,fast=12,slow=26,signal=9){
+  const ema=(arr,p)=>{const r=[];let m=arr[0];r.push(m);const k=2/(p+1);for(let i=1;i<arr.length;i++){m=arr[i]*k+m*(1-k);r.push(m)}return r};
+  const closes=data.map(d=>d.c);
+  const ef=ema(closes,fast),es=ema(closes,slow);
+  const dif=ef.map((v,i)=>+(v-es[i]).toFixed(4));
+  const dea=ema(dif,signal).map(v=>+v.toFixed(4));
+  const hist=dif.map((v,i)=>+((v-dea[i])*2).toFixed(4));
+  return{dif,dea,hist};
+}
+function calcRSI(data,periods=[6,12,24]){
+  return periods.map(p=>{
+    const r=[];
+    for(let i=0;i<data.length;i++){
+      if(i<p){r.push(null);continue}
+      let gain=0,loss=0;
+      for(let j=i-p+1;j<=i;j++){
+        const d=data[j].c-data[j-1].c;
+        if(d>0)gain+=d;else loss-=d;
+      }
+      const rs=gain/(loss||1e-10);
+      r.push(+(100-100/(1+rs)).toFixed(1));
+    }
+    return r;
+  });
+}
+function calcBOLL(data,period=20,mult=2){
+  const r={mid:[],up:[],dn:[]};
+  for(let i=0;i<data.length;i++){
+    if(i<period-1){r.mid.push(null);r.up.push(null);r.dn.push(null);continue}
+    let s=0;for(let j=0;j<period;j++)s+=data[i-j].c;
+    const m=s/period;let v=0;for(let j=0;j<period;j++)v+=Math.pow(data[i-j].c-m,2);
+    const sd=Math.sqrt(v/period);
+    r.mid.push(+m.toFixed(2));r.up.push(+(m+mult*sd).toFixed(2));r.dn.push(+(m-mult*sd).toFixed(2));
+  }
+  return r;
+}
+
+// ── K-Line Rendering ──
+function renderChart(){
+  if(!chartData.length)return;
+  const canvas=document.getElementById('chartCanvas');
+  const wrap=document.getElementById('chartWrap');
+  const dpr=window.devicePixelRatio||1;
+  const W=wrap.clientWidth;const H=400;
+  canvas.width=W*dpr;canvas.height=H*dpr;
+  canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+
+  const pad={t:20,r:60,b:30,l:10};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const n=chartData.length;
+  const barW=cw/n;
+  const prices=chartData.flatMap(d=>[d.h,d.l]);
+  const pMin=Math.min(...prices)*.998,pMax=Math.max(...prices)*1.002;
+  const pRange=pMax-pMin||1;
+  const py=p=>pad.t+ch*(1-(p-pMin)/pRange);
+
+  // grid
+  ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){
+    const y=pad.t+ch*i/5;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
+    const pv=(pMax-pRange*i/5).toFixed(2);
+    ctx.fillStyle='rgba(255,255,255,.2)';ctx.font='10px monospace';ctx.textAlign='left';
+    ctx.fillText(pv,W-pad.r+4,y+3);
+  }
+
+  // MA lines
+  if(activeIndicators.has('ma')){
+    const colors=['#f59e0b','#3b82f6','#a78bfa','#22c55e'];
+    [5,10,20,60].forEach((p,i)=>{
+      const ma=calcMA(chartData,p);
+      ctx.strokeStyle=colors[i];ctx.lineWidth=1;ctx.beginPath();
+      let started=false;
+      ma.forEach((v,j)=>{if(v===null)return;const x=pad.l+(j+.5)*barW;if(!started){ctx.moveTo(x,py(v));started=true}else ctx.lineTo(x,py(v))});
+      ctx.stroke();
+    });
+  }
+
+  // BOLL
+  if(activeIndicators.has('boll')){
+    const b=calcBOLL(chartData);
+    [[b.up,'rgba(59,130,246,.4)'],[b.mid,'rgba(59,130,246,.6)'],[b.dn,'rgba(59,130,246,.4)']].forEach(([arr,col])=>{
+      ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();let s=false;
+      arr.forEach((v,j)=>{if(v===null)return;const x=pad.l+(j+.5)*barW;if(!s){ctx.moveTo(x,py(v));s=true}else ctx.lineTo(x,py(v))});
+      ctx.stroke();
+    });
+  }
+
+  // candles + volume
+  const volMax=Math.max(...chartData.map(d=>d.v));
+  const volH=50;
+  chartData.forEach((d,i)=>{
+    const x=pad.l+(i+.5)*barW;
+    const isUp=d.c>=d.o;
+    const col=isUp?'#22c55e':'#ef4444';
+    const bodyTop=py(Math.max(d.o,d.c));
+    const bodyBot=py(Math.min(d.o,d.c));
+    const bodyH=Math.max(bodyBot-bodyTop,1);
+    ctx.fillStyle=col;
+    ctx.fillRect(x-barW*.35,bodyTop,barW*.7,bodyH);
+    // wick
+    ctx.beginPath();ctx.moveTo(x,py(d.h));ctx.lineTo(x,bodyTop);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x,bodyBot);ctx.lineTo(x,py(d.l));ctx.stroke();
+    // volume
+    const vH=d.v/volMax*volH;
+    ctx.fillStyle=isUp?'rgba(34,197,94,.25)':'rgba(239,68,68,.25)';
+    ctx.fillRect(x-barW*.35,H-pad.b-vH,barW*.7,vH);
+  });
+
+  // hover
+  if(chartHover>=0&&chartHover<n){
+    const x=pad.l+(chartHover+.5)*barW;
+    ctx.strokeStyle='rgba(255,255,255,.15)';ctx.lineWidth=1;
+    ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,pad.t);ctx.lineTo(x,H-pad.b);ctx.stroke();ctx.setLineDash([]);
+  }
+
+  // RSI sub-chart
+  renderRSI(ctx,W,H,pad);
+
+  // MACD sub-chart
+  renderMACDSubChart();
+
+  // update side panel
+  updateStockInfo();updateIndPanel();updateSignals();
+}
+
+function renderRSI(ctx,W,H,pad){
+  if(!activeIndicators.has('rsi'))return;
+  const rsi=calcRSI(chartData);
+  const rsY0=H-80,rsH=60;
+  ctx.strokeStyle='rgba(255,255,255,.06)';ctx.lineWidth=1;
+  [30,50,70].forEach(v=>{const y=rsY0+rsH*(1-v/100);ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke()});
+  const colors=['#f59e0b','#3b82f6','#a78bfa'];
+  rsi.forEach((arr,i)=>{
+    ctx.strokeStyle=colors[i];ctx.lineWidth=1;ctx.beginPath();
+    const n=chartData.length;const barW=(W-pad.l-pad.r)/n;
+    let s=false;
+    arr.forEach((v,j)=>{if(v===null)return;const x=pad.l+(j+.5)*barW;const y=rsY0+rsH*(1-v/100);if(!s){ctx.moveTo(x,y);s=true}else ctx.lineTo(x,y)});
+    ctx.stroke();
+  });
+}
+
+function renderMACDSubChart(){
+  const wrap=document.getElementById('macdWrap');
+  if(!activeIndicators.has('macd')){wrap.style.display='none';return}
+  wrap.style.display='block';
+  const canvas=document.getElementById('macdCanvas');
+  const dpr=window.devicePixelRatio||1;
+  const W=wrap.clientWidth;const H=120;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+  const macd=calcMACD(chartData);
+  const pad={t:10,r:60,b:10,l:10};
+  const cw=W-pad.l-pad.r,ch=H-pad.t-pad.b;
+  const allVals=[...macd.dif,...macd.dea,...macd.hist].filter(v=>v!==null&&v!==undefined);
+  const vMax=Math.max(Math.abs(Math.min(...allVals)),Math.abs(Math.max(...allVals)),.01);
+  const n=chartData.length;const barW=cw/n;
+  // zero line
+  const zy=pad.t+ch/2;
+  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.beginPath();ctx.moveTo(pad.l,zy);ctx.lineTo(W-pad.r,zy);ctx.stroke();
+  // histogram
+  macd.hist.forEach((v,i)=>{
+    const x=pad.l+(i+.5)*barW;
+    const h=(v/vMax)*ch/2;
+    ctx.fillStyle=v>=0?'rgba(34,197,94,.6)':'rgba(239,68,68,.6)';
+    ctx.fillRect(x-barW*.3,zy-h,barW*.6,Math.abs(h));
+  });
+  // dif & dea lines
+  [[macd.dif,'#f59e0b'],[macd.dea,'#3b82f6']].forEach(([arr,col])=>{
+    ctx.strokeStyle=col;ctx.lineWidth=1;ctx.beginPath();let s=false;
+    arr.forEach((v,i)=>{const x=pad.l+(i+.5)*barW;const y=pad.t+ch/2-(v/vMax)*ch/2;if(!s){ctx.moveTo(x,y);s=true}else ctx.lineTo(x,y)});
+    ctx.stroke();
+  });
+}
+
+function updateStockInfo(){
+  if(!chartData.length)return;
+  const last=chartData[chartData.length-1];
+  const prev=chartData.length>1?chartData[chartData.length-2]:last;
+  const chg=last.c-prev.c;
+  const chgPct=(chg/prev.c*100).toFixed(2);
+  const sym=document.getElementById('chartSymbol').value.trim()||'600519';
+  document.getElementById('siName').textContent=STOCK_NAMES[sym]||'--';
+  document.getElementById('siCode').textContent=sym+'.SH';
+  document.getElementById('siPrice').textContent=last.c.toFixed(2);
+  const ce=document.getElementById('siChange');
+  ce.textContent=(chg>=0?'+':'')+chg.toFixed(2)+' ('+chgPct+'%)';
+  ce.className='si-change '+(chg>=0?'si-up':'si-down');
+}
+
+function updateIndPanel(){
+  const el=document.getElementById('indValues');
+  let html='';
+  if(activeIndicators.has('ma')){
+    [5,10,20,60].forEach(p=>{
+      const ma=calcMA(chartData,p);
+      const v=ma.filter(x=>x!==null).slice(-1)[0];
+      html+='<div class="ind-row"><span>MA'+p+'</span><span class="ir-val">'+(v?v.toFixed(2):'--')+'</span></div>';
+    });
+  }
+  if(activeIndicators.has('macd')){
+    const m=calcMACD(chartData);
+    const i=chartData.length-1;
+    html+='<div class="ind-row"><span>DIF</span><span class="ir-val">'+m.dif[i].toFixed(4)+'</span></div>';
+    html+='<div class="ind-row"><span>DEA</span><span class="ir-val">'+m.dea[i].toFixed(4)+'</span></div>';
+    html+='<div class="ind-row"><span>MACD</span><span class="ir-val">'+m.hist[i].toFixed(4)+'</span></div>';
+  }
+  if(activeIndicators.has('rsi')){
+    const rsi=calcRSI(chartData);
+    [6,12,24].forEach((p,i)=>{
+      const v=rsi[i].slice(-1)[0];
+      html+='<div class="ind-row"><span>RSI'+p+'</span><span class="ir-val">'+(v?v.toFixed(1):'--')+'</span></div>';
+    });
+  }
+  if(activeIndicators.has('boll')){
+    const b=calcBOLL(chartData);
+    html+='<div class="ind-row"><span>BOLL上</span><span class="ir-val">'+(b.up.slice(-1)[0]||'--')+'</span></div>';
+    html+='<div class="ind-row"><span>BOLL中</span><span class="ir-val">'+(b.mid.slice(-1)[0]||'--')+'</span></div>';
+    html+='<div class="ind-row"><span>BOLL下</span><span class="ir-val">'+(b.dn.slice(-1)[0]||'--')+'</span></div>';
+  }
+  el.innerHTML=html||'<div style="color:var(--text3);font-size:12px">选择指标查看数值</div>';
+}
+
+function updateSignals(){
+  const el=document.getElementById('signalList');
+  const types=['buy','sell','hold'];
+  const labels={buy:'买入',sell:'卖出',hold:'持有'};
+  const signals=[];
+  for(let i=0;i<5;i++){
+    const t=types[Math.floor(Math.random()*3)];
+    const conf=(60+Math.random()*38).toFixed(1);
+    const days=['1天前','2天前','3天前','5天前','7天前'][i];
+    signals.push({type:t,conf,days});
+  }
+  el.innerHTML=signals.map(s=>'<div class="signal-item signal-'+s.type+'"><span class="signal-badge sb-'+s.type+'">'+labels[s.type]+'</span><span>'+s.days+'</span><span class="signal-conf">'+s.conf+'%</span></div>').join('');
+}
+
+// ── Chart Events ──
+function bindChartEvents(){
+  const canvas=document.getElementById('chartCanvas');
+  const tooltip=document.getElementById('chartTooltip');
+  const wrap=document.getElementById('chartWrap');
+
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const x=e.clientX-rect.left;
+    const n=chartData.length;if(!n)return;
+    const W=wrap.clientWidth;const pad={l:10,r:60};
+    const barW=(W-pad.l-pad.r)/n;
+    const idx=Math.floor((x-pad.l)/barW);
+    if(idx<0||idx>=n){chartHover=-1;tooltip.style.display='none';return}
+    chartHover=idx;renderChart();
+    const d=chartData[idx];
+    tooltip.style.display='block';
+    tooltip.style.left=Math.min(x+10,W-160)+'px';
+    tooltip.style.top='30px';
+    tooltip.innerHTML='<div class="ct-row"><span class="ct-label">开</span><span>'+(d.c>=d.o?'<span style="color:var(--green)">':'<span style="color:var(--red)">')+d.o.toFixed(2)+'</span></span></div><div class="ct-row"><span class="ct-label">高</span><span>'+d.h.toFixed(2)+'</span></div><div class="ct-row"><span class="ct-label">低</span><span>'+d.l.toFixed(2)+'</span></div><div class="ct-row"><span class="ct-label">收</span><span>'+(d.c>=d.o?'<span style="color:var(--green)">':'<span style="color:var(--red)">')+d.c.toFixed(2)+'</span></span></div><div class="ct-row"><span class="ct-label">量</span><span>'+(d.v/10000).toFixed(1)+'万</span></div>';
+  });
+  canvas.addEventListener('mouseleave',()=>{chartHover=-1;tooltip.style.display='none';renderChart()});
+
+  document.querySelectorAll('.ind-chip').forEach(c=>c.addEventListener('click',()=>{
+    const ind=c.dataset.ind;
+    if(activeIndicators.has(ind)){activeIndicators.delete(ind);c.classList.remove('active')}
+    else{activeIndicators.add(ind);c.classList.add('active')}
+    renderChart();
+  }));
+
+  document.getElementById('chartLoadBtn').addEventListener('click',()=>{
+    const bases={'600519':1680,'000001':12.5,'000858':145,'601318':48,'600036':35,'000333':62,'002415':32,'600900':28,'601899':16,'000568':170};
+    const sym=document.getElementById('chartSymbol').value.trim()||'600519';
+    chartData=genKline(80,bases[sym]||100);
+    renderChart();
+  });
+}
+
+// ── Backtest ──
+function runBacktest(){
+  const sym=document.getElementById('btSymbol').value.trim()||'600519';
+  const strategy=document.getElementById('btStrategy').value;
+  const capital=parseFloat(document.getElementById('btCapital').value)*10000;
+  const data=genKline(200,100);
+  let cash=capital,shares=0,trades=[];
+  const ma5=calcMA(data,5),ma20=calcMA(data,20);
+  const macd=calcMACD(data);
+  const rsi=calcRSI(data,[6]);
+  const boll=calcBOLL(data);
+
+  for(let i=20;i<data.length;i++){
+    let signal=null;
+    if(strategy==='ma_cross'&&ma5[i]&&ma20[i])signal=ma5[i]>ma20[i]&&ma5[i-1]<=ma20[i-1]?'buy':ma5[i]<ma20[i]&&ma5[i-1]>=ma20[i-1]?'sell':null;
+    if(strategy==='macd_cross')signal=macd.dif[i]>macd.dea[i]&&macd.dif[i-1]<=macd.dea[i-1]?'buy':macd.dif[i]<macd.dea[i]&&macd.dif[i-1]>=macd.dea[i-1]?'sell':null;
+    if(strategy==='rsi_obos'&&rsi[0][i])signal=rsi[0][i]<30?'buy':rsi[0][i]>70?'sell':null;
+    if(strategy==='boll_break'&&boll.up[i]&&boll.dn[i])signal=data[i].c>boll.up[i]?'buy':data[i].c<boll.dn[i]?'sell':null;
+
+    if(signal==='buy'&&cash>data[i].c*100){
+      const qty=Math.floor(cash/data[i].c/100)*100;
+      if(qty>0){cash-=qty*data[i].c;shares+=qty;trades.push({d:i,type:'buy',price:data[i].c,qty})}
+    }else if(signal==='sell'&&shares>0){
+      trades.push({d:i,type:'sell',price:data[i].c,qty:shares});
+      cash+=shares*data[i].c;shares=0;
+    }
+  }
+  const total=cash+shares*data[data.length-1].c;
+  const ret=((total-capital)/capital*100).toFixed(2);
+  let maxDD=0,peak=capital;
+  const curve=[];
+  for(let i=0;i<data.length;i++){
+    let v=cash+shares*data[i].c;
+    if(i>0&&trades.some(t=>t.d===i)){
+      let c2=capital,s2=0;
+      trades.filter(t=>t.d<=i).forEach(t=>{if(t.type==='buy')c2-=t.price*t.qty;else c2+=t.price*t.qty;if(t.type==='buy')s2+=t.qty;else s2=0});
+      v=c2+s2*data[i].c;
+    }
+    curve.push(v);if(v>peak)peak=v;const dd=(peak-v)/peak; if(dd>maxDD)maxDD=dd;
+  }
+
+  document.getElementById('btMetrics').innerHTML=
+    '<div class="bt-metric '+(ret>=0?'positive':'negative')+'"><div class="bm-val">'+ret+'%</div><div class="bm-label">总收益率</div></div>'+
+    '<div class="bt-metric"><div class="bm-val">'+(total/10000).toFixed(1)+'万</div><div class="bm-label">最终资产</div></div>'+
+    '<div class="bt-metric negative"><div class="bm-val">'+(maxDD*100).toFixed(1)+'%</div><div class="bm-label">最大回撤</div></div>'+
+    '<div class="bt-metric"><div class="bm-val">'+trades.length+'</div><div class="bm-label">交易次数</div></div>'+
+    '<div class="bt-metric"><div class="bm-val">'+(trades.filter(t=>t.type==='sell').reduce((s,t)=>{const buy=trades.find(b=>b.type==='buy'&&b.qty===t.qty);return s+(buy?(t.price-buy.price)*t.qty:0)},0)/10000).toFixed(2)+'万</div><div class="bm-label">累计盈亏</div></div>';
+
+  document.getElementById('btTradeBody').innerHTML=trades.map(t=>{
+    const pnl=t.type==='sell'?((t.price-(trades.find(b=>b.d<t.d&&b.type==='buy')||{price:0}).price)*t.qty).toFixed(0):'--';
+    return'<tr><td>'+t.d+'</td><td style="color:'+(t.type==='buy'?'var(--green)':'var(--red)')+'">'+(t.type==='buy'?'买入':'卖出')+'</td><td>'+t.price.toFixed(2)+'</td><td>'+t.qty+'</td><td style="color:'+(parseFloat(pnl)>=0?'var(--green)':'var(--red)')+'">'+pnl+'</td></tr>';
+  }).join('');
+
+  // render curve
+  const cc=document.getElementById('btCurveCanvas');const dpr=window.devicePixelRatio||1;
+  const W2=cc.parentElement.clientWidth-28;cc.width=W2*dpr;cc.height=200*dpr;cc.style.width=W2+'px';
+  const cctx=cc.getContext('2d');cctx.scale(dpr,dpr);
+  const cMin=Math.min(...curve),cMax=Math.max(...curve);
+  const cRange=cMax-cMin||1;
+  cctx.strokeStyle='var(--accent)';cctx.lineWidth=1.5;cctx.beginPath();
+  curve.forEach((v,i)=>{const x=i/(curve.length-1)*W2;const y=10+180*(1-(v-cMin)/cRange);i===0?cctx.moveTo(x,y):cctx.lineTo(x,y)});
+  cctx.stroke();
+  // zero line
+  const zy=10+180*(1-capital/(cMax-cMin+cMin));
+  cctx.strokeStyle='rgba(255,255,255,.1)';cctx.beginPath();cctx.moveTo(0,zy);cctx.lineTo(W2,zy);cctx.stroke();
+
+  document.getElementById('btResults').classList.add('open');
+}
+
+// ── Simulate Trading ──
+function getSimState(){
+  const d=JSON.parse(localStorage.getItem('simState')||'null');
+  if(d)return d;
+  const init={cash:1000000,holdings:{},history:[],initCash:1000000};
+  localStorage.setItem('simState',JSON.stringify(init));return init;
+}
+function saveSimState(s){localStorage.setItem('simState',JSON.stringify(s))}
+function renderSimUI(){
+  const s=getSimState();
+  let holdVal=0;
+  Object.keys(s.holdings).forEach(code=>{const h=s.holdings[code];holdVal+=h.qty*h.price*100});
+  const total=s.cash+holdVal;const pnl=total-s.initCash;const pnlPct=(pnl/s.initCash*100).toFixed(2);
+  document.getElementById('simTotal').textContent=(total/10000).toFixed(1)+'万';
+  document.getElementById('simCash').textContent=(s.cash/10000).toFixed(1)+'万';
+  document.getElementById('simHoldVal').textContent=(holdVal/10000).toFixed(1)+'万';
+  const pe=document.getElementById('simPnl');pe.textContent=(pnl>=0?'+':'')+(pnl/10000).toFixed(2)+'万';
+  pe.style.color=pnl>=0?'var(--green)':'var(--red)';
+  const pp=document.getElementById('simPnlPct');pp.textContent=(pnl>=0?'+':'')+pnlPct+'%';
+  pp.style.color=pnl>=0?'var(--green)':'var(--red)';
+
+  document.getElementById('simHoldBody').innerHTML=Object.keys(s.holdings).map(code=>{
+    const h=s.holdings[code];const cost=h.cost;const pnl2=(h.price-cost)*h.qty*100;
+    const pnlPct2=(pnl2/(cost*h.qty*100)*100).toFixed(2);
+    return'<tr><td>'+code+'</td><td>'+(STOCK_NAMES[code]||'--')+'</td><td>'+h.qty+'</td><td>'+cost.toFixed(2)+'</td><td>'+h.price.toFixed(2)+'</td><td style="color:'+(pnl2>=0?'var(--green)':'var(--red)')+'">'+pnl2.toFixed(0)+'</td><td style="color:'+(pnl2>=0?'var(--green)':'var(--red)')+'">'+pnlPct2+'%</td><td><button class="sell-sm" data-code="'+code+'">卖出</button></td></tr>';
+  }).join('')||'<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:20px">暂无持仓</td></tr>';
+
+  document.getElementById('simHistBody').innerHTML=s.history.slice(-20).reverse().map(t=>
+    '<tr><td>'+t.time+'</td><td style="color:'+(t.type==='buy'?'var(--green)':'var(--red)')+'">'+(t.type==='buy'?'买入':'卖出')+'</td><td>'+t.code+'</td><td>'+t.price.toFixed(2)+'</td><td>'+t.qty+'</td><td>'+t.amount.toFixed(0)+'</td></tr>'
+  ).join('')||'<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px">暂无记录</td></tr>';
+
+  document.getElementById('simPrice').value='';
+  document.getElementById('simStock').value='';
+
+  // bind sell buttons
+  document.querySelectorAll('.sell-sm').forEach(btn=>btn.addEventListener('click',()=>{
+    const code=btn.dataset.code;const s2=getSimState();
+    if(!s2.holdings[code])return;
+    const h=s2.holdings[code];s2.cash+=h.price*h.qty*100;
+    s2.history.push({type:'sell',code,price:h.price,qty:h.qty,amount:h.price*h.qty*100,time:new Date().toLocaleString()});
+    delete s2.holdings[code];saveSimState(s2);renderSimUI();
+  }));
+}
+
+function bindSimEvents(){
+  document.getElementById('simBuyBtn').addEventListener('click',()=>{
+    const code=document.getElementById('simStock').value.trim();if(!code)return;
+    const price=parseFloat(document.getElementById('simPrice').value);if(!price||price<=0)return;
+    const lots=parseInt(document.getElementById('simQty').value)||1;
+    const qty=lots*100;const amount=price*qty;
+    const s=getSimState();if(s.cash<amount){alert(lang==='zh'?'资金不足':'Insufficient funds');return}
+    s.cash-=amount;
+    if(!s.holdings[code])s.holdings[code]={qty:0,cost:0,price};
+    const h=s.holdings[code];const totalCost=h.cost*h.qty+price*qty;h.qty+=qty;h.cost=totalCost/h.qty;h.price=price;
+    s.history.push({type:'buy',code,price,qty,amount,time:new Date().toLocaleString()});
+    saveSimState(s);renderSimUI();
+  });
+  document.getElementById('simSellBtn').addEventListener('click',()=>{
+    const code=document.getElementById('simStock').value.trim();if(!code)return;
+    const price=parseFloat(document.getElementById('simPrice').value);if(!price||price<=0)return;
+    const lots=parseInt(document.getElementById('simQty').value)||1;const qty=lots*100;
+    const s=getSimState();if(!s.holdings[code]||s.holdings[code].qty<qty){alert(lang==='zh'?'持仓不足':'Insufficient holdings');return}
+    s.cash+=price*qty;const h=s.holdings[code];h.qty-=qty;
+    if(h.qty===0)delete s.holdings[code];else h.cost=(h.cost*h.qty+price*qty)/(h.qty+qty);
+    s.history.push({type:'sell',code,price,qty,amount:price*qty,time:new Date().toLocaleString()});
+    saveSimState(s);renderSimUI();
+  });
+  document.getElementById('simResetBtn').addEventListener('click',()=>{
+    if(!confirm(lang==='zh'?'确定重置？所有持仓和记录将清空。':'Reset? All data will be cleared.'))return;
+    localStorage.removeItem('simState');renderSimUI();
+  });
+  // auto-fill price on stock input
+  document.getElementById('simStock').addEventListener('change',()=>{
+    const code=document.getElementById('simStock').value.trim();
+    if(STOCK_NAMES[code])document.getElementById('simPrice').value=(Math.random()*200+10).toFixed(2);
+  });
+}
+
+// ── Core Functions ──
+function init(){
+  applyTheme();renderSidebar();renderModelChips();renderCompareGrid();renderFileList();renderFeatures();bindEvents();applyLang();loadUser();applyThemeUI();
+  bindChartEvents();bindSimEvents();renderSimUI();
+  // default chart data
+  chartData=genKline(80,1680);renderChart();
+}
 function bindEvents(){
   document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>navigateTo(n.dataset.nav)));
   document.getElementById('sidebarToggle').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('collapsed'));
@@ -496,8 +937,8 @@ function bindEvents(){
   document.getElementById('importFileBtn').addEventListener('click',importFile);
   document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
   document.getElementById('chatSend').addEventListener('click',sendChat);
+  document.getElementById('btRunBtn').addEventListener('click',runBacktest);
 }
-
 function navigateTo(nav){
   currentNav=nav;
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.nav===nav));
@@ -505,107 +946,79 @@ function navigateTo(nav){
   let pageId='page'+capitalize(nav);
   if(nav==='tools')pageId='page'+capitalize(currentTool);
   if(nav==='personal')pageId='pagePersonal';
+  if(nav==='trade')pageId='page'+capitalize(currentTradeTool);
   showPage(pageId);
+  if(nav==='trade'&&currentTradeTool==='chart')setTimeout(()=>renderChart(),50);
 }
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active')}
 function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1)}
-
 function renderSidebar(){
   const items=SIDEBAR_MAP[currentNav]||[];
   const labelEl=document.getElementById('sidebarLabel');
   const contentEl=document.getElementById('sidebarContent');
-  if(items.length===0){labelEl.style.display='none';contentEl.innerHTML='<div class="sidebar-placeholder">暂无子功能</div>'}
+  if(items.length===0){labelEl.style.display='none';contentEl.innerHTML='<div class="sidebar-placeholder">'+(currentNav==='trade'?'':'暂无子功能')+'</div>'}
   else{
     labelEl.style.display='block';labelEl.textContent=I18N[lang].subTools;
-    contentEl.innerHTML=items.map(item=>`<div class="side-item" data-tool="${item.id}">${item.icon}<span data-i18n="${item.labelKey}">${I18N[lang][item.labelKey]}</span></div>`).join('');
+    contentEl.innerHTML=items.map(item=>'<div class="side-item" data-tool="'+item.id+'">'+item.icon+'<span data-i18n="'+item.labelKey+'">'+I18N[lang][item.labelKey]+'</span></div>').join('');
     contentEl.querySelectorAll('.side-item').forEach(si=>si.addEventListener('click',()=>{
       if(si.dataset.tool==='files'){showPage('pagePersonal');return}
-      currentTool=si.dataset.tool;
-      document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));
-      si.classList.add('active');
-      showPage('page'+capitalize(currentTool));
+      if(currentNav==='trade'){currentTradeTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTradeTool));if(currentTradeTool==='chart')setTimeout(renderChart,50);return}
+      currentTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTool));
     }));
+    // auto-select first
+    const firstId=currentNav==='trade'?currentTradeTool:(items[0]?items[0].id:'');
+    contentEl.querySelectorAll('.side-item').forEach(si=>{if(si.dataset.tool===firstId)si.classList.add('active')});
   }
 }
-
 function renderFeatures(){
   const el=document.getElementById('homeFeatures');
-  el.innerHTML=FEATURES.map(f=>`
-    <div class="feature-card" data-nav="${f.nav}" data-tool="${f.tool||''}">
-      <div class="icon" style="background:${f.bg}">${f.icon}</div>
-      <h3 data-i18n="${f.titleKey}">${I18N[lang][f.titleKey]}</h3>
-      <p data-i18n="${f.descKey}">${I18N[lang][f.descKey]}</p>
-    </div>
-  `).join('');
+  el.innerHTML=FEATURES.map(f=>'<div class="feature-card" data-nav="'+f.nav+'" data-tool="'+(f.tool||'')+'"><div class="icon" style="background:'+f.bg+'">'+f.icon+'</div><h3 data-i18n="'+f.titleKey+'">'+I18N[lang][f.titleKey]+'</h3><p data-i18n="'+f.descKey+'">'+I18N[lang][f.descKey]+'</p></div>').join('');
   el.querySelectorAll('.feature-card').forEach(c=>c.addEventListener('click',()=>{
-    navigateTo(c.dataset.nav);
-    if(c.dataset.tool){currentTool=c.dataset.tool;renderSidebar();showPage('page'+capitalize(currentTool))}
+    const nav=c.dataset.nav;navigateTo(nav);
+    if(nav==='trade'){currentTradeTool=c.dataset.tool||'chart';renderSidebar();showPage('page'+capitalize(currentTradeTool));setTimeout(renderChart,50)}
+    else if(c.dataset.tool){currentTool=c.dataset.tool;renderSidebar();showPage('page'+capitalize(currentTool))}
   }));
 }
-
 function sendChat(){
-  const input=document.getElementById('chatInput');
-  const msg=input.value.trim();
-  if(!msg)return;
-  const res=document.getElementById('chatResponse');
-  res.classList.add('open');
-  res.innerHTML=`<div style="color:var(--text3);font-size:12px;margin-bottom:8px">您：${msg}</div><div>这是一个演示回复。在真实场景中，这里会连接AI模型返回智能回答。您的问题已被记录。</div>`;
+  const input=document.getElementById('chatInput');const msg=input.value.trim();if(!msg)return;
+  const res=document.getElementById('chatResponse');res.classList.add('open');
+  res.innerHTML='<div style="color:var(--text3);font-size:12px;margin-bottom:8px">您：'+msg+'</div><div>这是一个演示回复。在真实场景中，这里会连接AI模型返回智能回答。</div>';
   input.value='';
 }
-
 function renderModelChips(){
   const el=document.getElementById('modelChips');
-  el.innerHTML=GEO_MODELS.map(m=>`<div class="model-chip" data-model="${m.id}">${m.name}</div>`).join('');
+  el.innerHTML=GEO_MODELS.map(m=>'<div class="model-chip" data-model="'+m.id+'">'+m.name+'</div>').join('');
   el.querySelectorAll('.model-chip').forEach(c=>c.addEventListener('click',()=>{
     if(selectedGeoModels.has(c.dataset.model)){selectedGeoModels.delete(c.dataset.model);c.classList.remove('selected')}
     else{selectedGeoModels.add(c.dataset.model);c.classList.add('selected')}
   }));
 }
-
 async function startGeo(){
-  const brand=document.getElementById('brandInput').value.trim();
-  if(!brand){document.getElementById('brandInput').focus();return}
+  const brand=document.getElementById('brandInput').value.trim();if(!brand){document.getElementById('brandInput').focus();return}
   if(selectedGeoModels.size===0){alert(lang==='zh'?'请至少选择一个模型':'Select at least one model');return}
-  const btn=document.getElementById('geoStartBtn');
-  btn.disabled=true;btn.textContent=I18N[lang].detecting;
+  const btn=document.getElementById('geoStartBtn');btn.disabled=true;btn.textContent=I18N[lang].detecting;
   document.getElementById('geoResults').innerHTML='';
-  const promises=[...selectedGeoModels].map(mid=>{
-    const m=GEO_MODELS.find(x=>x.id===mid);
-    return detectOne(brand,m).then(r=>showResult(r));
-  });
-  await Promise.allSettled(promises);
-  btn.disabled=false;btn.textContent=I18N[lang].startBtn;
+  const promises=[...selectedGeoModels].map(mid=>{const m=GEO_MODELS.find(x=>x.id===mid);return detectOne(brand,m).then(r=>showResult(r))});
+  await Promise.allSettled(promises);btn.disabled=false;btn.textContent=I18N[lang].startBtn;
 }
 async function detectOne(brand,model){
   const key=localStorage.getItem('key_'+model.provider)||'';
   if(!key)return{model:model.name,score:0,mentioned:false,snippet:I18N[lang].noKey,provider:model.provider};
   try{
     const res=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:model.provider,model:model.id,apiKey:key,prompt:GEO_PROMPT(brand)})});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    const text=data.content||'';
+    if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();const text=data.content||'';
     const mentioned=text.toLowerCase().includes(brand.toLowerCase());
     return{model:model.name,score:mentioned?Math.floor(60+Math.random()*40):Math.floor(Math.random()*35),mentioned,snippet:text.slice(0,100),provider:model.provider};
   }catch(e){return{model:model.name,score:0,mentioned:false,snippet:'Error: '+e.message,provider:model.provider}}
 }
 function showResult(r){
   const cls=r.score>=60?'s-high':r.score>=30?'s-mid':'s-low';
-  const tag=r.mentioned?`<span class="result-tag t-yes">${I18N[lang].mentioned}</span>`:`<span class="result-tag t-no">${I18N[lang].notMentioned}</span>`;
-  document.getElementById('geoResults').insertAdjacentHTML('beforeend',`<div class="result-card"><div class="score-ring ${cls}">${r.score}</div><div class="result-info"><div class="result-name">${r.model}</div><div class="result-snippet">${r.snippet}</div></div>${tag}</div>`);
+  const tag=r.mentioned?'<span class="result-tag t-yes">'+I18N[lang].mentioned+'</span>':'<span class="result-tag t-no">'+I18N[lang].notMentioned+'</span>';
+  document.getElementById('geoResults').insertAdjacentHTML('beforeend','<div class="result-card"><div class="score-ring '+cls+'">'+r.score+'</div><div class="result-info"><div class="result-name">'+r.model+'</div><div class="result-snippet">'+r.snippet+'</div></div>'+tag+'</div>');
 }
-
 function renderCompareGrid(){
   const el=document.getElementById('compareGrid');
-  el.innerHTML=MODELS.map(m=>{
-    const p=PROVIDERS[m.provider];
-    return`<div class="price-card" data-model="${m.id}">
-      <div class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
-      <div class="provider" style="color:${p.color}">${p.name}</div>
-      <div class="model">${m.name}</div>
-      <div class="price-row"><span>Input</span><span>$${m.in.toFixed(2)}/M</span></div>
-      <div class="price-row"><span>Output</span><span>$${m.out.toFixed(2)}/M</span></div>
-    </div>`;
-  }).join('');
+  el.innerHTML=MODELS.map(m=>{const p=PROVIDERS[m.provider];return'<div class="price-card" data-model="'+m.id+'"><div class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div><div class="provider" style="color:'+p.color+'">'+p.name+'</div><div class="model">'+m.name+'</div><div class="price-row"><span>Input</span><span>$'+m.in.toFixed(2)+'/M</span></div><div class="price-row"><span>Output</span><span>$'+m.out.toFixed(2)+'/M</span></div></div>'}).join('');
   el.querySelectorAll('.price-card').forEach(c=>c.addEventListener('click',()=>{
     const mid=c.dataset.model;
     if(selectedCompareModels.has(mid)){selectedCompareModels.delete(mid);c.classList.remove('selected')}
@@ -613,68 +1026,30 @@ function renderCompareGrid(){
     updateCompareTable();
   }));
 }
-
 function updateCompareTable(){
-  const countEl=document.getElementById('selectedCount');
-  const tableWrap=document.getElementById('compareTableWrap');
-  const table=document.getElementById('compareTable');
-  const suggestionsEl=document.getElementById('compareSuggestions');
+  const countEl=document.getElementById('selectedCount');const tableWrap=document.getElementById('compareTableWrap');const table=document.getElementById('compareTable');const suggestionsEl=document.getElementById('compareSuggestions');
   countEl.textContent=selectedCompareModels.size;
   if(selectedCompareModels.size===0){tableWrap.classList.remove('open');suggestionsEl.style.display='none';return}
   tableWrap.classList.add('open');
   const models=[...selectedCompareModels].map(id=>MODELS.find(m=>m.id===id));
-  const headers=['模型','Input价格','Output价格','上下文','MMLU','HumanEval','MATH','SWE-bench'];
-  table.innerHTML=`<thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${models.map(m=>`
-    <tr>
-      <td class="model-name">${m.name}</td>
-      <td>$${m.in.toFixed(2)}/M</td>
-      <td>$${m.out.toFixed(2)}/M</td>
-      <td>${m.ctx}K</td>
-      <td>${m.bench.mmlu}%</td>
-      <td>${m.bench.humaneval}%</td>
-      <td>${m.bench.math}%</td>
-      <td>${m.bench.swe}%</td>
-    </tr>`).join('')}</tbody>`;
+  table.innerHTML='<thead><tr><th>模型</th><th>Input</th><th>Output</th><th>上下文</th><th>MMLU</th><th>HumanEval</th><th>MATH</th><th>SWE</th></tr></thead><tbody>'+models.map(m=>'<tr><td class="model-name">'+m.name+'</td><td>$'+m.in.toFixed(2)+'/M</td><td>$'+m.out.toFixed(2)+'/M</td><td>'+m.ctx+'K</td><td>'+m.bench.mmlu+'%</td><td>'+m.bench.humaneval+'%</td><td>'+m.bench.math+'%</td><td>'+m.bench.swe+'%</td></tr>').join('')+'</tbody>';
   suggestionsEl.style.display='block';
-  const list=document.getElementById('suggestionList');
-  list.innerHTML=models.map(m=>`
-    <div class="suggestion-item">
-      <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
-      <div class="content"><div class="title">${m.name} — ${m.positioning}</div><div class="desc">${m.advice}</div></div>
-    </div>
-  `).join('');
+  document.getElementById('suggestionList').innerHTML=models.map(m=>'<div class="suggestion-item"><svg viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><div class="content"><div class="title">'+m.name+' — '+m.positioning+'</div><div class="desc">'+m.advice+'</div></div></div>').join('');
 }
-
 function renderFileList(){
-  const el=document.getElementById('fileList');
-  const files=JSON.parse(localStorage.getItem('files')||'[]');
+  const el=document.getElementById('fileList');const files=JSON.parse(localStorage.getItem('files')||'[]');
   if(files.length===0)el.innerHTML='<div class="file-empty">暂无文件，点击新建文件开始</div>';
-  else el.innerHTML=files.map(f=>`<div class="file-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg><span class="file-name">${f.name}</span><span class="file-meta">${f.date||''}</span></div>`).join('');
+  else el.innerHTML=files.map(f=>'<div class="file-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg><span class="file-name">'+f.name+'</span><span class="file-meta">'+(f.date||'')+'</span></div>').join('');
 }
 function newFile(){
-  const name=prompt(lang==='zh'?'输入文件名：':'Enter filename:','新文档.txt');
-  if(!name)return;
-  const files=JSON.parse(localStorage.getItem('files')||'[]');
-  files.unshift({name,content:'',date:new Date().toLocaleDateString()});
-  localStorage.setItem('files',JSON.stringify(files));
-  renderFileList();
+  const name=prompt(lang==='zh'?'输入文件名：':'Enter filename:','新文档.txt');if(!name)return;
+  const files=JSON.parse(localStorage.getItem('files')||'[]');files.unshift({name,content:'',date:new Date().toLocaleDateString()});
+  localStorage.setItem('files',JSON.stringify(files));renderFileList();
 }
 function importFile(){
   const inp=document.createElement('input');inp.type='file';inp.accept='.txt,.md,.json,.csv';
-  inp.onchange=()=>{
-    const file=inp.files[0];if(!file)return;
-    const reader=new FileReader();
-    reader.onload=()=>{
-      const files=JSON.parse(localStorage.getItem('files')||'[]');
-      files.unshift({name:file.name,content:reader.result,date:new Date().toLocaleDateString()});
-      localStorage.setItem('files',JSON.stringify(files));
-      renderFileList();
-    };
-    reader.readAsText(file);
-  };
-  inp.click();
+  inp.onchange=()=>{const file=inp.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{const files=JSON.parse(localStorage.getItem('files')||'[]');files.unshift({name:file.name,content:reader.result,date:new Date().toLocaleDateString()});localStorage.setItem('files',JSON.stringify(files));renderFileList()};reader.readAsText(file)};inp.click();
 }
-
 function openAuth(mode){authMode=mode;updateAuthUI();document.getElementById('authModal').classList.add('open')}
 function closeAuth(){document.getElementById('authModal').classList.remove('open')}
 function toggleAuthMode(e){e.preventDefault();authMode=authMode==='login'?'register':'login';updateAuthUI()}
@@ -682,63 +1057,41 @@ function updateAuthUI(){
   const t=I18N[lang];
   document.getElementById('authTitle').textContent=authMode==='login'?t.login:t.register;
   document.getElementById('authSubmitBtn').textContent=authMode==='login'?t.login:t.register;
-  document.getElementById('authSwitch').innerHTML=`<span>${authMode==='login'?t.noAccount:'已有账号？'}</span> <a id="authToggleLink">${authMode==='login'?t.register:t.login}</a>`;
+  document.getElementById('authSwitch').innerHTML='<span>'+(authMode==='login'?t.noAccount:'已有账号？')+'</span> <a id="authToggleLink">'+(authMode==='login'?t.register:t.login)+'</a>';
   document.getElementById('authToggleLink').addEventListener('click',toggleAuthMode);
 }
 function submitAuth(){
-  const user=document.getElementById('authUser').value.trim();
-  const pass=document.getElementById('authPass').value;
-  if(!user||!pass)return;
-  if(authMode==='login'){
-    const saved=JSON.parse(localStorage.getItem('u_'+user)||'null');
-    if(!saved||saved.p!==pass){alert(lang==='zh'?'用户名或密码错误':'Wrong username or password');return}
-    localStorage.setItem('currentUser',user);
-  }else{localStorage.setItem('u_'+user,JSON.stringify({p:pass,n:user}));localStorage.setItem('currentUser',user)}
+  const user=document.getElementById('authUser').value.trim();const pass=document.getElementById('authPass').value;if(!user||!pass)return;
+  if(authMode==='login'){const saved=JSON.parse(localStorage.getItem('u_'+user)||'null');if(!saved||saved.p!==pass){alert(lang==='zh'?'用户名或密码错误':'Wrong username or password');return}localStorage.setItem('currentUser',user)}
+  else{localStorage.setItem('u_'+user,JSON.stringify({p:pass,n:user}));localStorage.setItem('currentUser',user)}
   closeAuth();loadUser();
 }
 function loadUser(){
-  const u=localStorage.getItem('currentUser');
-  const right=document.querySelector('.topbar-right');
+  const u=localStorage.getItem('currentUser');const right=document.querySelector('.topbar-right');
   if(u){
-    right.innerHTML=`<button class="widget-btn" id="widgetBtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button><span style="font-size:12px;color:var(--text2)">${u}</span><button class="btn-ghost" id="logoutBtn">${I18N[lang].logout}</button>`;
+    right.innerHTML='<button class="widget-btn" id="widgetBtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button><span style="font-size:12px;color:var(--text2)">'+u+'</span><button class="btn-ghost" id="logoutBtn">'+I18N[lang].logout+'</button>';
     document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
     document.getElementById('logoutBtn').addEventListener('click',()=>{localStorage.removeItem('currentUser');loadUser()});
   }else{
-    right.innerHTML=`<button class="widget-btn" id="widgetBtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button><button class="btn-ghost" id="loginBtn">${I18N[lang].login}</button><button class="btn-primary" id="registerBtn">${I18N[lang].register}</button>`;
+    right.innerHTML='<button class="widget-btn" id="widgetBtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button><button class="btn-ghost" id="loginBtn">'+I18N[lang].login+'</button><button class="btn-primary" id="registerBtn">'+I18N[lang].register+'</button>';
     document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
     document.getElementById('loginBtn').addEventListener('click',()=>openAuth('login'));
     document.getElementById('registerBtn').addEventListener('click',()=>openAuth('register'));
   }
 }
-
 function toggleWidget(e){e.stopPropagation();document.getElementById('widgetPanel').classList.toggle('open')}
-function applyThemeUI(){
-  document.getElementById('langCurrent').textContent=lang==='zh'?'中文':'English';
-  const themeLabel=document.getElementById('themeLabel');
-  themeLabel.textContent=theme==='dark'?I18N[lang].wpThemeDark:I18N[lang].wpThemeLight;
-}
-function toggleTheme(){
-  theme=theme==='dark'?'light':'dark';
-  localStorage.setItem('theme',theme);
-  applyTheme();
-  applyThemeUI();
-  document.getElementById('widgetPanel').classList.remove('open');
-}
+function applyThemeUI(){document.getElementById('langCurrent').textContent=lang==='zh'?'中文':'English';document.getElementById('themeLabel').textContent=theme==='dark'?I18N[lang].wpThemeDark:I18N[lang].wpThemeLight}
+function toggleTheme(){theme=theme==='dark'?'light':'dark';localStorage.setItem('theme',theme);applyTheme();applyThemeUI();document.getElementById('widgetPanel').classList.remove('open')}
 function applyTheme(){document.documentElement.classList.toggle('light',theme==='light')}
-function toggleLang(){
-  lang=lang==='zh'?'en':'zh';
-  localStorage.setItem('lang',lang);
-  applyLang();applyThemeUI();renderSidebar();renderFeatures();loadUser();
-  document.getElementById('widgetPanel').classList.remove('open');
-}
+function toggleLang(){lang=lang==='zh'?'en':'zh';localStorage.setItem('lang',lang);applyLang();applyThemeUI();renderSidebar();renderFeatures();loadUser();document.getElementById('widgetPanel').classList.remove('open')}
 function applyLang(){
   const t=I18N[lang];
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const key=el.dataset.i18n;
-    if(t[key])el.textContent=t[key];
-  });
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(t[key])el.textContent=t[key]});
   document.querySelectorAll('[data-placeholder]').forEach(el=>{const key=el.dataset.placeholder;if(t[key])el.placeholder=t[key]});
 }
+
+// responsive chart resize
+window.addEventListener('resize',()=>{if(currentNav==='trade'&&currentTradeTool==='chart'&&chartData.length)renderChart()});
 
 init();
 </script>
