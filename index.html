@@ -1,672 +1,1393 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GEO可见性 — AI搜索存在感分析 2026</title>
+<title>科Ke — 科技改变生活</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#05060a;--surface:#0d0f16;--surface2:#151823;--surface3:#1c1f2e;
-    --border:rgba(255,255,255,.06);--border-hover:rgba(255,255,255,.12);
-    --accent:#6366f1;--accent2:#818cf8;--accent-glow:rgba(99,102,241,.25);
-    --green:#10b981;--green-bg:rgba(16,185,129,.1);--green-border:rgba(16,185,129,.3);
-    --red:#ef4444;--red-bg:rgba(239,68,68,.08);--red-border:rgba(239,68,68,.25);
-    --yellow:#f59e0b;--yellow-bg:rgba(245,158,11,.1);
-    --text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-    --radius:16px;--radius-sm:10px;
-  }
-  html{scroll-behavior:smooth}
-  body{font-family:'Segoe UI','Microsoft YaHei',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;line-height:1.6;transition:margin-right .35s cubic-bezier(.4,0,.2,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg-subtle:#0e0e16;
+  --surface1:rgba(15,15,24,.88);--surface2:rgba(20,20,35,.78);--surface3:rgba(26,26,45,.68);
+  --border:rgba(255,255,255,.06);--border-hover:rgba(255,255,255,.13);--border-strong:rgba(255,255,255,.18);
+  --accent:#818cf8;--accent2:#a78bfa;--accent-glow:rgba(129,140,248,.3);--accent-grad:linear-gradient(135deg,#818cf8,#a78bfa,#c084fc);
+  --accent-grad-h:linear-gradient(90deg,#818cf8,#a78bfa,#c084fc,#f472b6);
+  --accent-grad-subtle:linear-gradient(135deg,rgba(129,140,248,.12),rgba(167,139,250,.08));
+  --green:#34d399;--green-bg:rgba(52,211,153,.1);--green-border:rgba(52,211,153,.25);--green-text:rgba(52,211,153,.9);
+  --red:#f87171;--red-bg:rgba(248,113,113,.08);--red-border:rgba(248,113,113,.22);--red-text:rgba(248,113,113,.9);
+  --yellow:#fbbf24;--yellow-bg:rgba(251,191,36,.08);--yellow-text:rgba(251,191,36,.9);
+  --orange:#fb923c;--orange-bg:rgba(251,146,60,.1);--orange-border:rgba(251,146,60,.22);
+  --text:#eef0f6;--text2:#94a3b8;--text3:#64748b;--text4:#475569;
+  --radius:16px;--radius-sm:10px;--radius-xs:6px;--radius-pill:9999px;
+  --font-sans:'Inter',system-ui,-apple-system,'Segoe UI','Microsoft YaHei',sans-serif;
+  --font-mono:'JetBrains Mono','Cascadia Code','Fira Code',monospace;
+  --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-7:32px;--sp-8:40px;--sp-9:48px;--sp-10:64px;--sp-11:80px;
+  --glass-blur:blur(24px);--glass-blur-heavy:blur(40px);
+  --ease-out:cubic-bezier(.16,1,.3,1);--ease-spring:cubic-bezier(.34,1.56,.64,1);--dur-fast:.15s;--dur-normal:.25s;--dur-slow:.4s;
+  --sidebar-w:220px;--sidebar-collapsed:62px;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+body{font-family:var(--font-sans);font-size:15px;font-weight:400;line-height:1.6;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");background-size:128px 128px}
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.65}
+.beam{position:fixed;pointer-events:none;z-index:0}
+.beam-1{top:15%;left:-20%;width:60%;height:1px;background:linear-gradient(90deg,transparent,rgba(129,140,248,.35),rgba(167,139,250,.12),transparent);animation:beamFloat 8s ease-in-out infinite}
+.beam-2{top:55%;right:-20%;width:50%;height:1px;background:linear-gradient(270deg,transparent,rgba(52,211,153,.3),rgba(52,211,153,.08),transparent);animation:beamFloat 11s ease-in-out infinite reverse}
+.beam-3{bottom:25%;left:10%;width:40%;height:1px;background:linear-gradient(90deg,transparent,rgba(192,132,252,.25),rgba(244,114,182,.1),transparent);animation:beamFloat 9.5s ease-in-out infinite;animation-delay:-3s}
+@keyframes beamFloat{0%,100%{transform:translateX(0);opacity:.35}50%{transform:translateX(40px);opacity:.8}}
+.glow-orb{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(120px);opacity:.06}
+.glow-orb-1{width:520px;height:520px;background:var(--accent);top:-160px;left:-100px;animation:orbDrift 22s ease-in-out infinite}
+.glow-orb-2{width:420px;height:420px;background:#34d399;bottom:-110px;right:-90px;animation:orbDrift 28s ease-in-out infinite reverse}
+.glow-orb-3{width:380px;height:380px;background:#c084fc;top:38%;left:58%;animation:orbDrift 24s ease-in-out infinite;animation-delay:-8s}
+@keyframes orbDrift{0%,100%{transform:translate(0,0)}50%{transform:translate(45px,-35px)}}
 
-  /* ── Sidebar ── */
-  .sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s}
-  .sidebar-overlay.open{opacity:1;pointer-events:auto}
-  .sidebar{position:fixed;top:0;right:-340px;width:320px;height:100vh;z-index:1000;background:var(--surface);border-left:1px solid var(--border);padding:28px 22px;overflow-y:auto;transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;gap:20px}
-  .sidebar.open{right:0}
-  .sidebar-close{align-self:flex-end;background:none;border:none;color:var(--text3);font-size:22px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:color .2s}
-  .sidebar-close:hover{color:var(--text)}
-  .sidebar-title{font-size:15px;font-weight:700;letter-spacing:.5px;color:var(--accent2);display:flex;align-items:center;gap:8px}
-  .sidebar-section{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:16px}
-  .sidebar-section h4{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);margin-bottom:12px}
-  .lang-options{display:flex;gap:8px}
-  .lang-btn{padding:7px 16px;border-radius:100px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text2);transition:all .2s}
-  .lang-btn.active,.lang-btn:hover{border-color:var(--accent);color:var(--accent2);background:rgba(99,102,241,.1)}
-  .setting-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
-  .setting-row:last-child{border-bottom:none}
-  .setting-label{font-size:13px;color:var(--text2)}
-  .toggle{width:40px;height:22px;border-radius:11px;background:var(--surface3);position:relative;cursor:pointer;transition:background .25s;border:none;padding:0}
-  .toggle.on{background:var(--accent)}
-  .toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .25s}
-  .toggle.on::after{transform:translateX(18px)}
-  .sidebar-footer{margin-top:auto;font-size:11px;color:var(--text3);text-align:center;line-height:1.6}
-  body.sidebar-open{margin-right:320px}
+/* ── App Shell ── */
+.app-shell{display:flex;min-height:calc(100vh - 56px);position:relative;z-index:1;margin-top:56px}display:flex;min-height:100vh;position:relative;z-index:1}
 
-  .mesh{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 10%,rgba(99,102,241,.07),transparent),radial-gradient(ellipse 50% 70% at 85% 90%,rgba(129,140,248,.04),transparent),radial-gradient(ellipse 40% 40% at 50% 50%,rgba(16,185,129,.025),transparent)}
-  .mesh::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);background-size:80px 80px}
-  .app{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:48px 28px 120px;transition:margin-right .35s cubic-bezier(.4,0,.2,1)}
-  .app.sidebar-open{margin-right:340px}
-  /* ── Hero ── */
-  .hero{text-align:center;padding:64px 0 56px;position:relative}
-  .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:100px;padding:6px 18px;font-size:13px;font-weight:500;color:var(--accent2);margin-bottom:28px;animation:fadeIn .6s ease}
-  .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-  .hero h1{font-size:clamp(30px,5vw,52px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:20px}
-  .hero h1 .grad{background:linear-gradient(135deg,var(--accent2),#c084fc,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .hero p{font-size:17px;color:var(--text2);max-width:560px;margin:0 auto 36px;line-height:1.7}
+/* ── Left Sidebar (collapsible) ── */
+.left-sidebar{width:var(--sidebar-w);background:rgba(8,8,14,.92);border-right:1px solid var(--border);backdrop-filter:var(--glass-blur-heavy);padding:var(--sp-4) var(--sp-3);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:width var(--dur-slow) var(--ease-out);overflow:hidden}
+.left-sidebar.collapsed{width:var(--sidebar-collapsed)}
+.left-sidebar .logo{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-2);margin-bottom:var(--sp-5);min-height:40px;white-space:nowrap;overflow:hidden}
+.left-sidebar .logo-icon{width:34px;height:34px;border-radius:var(--radius-sm);background:linear-gradient(135deg,#818cf8,#34d399);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:0 0 20px rgba(129,140,248,.2)}
+.left-sidebar .logo-text{font-size:15px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(135deg,var(--accent),#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;transition:opacity var(--dur-normal)}
+.collapsed .logo-text{opacity:0;pointer-events:none}
 
-  /* ── cards ── */
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;position:relative;overflow:hidden;transition:border-color .3s}
-  .card:hover{border-color:var(--border-hover)}
-  .card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
-  .card-title{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:20px;display:flex;align-items:center;gap:8px}
-  .card-title .bar{width:3px;height:14px;background:var(--accent);border-radius:2px}
+/* Collapse toggle */
+.collapse-btn{position:absolute;top:14px;right:-14px;width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text3);font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:101;transition:all var(--dur-normal);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.collapse-btn:hover{border-color:var(--accent);color:var(--accent);transform:scale(1.1)}
+.collapsed .collapse-btn{right:-14px}
 
-  /* ── model grid ── */
-  .provider-section{margin-bottom:20px}
-  .provider-section:last-child{margin-bottom:0}
-  .provider-label{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
-  .provider-label .p-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-  .model-chips{display:flex;flex-wrap:wrap;gap:8px}
-  .model-chip{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border-radius:100px;font-size:12.5px;font-weight:500;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap}
-  .model-chip:hover{border-color:var(--border-hover);background:var(--surface3)}
-  .model-chip.active{background:rgba(99,102,241,.12);border-color:var(--accent);color:var(--accent2);box-shadow:0 0 0 3px var(--accent-glow)}
-  .model-chip .check{width:15px;height:15px;border-radius:50%;border:2px solid var(--text3);transition:all .2s;display:flex;align-items:center;justify-content:center;font-size:8px;color:transparent}
-  .model-chip.active .check{border-color:var(--accent);background:var(--accent);color:#fff}
-  .model-chip .m-icon{font-size:14px}
-  .model-chip .m-name{font-size:12px}
-  .model-chip .m-badge{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(255,255,255,.06);color:var(--text3);margin-left:2px}
+/* Nav items */
+.nav-section{margin-bottom:var(--sp-4);overflow:hidden}
+.nav-section-title{font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text4);padding:0 var(--sp-2);margin-bottom:var(--sp-2);white-space:nowrap;transition:opacity var(--dur-normal)}
+.collapsed .nav-section-title{opacity:0}
+.nav-item{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3);border-radius:var(--radius-sm);font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;transition:all var(--dur-normal) var(--ease-out);border:1px solid transparent;margin-bottom:2px;letter-spacing:.2px;user-select:none;white-space:nowrap;overflow:hidden}
+.nav-item:hover{background:rgba(129,140,248,.06);color:var(--text)}
+.nav-item.active{background:rgba(129,140,248,.1);color:var(--accent);border-color:rgba(129,140,248,.15);box-shadow:0 0 20px rgba(129,140,248,.06)}
+.nav-item .nav-icon{font-size:18px;width:24px;text-align:center;flex-shrink:0}
+.nav-item .nav-label{transition:opacity var(--dur-normal)}
+.collapsed .nav-item .nav-label{opacity:0}
+.collapsed .nav-item{justify-content:center;padding:var(--sp-2)}
 
-  /* ── key panel ── */
-  .key-panel{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s;opacity:0}
-  .key-panel.open{max-height:3000px;opacity:1;margin-top:20px}
-  .key-row{display:grid;grid-template-columns:200px 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
-  .key-row:last-child{border-bottom:none}
-  .key-label{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500}
-  .key-label .icon{font-size:18px}
-  .key-input-wrap{position:relative}
-  .key-input{width:100%;padding:10px 42px 10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:"Courier New",monospace;font-size:12.5px;letter-spacing:.4px;outline:none;transition:border-color .2s}
-  .key-input:focus{border-color:var(--accent)}
-  .key-input::placeholder{color:var(--text3);font-family:"Segoe UI",sans-serif;font-size:11.5px;letter-spacing:0}
-  .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:2px;transition:color .2s}
-  .eye:hover{color:var(--text2)}
+/* Sidebar bottom: user + widget */
+.sidebar-bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:var(--sp-3);overflow:hidden}
+.user-section{background:var(--surface3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:var(--sp-3);margin-bottom:var(--sp-3);transition:all var(--dur-normal);white-space:nowrap;overflow:hidden}
+.collapsed .user-section{padding:var(--sp-2);text-align:center}
+.user-card{display:flex;align-items:center;gap:var(--sp-2)}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent-grad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.user-info{flex:1;min-width:0;transition:opacity var(--dur-normal)}
+.collapsed .user-info{opacity:0;display:none}
+.user-name{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.2px}
+.user-email{font-size:10px;color:var(--text4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.login-prompt{font-size:11.5px;color:var(--text3);line-height:1.5;transition:opacity var(--dur-normal)}
+.collapsed .login-prompt{opacity:0}
+.login-prompt a{color:var(--accent);cursor:pointer;text-decoration:none;font-weight:600}
+.login-prompt a:hover{text-decoration:underline}
 
-  /* ── brand + run ── */
-  .brand-row{display:grid;grid-template-columns:1fr 200px;gap:16px;align-items:flex-end;margin-top:24px}
-  @media(max-width:640px){.brand-row{grid-template-columns:1fr}}
-  .input-wrap{position:relative}
-  .input-wrap label{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:8px}
-  .input-wrap input{width:100%;padding:14px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:15px;outline:none;transition:border-color .2s}
-  .input-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-  .run-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px 32px;background:linear-gradient(135deg,var(--accent),#4f46e5);color:#fff;font-size:16px;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all .25s;font-family:inherit;box-shadow:0 8px 32px rgba(99,102,241,.3);position:relative;overflow:hidden}
-  .run-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);opacity:0;transition:opacity .25s}
-  .run-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 40px rgba(99,102,241,.4)}
-  .run-btn:hover:not(:disabled)::after{opacity:1}
-  .run-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
-  .run-btn .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+/* Widget (settings) */
+.sidebar-widget{display:flex;gap:var(--sp-2);padding:var(--sp-2) var(--sp-3);flex-wrap:wrap;white-space:nowrap;overflow:hidden;transition:opacity var(--dur-normal)}
+.collapsed .sidebar-widget{justify-content:center;opacity:.6}
+.widget-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--radius-pill);font-size:10.5px;font-weight:600;background:var(--surface2);border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all var(--dur-normal);letter-spacing:.2px}
+.widget-chip:hover{border-color:var(--accent);color:var(--accent)}
+.widget-chip .w-icon{font-size:12px}
 
-  /* ── progress ── */
-  .progress-bar-wrap{height:3px;background:var(--surface2);border-radius:2px;margin-top:20px;overflow:hidden;display:none}
-  .progress-bar-wrap.show{display:block}
-  .progress-bar{height:100%;width:0%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2),#c084fc);transition:width .4s}
-  .progress-text{font-size:12px;color:var(--text3);margin-top:8px;display:none}
-  .progress-text.show{display:block}
+.sidebar-footer{font-size:9.5px;color:var(--text4);text-align:center;line-height:1.6;padding-top:var(--sp-2);white-space:nowrap;overflow:hidden;transition:opacity var(--dur-normal)}
+.collapsed .sidebar-footer{opacity:0}
+.sidebar-footer a{color:var(--accent);cursor:pointer;text-decoration:none}
+.sidebar-footer a:hover{text-decoration:underline}
 
-  /* ── results ── */
-  #results{display:none}
-  #results.show{display:block;animation:fadeUp .6s ease}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+/* ── Main Content ── */
+.main-content{flex:1;margin-left:var(--sidebar-w);min-height:100vh;display:flex;flex-direction:column;transition:margin-left var(--dur-slow) var(--ease-out)}
+.main-content.sidebar-collapsed{margin-left:var(--sidebar-collapsed)}
 
-  .score-hero{text-align:center;padding:48px 32px;background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.15);border-radius:var(--radius);margin-bottom:32px}
-  .ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 24px}
-  .ring-wrap svg{transform:rotate(-90deg)}
-  .ring-wrap circle{fill:none;stroke-width:8}
-  .ring-wrap .bg{stroke:rgba(255,255,255,.05)}
-  .ring-wrap .prog{stroke:var(--accent);stroke-linecap:round;transition:stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)}
-  .ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .ring-txt .num{font-size:48px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--text),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  .ring-txt .sub{font-size:12px;color:var(--text3);margin-top:4px}
-  .score-grade{font-size:20px;font-weight:700;margin-top:8px}
-  .score-meta{font-size:13px;color:var(--text3);margin-top:6px}
+/* ── Top Bar ── */
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-4) var(--sp-7);border-bottom:1px solid var(--border);backdrop-filter:var(--glass-blur);background:rgba(8,8,14,.6);position:sticky;top:0;z-index:50}
+.top-bar-left{display:flex;align-items:center;gap:var(--sp-3)}
+.back-btn{display:flex;align-items:center;gap:var(--sp-1);padding:var(--sp-2) var(--sp-3);border-radius:var(--radius-xs);font-size:12.5px;font-weight:600;color:var(--text2);background:none;border:1px solid var(--border);cursor:pointer;transition:all var(--dur-normal);font-family:var(--font-sans);letter-spacing:.2px}
+.back-btn:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 14px var(--accent-glow)}
+.top-bar-title{font-size:14px;font-weight:700;letter-spacing:.2px}
+.top-bar-right{display:flex;align-items:center;gap:var(--sp-2)}
+.auth-btn{padding:7px 18px;border-radius:var(--radius-pill);font-size:12px;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all var(--dur-normal);font-family:var(--font-sans);letter-spacing:.2px}
+.auth-btn:hover{border-color:var(--accent);color:var(--accent)}
+.auth-btn.primary{background:var(--accent-grad);border-color:transparent;color:#fff;box-shadow:0 4px 16px rgba(129,140,248,.2)}
+.auth-btn.primary:hover{box-shadow:0 6px 24px rgba(129,140,248,.35);transform:translateY(-1px)}
+.user-menu-btn{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-1) var(--sp-3);border-radius:var(--radius-pill);border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:all var(--dur-normal);font-family:var(--font-sans)}
+.user-menu-btn:hover{border-color:var(--border-hover)}
+.user-menu-btn .mini-avatar{width:24px;height:24px;border-radius:50%;background:var(--accent-grad);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.user-menu-btn .mini-name{font-size:12.5px;font-weight:600;color:var(--text2)}
 
-  .results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:32px}
-  .rcard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:20px;transition:all .3s}
-  .rcard:hover{border-color:var(--border-hover)}
-  .rcard.mentioned{border-color:var(--green-border);background:var(--green-bg)}
-  .rcard.not-mentioned{border-color:var(--red-border);background:var(--red-bg)}
-  .rcard.error{background:var(--yellow-bg)}
-  .rcard-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .rcard-head .icon{font-size:22px}
-  .rcard-head .name{font-size:14px;font-weight:600;flex:1}
-  .rcard-head .badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:100px}
-  .badge.yes{background:var(--green-bg);color:var(--green)}
-  .badge.no{background:var(--red-bg);color:var(--red)}
-  .badge.err{background:var(--yellow-bg);color:var(--yellow)}
-  .rcard-body{font-size:12.5px;color:var(--text2);line-height:1.65;max-height:72px;overflow:hidden;position:relative}
-  .rcard-body::after{content:"";position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface2))}
-  .rcard.mentioned .rcard-body::after{background:linear-gradient(transparent,var(--green-bg))}
+/* ── Page Container ── */
+.page{display:none;animation:fadeUp .4s var(--ease-out)}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1;box-shadow:0 0 8px var(--accent)}50%{opacity:.25;box-shadow:0 0 0 var(--accent)}}
+@keyframes badgeBreath{0%,100%{box-shadow:0 0 16px rgba(129,140,248,.08)}50%{box-shadow:0 0 28px rgba(129,140,248,.2)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes staggerIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes progressGlow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
 
-  .suggest{background:linear-gradient(135deg,rgba(99,102,241,.08),rgba(99,102,241,.03));border:1px solid rgba(99,102,241,.15);border-radius:var(--radius-sm);padding:28px 32px}
-  .suggest h3{font-size:14px;font-weight:700;color:var(--accent2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
-  .suggest p{font-size:14.5px;color:var(--text2);line-height:1.8}
+/* ── Landing Page ── */
+.landing{max-width:960px;margin:0 auto;padding:var(--sp-11) var(--sp-7) 120px}
+.landing-hero{text-align:center;padding:var(--sp-11) 0 var(--sp-9)}
+.landing-hero .hero-badge{display:inline-flex;align-items:center;gap:10px;background:rgba(129,140,248,.08);border:1px solid rgba(129,140,248,.18);border-radius:var(--radius-pill);padding:8px 22px;font-size:12.5px;font-weight:600;color:var(--accent);margin-bottom:28px;animation:badgeBreath 4s ease-in-out infinite,fadeIn .6s ease;backdrop-filter:blur(12px);letter-spacing:.3px}
+.hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite}
+.landing-hero h1{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-2px;line-height:1.08;margin-bottom:20px}
+.landing-hero h1 .grad{background:linear-gradient(135deg,var(--accent),#34d399,#c084fc,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.landing-hero p{font-size:15.5px;color:var(--text2);max-width:600px;margin:0 auto;line-height:1.8}
 
-  @media(max-width:640px){.app{padding:28px 14px 80px}.hero{padding:40px 0 32px}.card{padding:20px 16px}.key-row{grid-template-columns:1fr}.results-grid{grid-template-columns:1fr}}
-  ::-webkit-scrollbar{width:6px}
-  ::-webkit-scrollbar-track{background:transparent}
-  ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:3px}
+.tool-cards{display:flex;flex-direction:column;gap:var(--sp-5);margin-top:var(--sp-8)}
+.tool-card{display:flex;align-items:stretch;background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all var(--dur-normal) var(--ease-out);backdrop-filter:var(--glass-blur);position:relative}
+.tool-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.tool-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.tool-card.tc-geo::before{background:linear-gradient(90deg,#818cf8,#a78bfa,#c084fc)}
+.tool-card.tc-price::before{background:linear-gradient(90deg,#34d399,#6ee7b7)}
+.tool-card.tc-ws::before{background:linear-gradient(90deg,#fb923c,#f59e0b)}
+.tool-card-accent{width:6px;flex-shrink:0}
+.tc-geo .tool-card-accent{background:linear-gradient(180deg,#818cf8,#a78bfa)}
+.tc-price .tool-card-accent{background:linear-gradient(180deg,#34d399,#6ee7b7)}
+.tc-ws .tool-card-accent{background:linear-gradient(180deg,#fb923c,#f59e0b)}
+.tool-card-body{flex:1;padding:var(--sp-6) var(--sp-7);display:flex;align-items:center;gap:var(--sp-5)}
+.tool-card-icon{font-size:36px;flex-shrink:0;width:56px;height:56px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center}
+.tc-geo .tool-card-icon{background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.15)}
+.tc-price .tool-card-icon{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.15)}
+.tc-ws .tool-card-icon{background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.15)}
+.tool-card-info{flex:1}
+.tool-card-name{font-size:18px;font-weight:700;letter-spacing:-.2px;margin-bottom:4px}
+.tool-card-desc{font-size:13px;color:var(--text2);line-height:1.6}
+.tool-card-tag{display:inline-block;margin-top:var(--sp-2);padding:3px 10px;border-radius:var(--radius-pill);font-size:10px;font-weight:700;letter-spacing:.4px}
+.tc-geo .tool-card-tag{background:rgba(129,140,248,.1);color:var(--accent)}
+.tc-price .tool-card-tag{background:var(--green-bg);color:var(--green-text)}
+.tc-ws .tool-card-tag{background:var(--orange-bg);color:var(--orange)}
+.tool-card-arrow{font-size:20px;color:var(--text4);padding-right:var(--sp-4);transition:transform var(--dur-normal)}
+.tool-card:hover .tool-card-arrow{transform:translateX(4px);color:var(--text2)}
+
+/* ── Tool Pages ── */
+.tool-page{max-width:1280px;margin:0 auto;padding:var(--sp-7) var(--sp-7) 120px}
+.tool-page .page-title{font-size:28px;font-weight:800;letter-spacing:-1px;margin-bottom:var(--sp-2)}
+.tool-page .page-title .grad{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.tool-page .page-sub{font-size:14px;color:var(--text2);margin-bottom:var(--sp-7);line-height:1.7}
+
+/* ── Cards ── */
+.card{background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius);padding:var(--sp-7);position:relative;overflow:hidden;backdrop-filter:var(--glass-blur);transition:transform var(--dur-normal) var(--ease-out),border-color var(--dur-slow),box-shadow var(--dur-slow);margin-bottom:var(--sp-5)}
+.card:hover{border-color:var(--border-hover);box-shadow:0 0 60px rgba(129,140,248,.03);transform:translateY(-1px)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.07),transparent)}
+.card-title{font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text4);margin-bottom:20px;display:flex;align-items:center;gap:var(--sp-2)}
+.card-title .bar{width:3px;height:14px;background:var(--accent-grad);border-radius:2px;box-shadow:0 0 10px var(--accent-glow)}
+
+/* ── Provider sections ── */
+.provider-section{margin-bottom:var(--sp-4)}
+.provider-section:last-child{margin-bottom:0}
+.provider-label{font-size:10.5px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text4);margin-bottom:10px;display:flex;align-items:center;gap:var(--sp-2)}
+.provider-label .p-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 10px currentColor}
+
+/* ── Model chips ── */
+.model-chips{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+.model-chip{display:inline-flex;align-items:center;gap:7px;padding:8px 15px;border-radius:var(--radius-pill);font-size:12px;font-weight:500;background:var(--surface2);border:1px solid var(--border);cursor:pointer;transition:all var(--dur-normal) var(--ease-out);user-select:none;white-space:nowrap;position:relative;overflow:hidden;font-family:var(--font-sans);letter-spacing:.2px}
+.model-chip::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center,rgba(129,140,248,.12),transparent);opacity:0;transition:opacity var(--dur-normal)}
+.model-chip:hover{border-color:var(--border-hover);transform:translateY(-1px)}
+.model-chip.active{background:rgba(129,140,248,.1);border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px var(--accent),0 0 20px var(--accent-glow)}
+.model-chip.active::before{opacity:1}
+.model-chip .check{width:15px;height:15px;border-radius:50%;border:2px solid var(--text4);transition:all var(--dur-normal) var(--ease-spring);display:flex;align-items:center;justify-content:center;font-size:8px;color:transparent;flex-shrink:0}
+.model-chip.active .check{border-color:var(--accent);background:var(--accent);color:#fff}
+.model-chip .m-name{font-size:12px}
+.model-chip .m-badge{font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px;background:rgba(255,255,255,.05);color:var(--text4);margin-left:2px;letter-spacing:.3px}
+
+/* ── Key panel ── */
+.key-panel{max-height:0;overflow:hidden;transition:max-height .5s var(--ease-out),opacity .3s,margin .3s;opacity:0;margin-top:0}
+.key-panel.open{max-height:3000px;opacity:1;margin-top:20px}
+.key-row{display:grid;grid-template-columns:200px 1fr;gap:var(--sp-3);align-items:center;padding:var(--sp-3) 0;border-bottom:1px solid var(--border)}
+.key-row:last-child{border-bottom:none}
+.key-label{display:flex;align-items:center;gap:var(--sp-2);font-size:12.5px;font-weight:500}
+.key-input-wrap{position:relative}
+.key-input{width:100%;padding:10px 42px 10px 14px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-mono);font-size:12px;letter-spacing:.5px;outline:none;transition:border-color var(--dur-normal),box-shadow var(--dur-normal)}
+.key-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow),0 0 20px rgba(129,140,248,.08)}
+.key-input::placeholder{color:var(--text4);font-family:var(--font-sans);font-size:11px}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text4);cursor:pointer;font-size:13px;padding:var(--sp-1);transition:color var(--dur-fast)}
+.eye:hover{color:var(--text2)}
+
+/* ── Brand row + Run button ── */
+.brand-row{display:grid;grid-template-columns:1fr 200px;gap:var(--sp-4);align-items:flex-end;margin-top:var(--sp-5)}
+.brand-row label{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--text4);margin-bottom:6px;display:block}
+.brand-row input[type=text]{width:100%;padding:12px 16px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-sans);font-size:15px;outline:none;transition:border-color var(--dur-normal),box-shadow var(--dur-normal)}
+.brand-row input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.brand-row input[type=text]::placeholder{color:var(--text4)}
+.run-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 32px;background:var(--accent-grad);color:#fff;font-size:15px;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease-out);font-family:inherit;position:relative;overflow:hidden;box-shadow:0 6px 28px rgba(129,140,248,.25);letter-spacing:.3px}
+.run-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 40px rgba(129,140,248,.4)}
+.run-btn:active:not(:disabled){transform:translateY(1px) scale(.98);box-shadow:0 2px 12px rgba(129,140,248,.2)}
+.run-btn:disabled{opacity:.35;cursor:not-allowed}
+.run-btn .spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+/* ── Progress ── */
+.progress-bar-wrap{height:3px;background:rgba(255,255,255,.03);border-radius:2px;margin-top:var(--sp-5);overflow:hidden;display:none}
+.progress-bar-wrap.show{display:block}
+.progress-bar{height:100%;width:0%;border-radius:2px;background:var(--accent-grad-h);background-size:200% 100%;animation:progressGlow 2s linear infinite;transition:width .5s var(--ease-out)}
+.progress-text{font-size:11.5px;color:var(--text4);margin-top:var(--sp-2);display:none;letter-spacing:.3px}
+.progress-text.show{display:block}
+
+/* ── Results ── */
+#results{display:none}
+#results.show{display:block;animation:fadeUp .6s var(--ease-out)}
+.score-hero{text-align:center;padding:var(--sp-10) var(--sp-7);background:var(--accent-grad-subtle);border:1px solid rgba(129,140,248,.12);border-radius:var(--radius);margin-bottom:var(--sp-7);backdrop-filter:blur(12px)}
+.ring-wrap{position:relative;width:160px;height:160px;margin:0 auto var(--sp-5)}
+.ring-wrap svg{transform:rotate(-90deg)}
+.ring-wrap circle{fill:none;stroke-width:7}
+.ring-wrap .bg{stroke:rgba(255,255,255,.03)}
+.ring-wrap .prog{stroke:url(#ringGrad);stroke-linecap:round;transition:stroke-dashoffset 1.5s var(--ease-out);filter:drop-shadow(0 0 10px rgba(129,140,248,.5))}
+.ring-txt{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-txt .num{font-size:48px;font-weight:800;line-height:1;letter-spacing:-2px;background:linear-gradient(135deg,var(--text),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-family:var(--font-sans)}
+.ring-txt .sub{font-size:11px;color:var(--text4);margin-top:4px;letter-spacing:.8px;text-transform:uppercase}
+.score-grade{font-size:18px;font-weight:700;margin-top:6px;letter-spacing:.2px}
+.score-meta{font-size:12.5px;color:var(--text4);margin-top:5px}
+.results-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--sp-4);margin-bottom:var(--sp-7)}
+.rcard{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:var(--sp-5);transition:all var(--dur-normal) var(--ease-out);backdrop-filter:blur(12px);animation:staggerIn .5s var(--ease-out) backwards}
+.rcard:hover{border-color:var(--border-hover);transform:translateY(-2px)}
+.rcard.mentioned{border-color:var(--green-border);background:var(--green-bg);box-shadow:0 4px 20px rgba(52,211,153,.06)}
+.rcard.not-mentioned{border-color:var(--red-border);background:var(--red-bg)}
+.rcard.error{background:var(--yellow-bg)}
+.rcard-head{display:flex;align-items:center;gap:var(--sp-2);margin-bottom:12px}
+.rcard-head .icon{font-size:20px}
+.rcard-head .name{font-size:13px;font-weight:600;flex:1;letter-spacing:.2px}
+.rcard-head .badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:var(--radius-pill);letter-spacing:.4px}
+.badge.yes{background:var(--green-bg);color:var(--green-text)}
+.badge.no{background:var(--red-bg);color:var(--red-text)}
+.badge.err{background:var(--yellow-bg);color:var(--yellow-text)}
+.rcard-body{font-size:12px;color:var(--text2);line-height:1.7;max-height:72px;overflow:hidden;position:relative}
+.rcard-body::after{content:"";position:absolute;bottom:0;left:0;right:0;height:28px;background:linear-gradient(transparent,var(--surface2))}
+.rcard.mentioned .rcard-body::after{background:linear-gradient(transparent,var(--green-bg))}
+.suggest{background:var(--accent-grad-subtle);border:1px solid rgba(129,140,248,.12);border-radius:var(--radius-sm);padding:var(--sp-6) var(--sp-7);backdrop-filter:blur(12px)}
+.suggest h3{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:var(--sp-2);letter-spacing:.3px}
+.suggest p{font-size:14px;color:var(--text2);line-height:1.8}
+
+/* ═══ AI 比价 ═══ */
+.price-hero{text-align:center;padding:var(--sp-8) 0 var(--sp-6)}
+.price-hero h2{font-size:clamp(24px,4vw,36px);font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.price-hero h2 .grad{background:linear-gradient(135deg,#34d399,#6ee7b7,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.price-hero p{font-size:14px;color:var(--text2);max-width:520px;margin:0 auto}
+.price-hero .max-hint{display:inline-block;margin-top:8px;font-size:11px;color:var(--yellow-text);background:var(--yellow-bg);padding:3px 12px;border-radius:var(--radius-pill);letter-spacing:.3px}
+.vs-grid{display:grid;gap:var(--sp-3);margin-bottom:var(--sp-5)}
+.vs-grid.n2{grid-template-columns:1fr 1fr}
+.vs-grid.n3{grid-template-columns:1fr 1fr 1fr}
+.vs-grid.n4{grid-template-columns:1fr 1fr 1fr 1fr}
+.vs-card{background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius-sm);padding:var(--sp-5);backdrop-filter:var(--glass-blur);position:relative;overflow:hidden;transition:all var(--dur-normal) var(--ease-out)}
+.vs-card:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.vs-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.vs-card.rank-1::before{background:linear-gradient(90deg,#fbbf24,#fcd34d)}
+.vs-card-head{display:flex;align-items:center;gap:var(--sp-2);margin-bottom:14px}
+.vs-card-head .vs-icon{font-size:22px}
+.vs-card-head .vs-name{font-size:14px;font-weight:700;flex:1;letter-spacing:.2px}
+.bench-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
+.bench-row:last-child{border-bottom:none}
+.bench-name{color:var(--text4);font-size:10.5px;letter-spacing:.3px}
+.bench-val{font-weight:700;font-family:var(--font-mono);font-size:12px}
+.bench-val.top{color:var(--green-text)}
+.bench-val.good{color:var(--accent)}
+.bench-val.mid{color:var(--yellow-text)}
+.vs-pos{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.vs-tag{padding:4px 10px;border-radius:var(--radius-xs);font-size:10px;font-weight:600;background:rgba(129,140,248,.06);color:var(--accent);letter-spacing:.3px}
+.vs-reco{margin-top:12px;font-size:12px;color:var(--text2);line-height:1.6}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:var(--sp-3);margin-bottom:var(--sp-5)}
+.price-card{background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius-sm);padding:var(--sp-4);backdrop-filter:var(--glass-blur);transition:all var(--dur-normal) var(--ease-out);position:relative;overflow:hidden}
+.price-card:hover{border-color:var(--border-hover);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.25)}
+.price-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.price-card.best::before{background:linear-gradient(90deg,#34d399,#6ee7b7)}
+.price-card.good::before{background:linear-gradient(90deg,#818cf8,#a78bfa)}
+.price-card.ok::before{background:linear-gradient(90deg,#fbbf24,#fcd34d)}
+.price-card.premium::before{background:linear-gradient(90deg,#f87171,#fca5a5)}
+.price-card-head{display:flex;align-items:center;gap:var(--sp-2);margin-bottom:14px}
+.price-card-head .p-icon{font-size:22px}
+.price-card-head .p-info{flex:1}
+.price-card-head .p-name{font-size:13.5px;font-weight:700;letter-spacing:.2px}
+.price-card-head .p-tier{font-size:9px;font-weight:700;padding:2px 8px;border-radius:var(--radius-pill);letter-spacing:.5px;text-transform:uppercase}
+.p-tier.best{background:var(--green-bg);color:var(--green-text)}
+.p-tier.good{background:rgba(129,140,248,.1);color:var(--accent)}
+.p-tier.ok{background:var(--yellow-bg);color:var(--yellow-text)}
+.p-tier.premium{background:var(--red-bg);color:var(--red-text)}
+.price-rows{display:flex;flex-direction:column;gap:6px}
+.price-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:rgba(0,0,0,.15);border-radius:7px;font-size:12px}
+.price-row .pr-label{color:var(--text4)}
+.price-row .pr-value{font-weight:700;font-family:var(--font-mono);font-size:12px}
+.price-row .pr-value.cheap{color:var(--green-text)}
+.price-row .pr-value.mid{color:var(--yellow-text)}
+.price-row .pr-value.costly{color:var(--red-text)}
+
+/* ── Code Agent ── */
+.code-agent-section{margin-bottom:var(--sp-5)}
+.code-agent-section h3{font-size:12.5px;font-weight:700;color:var(--accent);margin-bottom:14px;display:flex;align-items:center;gap:var(--sp-2);letter-spacing:.4px;text-transform:uppercase}
+.code-agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-3)}
+.code-agent-card{background:linear-gradient(135deg,rgba(52,211,153,.03),rgba(129,140,248,.02));border:1px solid rgba(52,211,153,.1);border-radius:var(--radius-sm);padding:var(--sp-5);backdrop-filter:var(--glass-blur)}
+.code-agent-card h4{font-size:14px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:var(--sp-2);letter-spacing:.2px}
+.code-agent-card .ca-sub{font-size:10.5px;color:var(--text4);margin-bottom:14px}
+.ca-model-row{background:rgba(0,0,0,.12);border-radius:8px;padding:12px;margin-bottom:8px}
+.ca-model-row:last-child{margin-bottom:0}
+.ca-model-name{font-size:12px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;letter-spacing:.2px}
+.ca-model-name .ca-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ca-price-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.ca-price-cell{text-align:center;padding:8px 4px;background:rgba(0,0,0,.1);border-radius:6px}
+.ca-price-cell .ca-label{font-size:9.5px;color:var(--text4);margin-bottom:3px;letter-spacing:.3px}
+.ca-price-cell .ca-val{font-size:12.5px;font-weight:700;font-family:var(--font-mono)}
+.ca-price-cell .ca-val.saving{color:var(--green-text)}
+.ca-note{font-size:10px;color:var(--text4);margin-top:10px;line-height:1.5}
+
+/* ── Calculator ── */
+.calc-section{background:linear-gradient(135deg,rgba(52,211,153,.04),rgba(129,140,248,.03));border:1px solid rgba(52,211,153,.1);border-radius:var(--radius);padding:var(--sp-6) var(--sp-7);backdrop-filter:var(--glass-blur);margin-bottom:var(--sp-5)}
+.calc-section h3{font-size:12.5px;font-weight:700;color:var(--green-text);margin-bottom:14px;display:flex;align-items:center;gap:var(--sp-2);letter-spacing:.4px;text-transform:uppercase}
+.calc-grid{display:grid;grid-template-columns:1fr 150px 140px;gap:var(--sp-2);align-items:end}
+.calc-label{font-size:10.5px;color:var(--text4);margin-bottom:4px;letter-spacing:.5px;text-transform:uppercase}
+.calc-select,.calc-input{width:100%;padding:10px 12px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:13px;font-family:var(--font-sans);outline:none;transition:border-color var(--dur-normal),box-shadow var(--dur-normal)}
+.calc-select:focus,.calc-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.calc-btn{width:100%;padding:12px;background:linear-gradient(135deg,#34d399,#059669);color:#fff;font-size:13px;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease-out);letter-spacing:.3px}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(52,211,153,.25)}
+.calc-btn:active{transform:translateY(1px) scale(.98)}
+.calc-result{margin-top:14px;padding:14px 18px;background:linear-gradient(135deg,rgba(52,211,153,.06),rgba(129,140,248,.04));border:1px solid rgba(52,211,153,.15);border-radius:var(--radius-sm);text-align:center}
+.calc-result .amount{font-size:32px;font-weight:800;background:linear-gradient(135deg,#34d399,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-1px;font-family:var(--font-sans)}
+.calc-result .unit{font-size:11px;color:var(--text4);margin-top:3px}
+
+/* ── Price bar chart ── */
+.bar-section{margin-bottom:var(--sp-5)}
+.bar-section h3{font-size:12.5px;font-weight:700;color:var(--text2);margin-bottom:14px;display:flex;align-items:center;gap:var(--sp-2);letter-spacing:.3px}
+.bar-compare{display:flex;flex-direction:column;gap:8px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-row .bar-label{width:110px;text-align:right;font-size:10.5px;color:var(--text3);flex-shrink:0;font-family:var(--font-sans)}
+.bar-row .bar-track{flex:1;height:20px;background:rgba(0,0,0,.2);border-radius:10px;overflow:hidden;position:relative}
+.bar-row .bar-fill{height:100%;border-radius:10px;transition:width 1.2s var(--ease-out);position:relative;display:flex;align-items:center}
+.bar-row .bar-fill .bp{position:absolute;right:6px;font-size:9px;font-weight:700;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.4);font-family:var(--font-mono)}
+
+/* ═══ 工作坊 ═══ */
+.ws-actions{display:flex;gap:var(--sp-2);flex-wrap:wrap;margin-bottom:var(--sp-4)}
+.ws-btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:var(--radius-sm);font-size:12.5px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all var(--dur-normal) var(--ease-out);backdrop-filter:var(--glass-blur);letter-spacing:.2px;font-family:var(--font-sans)}
+.ws-btn:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 16px var(--accent-glow);transform:translateY(-1px)}
+.ws-btn:active{transform:translateY(1px) scale(.98)}
+.ws-btn.primary{background:linear-gradient(135deg,var(--orange),#ea580c);border-color:var(--orange-border);color:#fff}
+.ws-btn.primary:hover{box-shadow:0 8px 24px rgba(249,115,22,.25)}
+.ws-file-list{display:flex;flex-direction:column;gap:8px;margin-bottom:var(--sp-4)}
+.ws-file-item{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal) var(--ease-out);backdrop-filter:var(--glass-blur)}
+.ws-file-item:hover{border-color:var(--border-hover);transform:translateY(-1px)}
+.ws-file-item.active{border-color:var(--accent);background:rgba(129,140,248,.05);box-shadow:0 0 18px var(--accent-glow)}
+.ws-file-icon{font-size:20px}
+.ws-file-info{flex:1;min-width:0}
+.ws-file-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.2px}
+.ws-file-meta{font-size:10.5px;color:var(--text4);margin-top:2px}
+.ws-file-del{background:none;border:none;color:var(--text4);cursor:pointer;font-size:15px;padding:var(--sp-1) var(--sp-2);border-radius:var(--radius-xs);transition:all var(--dur-fast)}
+.ws-file-del:hover{color:var(--red-text);background:var(--red-bg)}
+.ws-editor-wrap{background:var(--surface1);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;backdrop-filter:var(--glass-blur)}
+.ws-editor-bar{display:flex;align-items:center;gap:var(--sp-2);padding:10px 16px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);font-size:12px;color:var(--text4)}
+.ws-editor-bar .fname{font-weight:600;color:var(--text2);letter-spacing:.2px}
+.ws-editor-bar .spacer{flex:1}
+.ws-editor-bar button{background:none;border:1px solid var(--border);color:var(--text2);padding:4px 12px;border-radius:var(--radius-xs);cursor:pointer;font-size:11px;transition:all var(--dur-fast);font-family:var(--font-sans)}
+.ws-editor-bar button:hover{border-color:var(--accent);color:var(--accent)}
+.ws-editor{width:100%;min-height:400px;padding:20px;background:transparent;border:none;color:var(--text);font-family:var(--font-mono);font-size:13px;line-height:1.7;resize:vertical;outline:none;tab-size:2}
+.ws-editor::placeholder{color:var(--text4)}
+.ws-empty{text-align:center;padding:60px 20px;color:var(--text4)}
+.ws-empty .icon{font-size:48px;margin-bottom:16px;opacity:.6}
+.ws-empty p{font-size:13.5px}
+#fileInput{display:none}
+
+/* ── Auth Modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:rgba(12,12,20,.98);border:1px solid var(--border);border-radius:var(--radius);padding:var(--sp-8);width:380px;max-width:90vw;backdrop-filter:var(--glass-blur-heavy);box-shadow:0 24px 80px rgba(0,0,0,.6);animation:fadeUp .3s var(--ease-out)}
+.modal h2{font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:var(--sp-2)}
+.modal .modal-sub{font-size:13px;color:var(--text3);margin-bottom:var(--sp-5);line-height:1.6}
+.modal-input{width:100%;padding:12px 16px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:14px;font-family:var(--font-sans);outline:none;transition:border-color var(--dur-normal),box-shadow var(--dur-normal);margin-bottom:var(--sp-3)}
+.modal-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.modal-input::placeholder{color:var(--text4)}
+.modal-btn{width:100%;padding:13px;background:var(--accent-grad);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal);font-family:inherit;letter-spacing:.3px;margin-top:var(--sp-2)}
+.modal-btn:hover{box-shadow:0 8px 28px rgba(129,140,248,.3);transform:translateY(-1px)}
+.modal-btn:active{transform:translateY(1px) scale(.98)}
+.modal-switch{font-size:12.5px;color:var(--text3);margin-top:var(--sp-4);text-align:center}
+.modal-switch a{color:var(--accent);cursor:pointer;font-weight:600;text-decoration:none}
+.modal-switch a:hover{text-decoration:underline}
+.modal-close{position:absolute;top:var(--sp-4);right:var(--sp-4);background:none;border:none;color:var(--text4);font-size:18px;cursor:pointer;padding:var(--sp-1)}
+.modal-close:hover{color:var(--text)}
+.modal-wrap{position:relative}
+
+/* ── Footer ── */
+.footer{text-align:center;padding:var(--sp-8) 0 var(--sp-9);font-size:12px;color:var(--text4);letter-spacing:.4px;border-top:1px solid var(--border);margin-top:var(--sp-10)}
+.footer span{opacity:.6}
+
+/* ── Responsive ── */
+@media(max-width:768px){
+  .left-sidebar{transform:translateX(-100%);width:var(--sidebar-w)}
+  .left-sidebar.mobile-open{transform:translateX(0)}
+  .left-sidebar.mobile-open.collapsed{width:var(--sidebar-w)}
+  .main-content{margin-left:0!important}
+  .mobile-menu-btn{display:flex!important}
+  .brand-row{grid-template-columns:1fr}
+  .calc-grid{grid-template-columns:1fr}
+  .code-agent-grid{grid-template-columns:1fr}
+  .tool-page{padding:var(--sp-5) var(--sp-4) 80px}
+  .landing{padding:var(--sp-6) var(--sp-4) 80px}
+  .tool-card-body{padding:var(--sp-5)}
+}
+@media(max-width:480px){
+  .results-grid{grid-template-columns:1fr}
+  .price-grid{grid-template-columns:1fr}
+  .vs-grid.n2,.vs-grid.n3,.vs-grid.n4{grid-template-columns:1fr}
+}
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface2);color:var(--text2);cursor:pointer;font-size:16px}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,.05);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.1)}
+
+/* SETTINGS OVERLAY */
+.settings-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1500;display:none;backdrop-filter:blur(4px)}
+.settings-overlay.show{display:flex;align-items:center;justify-content:center}
+.settings-panel{background:rgba(12,12,20,.98);border:1px solid var(--border);border-radius:var(--radius);width:580px;max-width:95vw;max-height:88vh;overflow-y:auto;backdrop-filter:var(--glass-blur-heavy);box-shadow:0 32px 80px rgba(0,0,0,.7);animation:fadeUp .3s var(--ease-out)}
+.settings-panel-hdr{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-5) var(--sp-6);border-bottom:1px solid var(--border)}
+.settings-panel-hdr h2{font-size:17px;font-weight:800;letter-spacing:-.3px}
+.settings-panel-hdr button{background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px;transition:all var(--dur-fast)}
+.settings-panel-hdr button:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.settings-body{padding:var(--sp-6)}
+.s-group{margin-bottom:var(--sp-6)}
+.s-group:last-child{margin-bottom:0}
+.s-group-title{font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text4);margin-bottom:14px;display:flex;align-items:center;gap:var(--sp-2)}
+.s-group-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.s-row{display:flex;align-items:center;gap:var(--sp-3);padding:var(--sp-3) 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.s-row:last-child{border-bottom:none}
+.s-row-label{flex:1;font-size:13.5px;font-weight:500;color:var(--text2)}
+.s-row-label .s-sub{font-size:11px;color:var(--text4);display:block;margin-top:2px;font-weight:400}
+.s-key-input{width:100%;max-width:340px;padding:9px 14px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-family:var(--font-mono);font-size:12px;letter-spacing:.3px;outline:none;transition:border-color var(--dur-normal),box-shadow var(--dur-normal)}
+.s-key-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.lang-opt{display:flex;gap:8px;flex-wrap:wrap}
+.lang-opt-btn{padding:7px 18px;border-radius:var(--radius-pill);font-size:12.5px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text3);cursor:pointer;transition:all var(--dur-normal);font-family:var(--font-sans)}
+.lang-opt-btn:hover{border-color:var(--accent);color:var(--accent)}
+.lang-opt-btn.active{background:rgba(129,140,248,.1);border-color:var(--accent);color:var(--accent);box-shadow:0 0 12px var(--accent-glow)}
+.s-toggle{display:flex;align-items:center;gap:var(--sp-3);padding:10px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal);width:100%}
+.s-toggle:hover{border-color:var(--border-hover)}
+.s-toggle-track{width:38px;height:21px;border-radius:11px;background:var(--bg-subtle);position:relative;transition:background var(--dur-normal);flex-shrink:0;border:1px solid rgba(255,255,255,.08)}
+.s-toggle-track.on{background:var(--accent)}
+.s-toggle-thumb{position:absolute;top:3px;left:3px;width:13px;height:13px;border-radius:50%;background:#fff;transition:transform var(--dur-normal) var(--ease-bounce);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.s-toggle-track.on .s-toggle-thumb{transform:translateX(17px)}
+.s-toggle-label{flex:1;font-size:13.5px;font-weight:500}
+.s-toggle-desc{font-size:11px;color:var(--text4);font-weight:400}
+/* AUTH MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1600;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.show{display:flex}
+.modal{background:rgba(12,12,20,.98);border:1px solid var(--border);border-radius:var(--radius);padding:var(--sp-8);width:360px;max-width:90vw;backdrop-filter:var(--glass-blur-heavy);box-shadow:0 24px 80px rgba(0,0,0,.6);animation:fadeUp .3s var(--ease-out);position:relative}
+.modal h2{font-size:19px;font-weight:800;letter-spacing:-.4px;margin-bottom:var(--sp-2)}
+.modal .modal-sub{font-size:12.5px;color:var(--text3);margin-bottom:var(--sp-5);line-height:1.6}
+.modal-input{width:100%;padding:11px 16px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:13.5px;font-family:var(--font-sans);outline:none;transition:border-color var(--dur-normal),box-shadow var(--dur-normal);margin-bottom:var(--sp-3)}
+.modal-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.modal-input::placeholder{color:var(--text4)}
+.modal-btn{width:100%;padding:12px;background:var(--accent-grad);color:#fff;font-size:14px;font-weight:700;border:none;border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal);font-family:inherit;letter-spacing:.3px;margin-top:var(--sp-2)}
+.modal-btn:hover{box-shadow:0 8px 28px rgba(129,140,248,.3);transform:translateY(-1px)}
+.modal-switch{font-size:12px;color:var(--text3);margin-top:var(--sp-4);text-align:center}
+.modal-switch a{color:var(--accent);cursor:pointer;font-weight:600;text-decoration:none}
+.modal-switch a:hover{text-decoration:underline}
+.modal-close{position:absolute;top:var(--sp-4);right:var(--sp-4);background:none;border:none;color:var(--text4);font-size:17px;cursor:pointer;padding:4px 8px;border-radius:6px}
+.modal-close:hover{color:var(--text);background:rgba(255,255,255,.05)}
+/* AI SHELL */
+.ai-shell{display:flex;height:calc(100vh - 56px);overflow:hidden}
+.ai-sidebar{width:260px;background:rgba(8,8,14,.95);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+.ai-sidebar-hdr{padding:var(--sp-4);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ai-sidebar-hdr h3{font-size:12.5px;font-weight:700;color:var(--text2)}
+.ai-sidebar-hdr button{background:var(--surface2);border:1px solid var(--border);color:var(--text2);font-size:11px;padding:5px 12px;border-radius:var(--radius-xs);cursor:pointer;transition:all var(--dur-fast);font-family:var(--font-sans)}
+.ai-sidebar-hdr button:hover{border-color:var(--accent);color:var(--accent)}
+.ai-convo-list{flex:1;overflow-y:auto;padding:var(--sp-3)}
+.ai-convo-item{display:flex;align-items:center;gap:var(--sp-2);padding:10px 12px;border-radius:var(--radius-sm);cursor:pointer;transition:all var(--dur-normal);margin-bottom:3px;font-size:12.5px;color:var(--text3);overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.ai-convo-item:hover{background:rgba(255,255,255,.04);color:var(--text2)}
+.ai-convo-item.active{background:rgba(129,140,248,.08);color:var(--accent)}
+.ai-convo-item .ci-icon{font-size:14px;width:18px;text-align:center;flex-shrink:0}
+.ai-convo-empty{text-align:center;padding:var(--sp-7) var(--sp-4);color:var(--text4);font-size:12px}
+.ai-convo-empty .icon{font-size:32px;margin-bottom:8px;opacity:.5}
+.ai-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.ai-model-bar{padding:var(--sp-3) var(--sp-5);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:var(--sp-3);overflow-x:auto;flex-shrink:0}
+.ai-model-bar::-webkit-scrollbar{height:0}
+.ai-model-chip{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:var(--radius-pill);font-size:11.5px;font-weight:600;border:1px solid var(--border);background:var(--surface2);color:var(--text3);cursor:pointer;transition:all var(--dur-normal);white-space:nowrap;font-family:var(--font-sans)}
+.ai-model-chip:hover{border-color:var(--border-hover);color:var(--text2)}
+.ai-model-chip.active{background:rgba(129,140,248,.1);border-color:var(--accent);color:var(--accent);box-shadow:0 0 12px var(--accent-glow)}
+.ai-model-chip .mc-dot{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.5}
+.ai-model-chip.active .mc-dot{opacity:1}
+.ai-messages{flex:1;overflow-y:auto;padding:var(--sp-6) var(--sp-7);display:flex;flex-direction:column;gap:var(--sp-4)}
+.ai-msg{display:flex;gap:var(--sp-3);animation:fadeUp .3s var(--ease-out)}
+.ai-msg.user{flex-direction:row-reverse}
+@keyframes fadeUpAI{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ai-msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--surface2);border:1px solid var(--border)}
+.ai-msg.assistant .ai-msg-avatar{background:var(--accent-grad-subtle);border-color:rgba(129,140,248,.15)}
+.ai-msg.user .ai-msg-avatar{background:linear-gradient(135deg,#34d399,#059669);color:#fff;font-size:13px;font-weight:700}
+.ai-msg-content{flex:1;max-width:680px}
+.ai-msg.user .ai-msg-content{text-align:right}
+.ai-msg-bubble{padding:12px 16px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);font-size:13.5px;line-height:1.7;text-align:left;word-break:break-word}
+.ai-msg.user .ai-msg-bubble{background:linear-gradient(135deg,rgba(52,211,153,.1),rgba(52,211,153,.06));border-color:var(--green-border)}
+.ai-msg-time{font-size:10px;color:var(--text4);margin-top:5px;padding:0 4px}
+.ai-typing{animation:blinkAI 1.2s ease-in-out infinite}
+@keyframes blinkAI{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-welcome{text-align:center;padding:var(--sp-11) var(--sp-7);color:var(--text4);animation:fadeIn .5s}
+.ai-welcome .icon{font-size:52px;margin-bottom:16px;opacity:.7}
+.ai-welcome p{font-size:13.5px;line-height:1.7}
+.ai-input-bar{padding:var(--sp-4) var(--sp-5);border-top:1px solid var(--border);background:rgba(8,8,14,.8);backdrop-filter:var(--glass-blur);flex-shrink:0}
+.ai-input-wrap{display:flex;gap:var(--sp-2);align-items:flex-end}
+.ai-textarea{flex:1;padding:11px 16px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:13.5px;font-family:var(--font-sans);line-height:1.6;resize:none;outline:none;min-height:44px;max-height:200px;transition:border-color var(--dur-normal),box-shadow var(--dur-normal)}
+.ai-textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.ai-textarea::placeholder{color:var(--text4)}
+.ai-send-btn{width:44px;height:44px;border-radius:var(--radius-sm);background:var(--accent-grad);border:none;color:#fff;font-size:16px;cursor:pointer;transition:all var(--dur-normal);display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 4px 16px rgba(129,140,248,.2)}
+.ai-send-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(129,140,248,.35)}
+.ai-send-btn:disabled{opacity:.3;cursor:not-allowed;transform:none}
+
 </style>
 </head>
 <body>
-<div class="mesh"></div>
 
-<!-- Sidebar -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-<div class="sidebar" id="sidebar">
-  <button class="sidebar-close" onclick="toggleSidebar()">✕</button>
-  <div class="sidebar-title">⚙️ 设置</div>
+<canvas id="particles"></canvas>
+<div class="beam beam-1"></div><div class="beam beam-2"></div><div class="beam beam-3"></div>
+<div class="glow-orb glow-orb-1"></div><div class="glow-orb glow-orb-2"></div><div class="glow-orb glow-orb-3"></div>
 
-  <div class="sidebar-section">
-    <h4>语言 / Language</h4>
-    <div class="lang-options">
-      <button class="lang-btn active" onclick="switchLang("zh")">中文</button>
-      <button class="lang-btn" onclick="switchLang("en")">English</button>
+
+<!-- SETTINGS OVERLAY -->
+<div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-panel">
+    <div class="settings-panel-hdr"><h2>&#9881;&#65039; &#35774;&#32622;</h2><button id="settingsClose">&#10005;</button></div>
+    <div class="settings-body">
+      <div class="s-group">
+        <div class="s-group-title">&#127760; &#35821;&#35328;</div>
+        <div class="lang-opt">
+          <button class="lang-opt-btn active" data-lang="zh-CN">&#31616;&#20307;&#20013;&#25991;</button>
+          <button class="lang-opt-btn" data-lang="en">English</button>
+          <button class="lang-opt-btn" data-lang="ja">&#26085;&#26412;&#35486;</button>
+        </div>
+      </div>
+      <div class="s-group">
+        <div class="s-group-title">&#128273; API &#23494;&#38053;</div>
+        <div class="s-row"><div class="s-row-label">OpenAI<span class="s-sub">GPT-5.x &#31995;&#21015;</span></div><input class="s-key-input" id="s-key-openai" type="password" placeholder="sk-..."></div>
+        <div class="s-row"><div class="s-row-label">DeepSeek<span class="s-sub">V4 / V3 &#31995;&#21015;</span></div><input class="s-key-input" id="s-key-deepseek" type="password" placeholder="sk-..."></div>
+        <div class="s-row"><div class="s-row-label">Google Gemini<span class="s-sub">Gemini 3.x</span></div><input class="s-key-input" id="s-key-gemini" type="password" placeholder="AIza..."></div>
+        <div class="s-row"><div class="s-row-label">Anthropic Claude<span class="s-sub">Claude 4.x</span></div><input class="s-key-input" id="s-key-claude" type="password" placeholder="sk-ant-..."></div>
+        <div class="s-row"><div class="s-row-label">xAI Grok<span class="s-sub">Grok-3 / Grok-2</span></div><input class="s-key-input" id="s-key-grok" type="password" placeholder="xai-..."></div>
+        <div class="s-row"><div class="s-row-label">&#36890;&#20041;&#21315;&#38382;<span class="s-sub">Qwen3.x</span></div><input class="s-key-input" id="s-key-qwen" type="password" placeholder="sk-..."></div>
+        <div class="s-row"><div class="s-row-label">&#26234;&#35895; GLM<span class="s-sub">GLM-5 / GLM-4</span></div><input class="s-key-input" id="s-key-glm" type="password" placeholder="..."></div>
+        <div class="s-row"><div class="s-row-label">Moonshot Kimi<span class="s-sub">Kimi 2.x</span></div><input class="s-key-input" id="s-key-kimi" type="password" placeholder="..."></div>
+      </div>
+      <div class="s-group">
+        <div class="s-group-title">&#10024; &#30028;&#38754;</div>
+        <div class="s-row"><div class="s-toggle" id="toggleParticles"><div class="s-toggle-track" id="particlesTrack"><div class="s-toggle-thumb"></div></div><div class="s-toggle-label">&#31890;&#23376;&#32972;&#26223;<span class="s-toggle-desc">&#39029;&#38754;&#21160;&#24577;&#32972;&#26223;&#31890;&#23376;&#25928;&#26524;</span></div></div></div>
+        <div class="s-row"><div class="s-toggle" id="toggleNotif"><div class="s-toggle-track" id="notifTrack"><div class="s-toggle-thumb"></div></div><div class="s-toggle-label">&#32467;&#26524;&#36890;&#30693;<span class="s-toggle-desc">GEO &#20998;&#26512;&#23436;&#25104;&#26102;&#24377;&#20986;&#36890;&#30693;</span></div></div></div>
+      </div>
+      <div class="s-group">
+        <div class="s-group-title">&#128214; &#20851;&#20110;</div>
+        <div class="s-row" style="justify-content:flex-start;gap:var(--sp-4)">
+          <div style="font-size:12px;color:var(--text3)">&#29256;&#26412; <span style="color:var(--accent)">v6.2</span></div>
+          <div style="font-size:12px;color:var(--text4)">&#31185;AI &#183; 2026</div>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="sidebar-section">
-    <h4>显示选项</h4>
-    <div class="setting-row">
-      <span class="setting-label">显示分数动画</span>
-      <button class="toggle on" id="toggleAnim" onclick="this.classList.toggle("on")"></button>
-    </div>
-    <div class="setting-row">
-      <span class="setting-label">深色模式</span>
-      <button class="toggle on" id="toggleDark"></button>
-    </div>
-  </div>
-
-  <div class="sidebar-section">
-    <h4>关于</h4>
-    <p style="font-size:12.5px;color:var(--text2);line-height:1.7">
-      GEO 可见性分析工具 2026 版<br>
-      检测品牌在 22 个主流 AI 模型中的提及情况。<br>
-      版本：v2.1 · 更新于 2026-06
-    </p>
-  </div>
-
-  <div class="sidebar-footer">
-    Powered by Cloudflare Pages · 开源项目
   </div>
 </div>
 
-<div class="app" id="app">
-  <!-- Settings button -->
-  <div style="display:flex;justify-content:flex-end;margin-bottom:-12px">
-    <button onclick="toggleSidebar()" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:8px 14px;border-radius:10px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:6px;transition:border-color .2s">
-      ⚙️ 设置
-    </button>
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">&#10005;</button>
+    <h2 id="authTitle">&#30331;&#24405;</h2>
+    <p class="modal-sub" id="authSub">&#30331;&#24405;&#21518;&#21487;&#20445;&#23384;&#26816;&#27979;&#35760;&#24405;&#21644;&#20581;&#20540;&#35774;&#32622;</p>
+    <input class="modal-input" id="authEmail" type="email" placeholder="&#37038;&#31665;">
+    <input class="modal-input" id="authPassword" type="password" placeholder="&#23494;&#30721;">
+    <button class="modal-btn" id="authSubmit">&#30331;&#24405;</button>
+    <p class="modal-switch" id="authSwitch">&#36824;&#27809;&#26377;&#36134;&#21495;&#65311;<a id="authSwitchLink">&#27880;&#20876;</a></p>
   </div>
+</div>
 
-  <div class="hero">
-    <div class="hero-badge"><span class="dot"></span> <span id="t_badge">22 个模型 · 2026 年中版</span></div>
-    <h1><span id="t_title">AI 搜索<br><span class="grad">可见性分析</span></span></h1>
-    <p id="t_subtitle">测量品牌在 22 个主流 AI 模型中的提及频率（2026 年中版）。获取可操作的 GEO 洞察。</p>
-  </div>
-  <!-- Model Selection -->
-  <div class="card" style="margin-bottom:28px">
-    <div class="card-title"><span class="bar"></span><span id="t_selectModels">选择模型（多选）</span><span style="flex:1"></span><span id="t_selectedCount" style="font-size:12px;color:var(--accent2);font-weight:600">0 已选</span></div>
-
-    <!-- OpenAI -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#10a37f"></span> OpenAI</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="gpt-5.5" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GPT-5.5</span><span class="m-badge">旗舰</span></div>
-        <div class="model-chip" data-model="gpt-5.4" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GPT-5.4</span></div>
-        <div class="model-chip" data-model="gpt-5.1" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GPT-5.1</span></div>
-      </div>
-    </div>
-
-    <!-- DeepSeek -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#4d6bfe"></span> DeepSeek</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="deepseek-v4" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">DeepSeek V4</span><span class="m-badge">最新</span></div>
-        <div class="model-chip" data-model="deepseek-v3.2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">DeepSeek V3.2</span></div>
-      </div>
-    </div>
-
-    <!-- Google -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#4285f4"></span> Google</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="gemini-3.1-pro" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Gemini 3.1 Pro</span><span class="m-badge">旗舰</span></div>
-        <div class="model-chip" data-model="gemini-3.1-ultra" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Gemini 3.1 Ultra</span></div>
-        <div class="model-chip" data-model="gemini-3.0-flash" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Gemini 3.0 Flash</span></div>
-      </div>
-    </div>
-
-    <!-- Anthropic -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#d4a574"></span> Anthropic</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="claude-opus-4.7" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Claude Opus 4.7</span><span class="m-badge">最强</span></div>
-        <div class="model-chip" data-model="claude-sonnet-4.6" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Claude Sonnet 4.6</span></div>
-      </div>
-    </div>
-
-    <!-- xAI -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#1a1a2e"></span> xAI</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="grok-3" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Grok-3</span></div>
-        <div class="model-chip" data-model="grok-2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Grok-2</span></div>
-      </div>
-    </div>
-
-    <!-- 阿里 -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#ff6a00"></span> 阿里巴巴</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="qwen-3.7-max" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Qwen3.7-Max</span><span class="m-badge">旗舰</span></div>
-        <div class="model-chip" data-model="qwen-3.5-plus" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Qwen3.5-Plus</span></div>
-      </div>
-    </div>
-
-    <!-- 智谱 -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#7c3aed"></span> 智谱</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="glm-5" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GLM-5</span><span class="m-badge">最新</span></div>
-        <div class="model-chip" data-model="glm-4-plus" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">GLM-4-Plus</span></div>
-      </div>
-    </div>
-
-    <!-- Moonshot -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#ff2d55"></span> Moonshot</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="kimi-2.6" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Kimi 2.6</span><span class="m-badge">最新</span></div>
-      </div>
-    </div>
-
-    <!-- 01.AI -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#f59e0b"></span> 01.AI</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="yi-lightning-2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Yi-Lightning 2</span></div>
-      </div>
-    </div>
-
-    <!-- Mistral -->
-    <div class="provider-section">
-      <div class="provider-label"><span class="p-dot" style="background:#ff7000"></span> Mistral</div>
-      <div class="model-chips">
-        <div class="model-chip" data-model="mistral-large-2" onclick="toggleChip(this)"><span class="check">✓</span><span class="m-name">Mistral Large 2</span></div>
-      </div>
+<!-- Auth Modal -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal-wrap">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal">
+      <h2 id="authTitle">登录</h2>
+      <p class="modal-sub" id="authSub">登录后可保存检测记录和偏好设置</p>
+      <input class="modal-input" id="authEmail" type="email" placeholder="邮箱">
+      <input class="modal-input" id="authPassword" type="password" placeholder="密码">
+      <button class="modal-btn" id="authSubmit">登录</button>
+      <p class="modal-switch" id="authSwitch">还没有账号？<a id="authSwitchLink">注册</a></p>
     </div>
   </div>
+</div>
 
-  <!-- API Keys -->
-  <div class="card" style="margin-bottom:28px">
-    <div class="card-title"><span class="bar"></span><span id="t_apiKeys">API 密钥</span><span style="flex:1"></span><button onclick="toggleKeyPanel()" style="background:var(--surface3);border:1px solid var(--border);color:var(--text2);padding:5px 14px;border-radius:8px;cursor:pointer;font-size:12px" id="t_toggleKeys">展开</button></div>
-    <div class="key-panel" id="keyPanel">
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_openaiKey">OpenAI API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-openai" placeholder="sk-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_deepseekKey">DeepSeek API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-deepseek" placeholder="sk-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_geminiKey">Gemini API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-gemini" placeholder="AIza..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_claudeKey">Claude API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-claude" placeholder="sk-ant-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_grokKey">Grok API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-grok" placeholder="xai-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_qwenKey">通义千问 API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-qwen" placeholder="sk-..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_glmKey">智谱 GLM API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-glm" placeholder="..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <div class="key-row"><div class="key-label"><span class="icon">🔑</span> <span id="t_kimiKey">Kimi API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-kimi" placeholder="..."><button class="eye" onclick="toggleEye(this)">👁</button></div></div>
-      <p style="font-size:11.5px;color:var(--text3);margin-top:14px;line-height:1.7" id="t_keyHint">🔒 密钥仅保存在浏览器本地，不会上传到服务器。<br>留空的平台将使用内置免费额度进行检测。</p>
+<div class="app-shell">
+  <!-- Left Sidebar -->
+  <aside class="left-sidebar" id="leftSidebar">
+    <button class="collapse-btn" id="collapseBtn" title="收起/展开">◀</button>
+    <div class="logo">
+      <div class="logo-icon">⚛</div>
+      <span class="logo-text">科Ke</span>
     </div>
-  </div>
-
-  <!-- Brand + Run -->
-  <div class="card" style="margin-bottom:36px">
-    <div class="brand-row">
-      <div class="input-wrap">
-        <label for="brandInput" id="t_brandLabel">品牌 / 产品名称</label>
-        <input type="text" id="brandInput" placeholder="例如：华为、Nike、Notion" id="t_brandPlaceholder">
+    <div class="nav-section">
+      <div class="nav-section-title">导航</div>
+      <div class="nav-item active" data-page="landing"><span class="nav-icon">🏠</span> <span class="nav-label">首页</span></div>
+      <div class="nav-item" data-page="geo"><span class="nav-icon">🔭</span> <span class="nav-label">GEO 可见性</span></div>
+      <div class="nav-item" data-page="price"><span class="nav-icon">💎</span> <span class="nav-label">AI 模型比价</span></div>
+      <div class="nav-item" data-page="workshop"><span class="nav-icon">🛠</span> <span class="nav-label">工作坊</span></div>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="user-section" id="userSection">
+        <div class="login-card" id="loginCard"><div class="lc-icon">&#128100;</div><div class="lc-title">&#30331;&#24405;&#31185;AI</div><div class="lc-sub">&#20445;&#23384;&#35760;&#24405;&#21644;&#20581;&#20540;</div></div>
       </div>
-      <button class="run-btn" id="runBtn" onclick="runAnalysis()">
-        <span id="t_runBtn">▶ 开始分析</span>
-      </button>
+      <div class="sidebar-footer">&#31185;AI &#183; 2026</div>
     </div>
-    <div class="progress-bar-wrap" id="progressWrap">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-    <div class="progress-text" id="progressText"></div>
-  </div>
+  </aside>
 
-  <!-- Results -->
-  <div id="results">
-    <div class="score-hero">
-      <div class="ring-wrap">
-        <svg width="160" height="160" viewBox="0 0 160 160">
-          <circle class="bg" cx="80" cy="80" r="68"/>
-          <circle class="prog" id="ring" cx="80" cy="80" r="68" stroke-dasharray="427" stroke-dashoffset="427"/>
-        </svg>
-        <div class="ring-txt">
-          <span class="num" id="scoreNum">0</span>
-          <span class="sub" id="t_scoreSub">可见性评分</span>
+  <!-- Main Content -->
+  <div class="main-content" id="mainContent">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        <button class="back-btn" id="backBtn" style="display:none">← 返回</button>
+        <span class="top-bar-title" id="topBarTitle"></span>
+      </div>
+      <div class="top-bar-right">
+        <div id="authButtons">
+          <button class="auth-btn" id="topLoginBtn">登录</button>
+          <button class="auth-btn primary" id="topRegBtn">注册</button>
+        </div>
+        <div class="user-menu-btn" id="userMenuBtn" style="display:none">
+          <div class="mini-avatar" id="miniAvatar">U</div>
+          <span class="mini-name" id="miniName">User</span>
         </div>
       </div>
-      <div class="score-grade" id="scoreGrade"></div>
-      <div class="score-meta" id="scoreMeta"></div>
     </div>
 
-    <div class="results-grid" id="resultsGrid"></div>
+    <!-- ═══ LANDING PAGE ═══ -->
+    <div class="page active" id="page-landing">
+      <div class="landing">
+        <div class="landing-hero">
+          <div class="hero-badge"><span class="dot"></span> <span>22 模型 · 10 平台 · 2026</span></div>
+          <h1>科技<br><span class="grad">改变生活</span></h1>
+          <p>当 AI 重新定义搜索与决策，品牌可见性、模型选型与成本优化不再是三件孤立的事。科Ke 用一次查询同时回答：谁在谈论你、哪个模型最值、跑一次到底花多少钱。</p>
+        </div>
+        <div class="tool-cards">
+          <div class="tool-card tc-geo" data-goto="geo">
+            <div class="tool-card-accent"></div>
+            <div class="tool-card-body">
+              <div class="tool-card-icon">🔭</div>
+              <div class="tool-card-info">
+                <div class="tool-card-name">GEO 可见性检测</div>
+                <div class="tool-card-desc">测量品牌在 22 个 AI 模型中的提及频率，获取可操作的优化建议</div>
+                <span class="tool-card-tag">22 个模型</span>
+              </div>
+              <span class="tool-card-arrow">→</span>
+            </div>
+          </div>
+          <div class="tool-card tc-price" data-goto="price">
+            <div class="tool-card-accent"></div>
+            <div class="tool-card-body">
+              <div class="tool-card-icon">💎</div>
+              <div class="tool-card-info">
+                <div class="tool-card-name">AI 模型比价</div>
+                <div class="tool-card-desc">横向对比 19 个模型的价格、性能基准和定位建议，含代码 Agent 定价</div>
+                <span class="tool-card-tag">含缓存定价</span>
+              </div>
+              <span class="tool-card-arrow">→</span>
+            </div>
+          </div>
+          <div class="tool-card tc-ws" data-goto="workshop">
+            <div class="tool-card-accent"></div>
+            <div class="tool-card-body">
+              <div class="tool-card-icon">🛠</div>
+              <div class="tool-card-info">
+                <div class="tool-card-name">工作坊</div>
+                <div class="tool-card-desc">创建、导入和编辑文件，浏览器本地持久化运行</div>
+                <span class="tool-card-tag">本地运行</span>
+              </div>
+              <span class="tool-card-arrow">→</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer"><span>科Ke · 科技改变生活 · 2026</span></div>
+      </div>
+    </div>
 
-    <div class="suggest" id="suggestCard">
-      <h3>💡 <span id="t_suggestTitle">优化建议</span></h3>
-      <p id="suggestText"></p>
+    <!-- ═══ GEO PAGE ═══ -->
+    <div class="page" id="page-geo">
+      <div class="tool-page">
+        <div class="page-title">GEO <span class="grad">可见性分析</span></div>
+        <div class="page-sub">测量品牌在 22 个主流 AI 模型中的提及频率。获取可操作的 GEO 洞察。</div>
+        <div class="card">
+          <div class="card-title"><span class="bar"></span><span>选择模型（多选）</span><span style="flex:1"></span><span id="t_selectedCount" style="font-size:11.5px;color:var(--accent);font-weight:600;letter-spacing:.3px">0 已选</span></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#10a37f"></span> OpenAI</div><div class="model-chips"><div class="model-chip geo-chip" data-model="gpt-5.5"><span class="check">✓</span><span class="m-name">GPT-5.5</span><span class="m-badge">旗舰</span></div><div class="model-chip geo-chip" data-model="gpt-5.4"><span class="check">✓</span><span class="m-name">GPT-5.4</span></div><div class="model-chip geo-chip" data-model="gpt-5.1"><span class="check">✓</span><span class="m-name">GPT-5.1</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#4d6bfe"></span> DeepSeek</div><div class="model-chips"><div class="model-chip geo-chip" data-model="deepseek-v4"><span class="check">✓</span><span class="m-name">DeepSeek V4</span><span class="m-badge">最新</span></div><div class="model-chip geo-chip" data-model="deepseek-v3.2"><span class="check">✓</span><span class="m-name">DeepSeek V3.2</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#4285f4"></span> Google</div><div class="model-chips"><div class="model-chip geo-chip" data-model="gemini-3.1-pro"><span class="check">✓</span><span class="m-name">Gemini 3.1 Pro</span><span class="m-badge">旗舰</span></div><div class="model-chip geo-chip" data-model="gemini-3.1-ultra"><span class="check">✓</span><span class="m-name">Gemini 3.1 Ultra</span></div><div class="model-chip geo-chip" data-model="gemini-3.0-flash"><span class="check">✓</span><span class="m-name">Gemini 3.0 Flash</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#d4a574"></span> Anthropic</div><div class="model-chips"><div class="model-chip geo-chip" data-model="claude-opus-4.7"><span class="check">✓</span><span class="m-name">Claude Opus 4.7</span><span class="m-badge">最强</span></div><div class="model-chip geo-chip" data-model="claude-sonnet-4.6"><span class="check">✓</span><span class="m-name">Claude Sonnet 4.6</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#1a1a2e"></span> xAI</div><div class="model-chips"><div class="model-chip geo-chip" data-model="grok-3"><span class="check">✓</span><span class="m-name">Grok-3</span></div><div class="model-chip geo-chip" data-model="grok-2"><span class="check">✓</span><span class="m-name">Grok-2</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#ff6a00"></span> 阿里巴巴</div><div class="model-chips"><div class="model-chip geo-chip" data-model="qwen-3.7-max"><span class="check">✓</span><span class="m-name">Qwen3.7-Max</span><span class="m-badge">旗舰</span></div><div class="model-chip geo-chip" data-model="qwen-3.5-plus"><span class="check">✓</span><span class="m-name">Qwen3.5-Plus</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#7c3aed"></span> 智谱</div><div class="model-chips"><div class="model-chip geo-chip" data-model="glm-5"><span class="check">✓</span><span class="m-name">GLM-5</span><span class="m-badge">最新</span></div><div class="model-chip geo-chip" data-model="glm-4-plus"><span class="check">✓</span><span class="m-name">GLM-4-Plus</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#ff2d55"></span> Moonshot</div><div class="model-chips"><div class="model-chip geo-chip" data-model="kimi-2.6"><span class="check">✓</span><span class="m-name">Kimi 2.6</span><span class="m-badge">最新</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#f59e0b"></span> 01.AI</div><div class="model-chips"><div class="model-chip geo-chip" data-model="yi-lightning-2"><span class="check">✓</span><span class="m-name">Yi-Lightning 2</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#ff7000"></span> Mistral</div><div class="model-chips"><div class="model-chip geo-chip" data-model="mistral-large-2"><span class="check">✓</span><span class="m-name">Mistral Large 2</span></div></div></div>
+        </div>
+        <div class="card">
+          <div class="card-title"><span class="bar"></span><span>API 密钥</span><span style="flex:1"></span><button id="toggleKeyBtn" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2);padding:6px 16px;border-radius:8px;cursor:pointer;font-size:12px;transition:all .2s;font-family:var(--font-sans)"><span id="t_toggleKeys">展开</span></button></div>
+          <div class="key-panel" id="keyPanel">
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>OpenAI API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-openai" placeholder="sk-..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>DeepSeek API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-deepseek" placeholder="sk-..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>Gemini API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-gemini" placeholder="AIza..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>Claude API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-claude" placeholder="sk-ant-..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>Grok API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-grok" placeholder="xai-..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>通义千问 API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-qwen" placeholder="sk-..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>智谱 GLM API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-glm" placeholder="..."><button class="eye">👁</button></div></div>
+            <div class="key-row"><div class="key-label"><span class="icon">🔑</span><span>Kimi API Key</span></div><div class="key-input-wrap"><input type="password" class="key-input" id="key-kimi" placeholder="..."><button class="eye">👁</button></div></div>
+            <p style="font-size:11px;color:var(--text4);margin-top:14px;line-height:1.7">🔒 密钥仅保存在浏览器本地，不会上传到服务器。</p>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:var(--sp-9)">
+          <div class="brand-row"><div class="input-wrap"><label for="brandInput">品牌 / 产品名称</label><input type="text" id="brandInput" placeholder="例如：华为、Nike、Notion"></div><button class="run-btn" id="runBtn"><span>▶ 开始分析</span></button></div>
+          <div class="progress-bar-wrap" id="progressWrap"><div class="progress-bar" id="progressBar"></div></div>
+          <div class="progress-text" id="progressText"></div>
+        </div>
+        <div id="results">
+          <div class="score-hero"><div class="ring-wrap"><svg width="160" height="160" viewBox="0 0 168 168"><defs><linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#818cf8"/><stop offset="50%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f472b6"/></linearGradient></defs><circle class="bg" cx="84" cy="84" r="72"/><circle class="prog" id="ring" cx="84" cy="84" r="72" stroke-dasharray="452.4" stroke-dashoffset="452.4"/></svg><div class="ring-txt"><span class="num" id="scoreNum">0</span><span class="sub">可见性评分</span></div></div><div class="score-grade" id="scoreGrade"></div><div class="score-meta" id="scoreMeta"></div></div>
+          <div class="results-grid" id="resultsGrid"></div>
+          <div class="suggest" id="suggestCard"><h3>💡 <span>优化建议</span></h3><p id="suggestText"></p></div>
+        </div>
+        <div class="footer"><span>科Ke · 2026</span></div>
+      </div>
+    </div>
+
+    <!-- ═══ PRICE PAGE ═══ -->
+    <div class="page" id="page-price">
+      <div class="tool-page">
+        <div class="page-title">AI 模型 <span class="grad">全面对比</span></div>
+        <div class="page-sub">多选模型（1-4个）横向比较性能 / 价格 / 定位建议</div>
+        <div class="price-hero">
+          <span class="max-hint">⚠️ 最多选择 4 个模型进行对比</span>
+        </div>
+        <div class="card" style="margin-bottom:var(--sp-5)">
+          <div class="card-title"><span class="bar"></span><span>选择要对比的模型（1-4 个）</span><span style="flex:1"></span><span id="vsCount" style="font-size:11.5px;color:var(--accent);font-weight:600;letter-spacing:.3px">0 已选</span></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#10a37f"></span> OpenAI</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="gpt-5.5"><span class="check">✓</span><span class="m-name">GPT-5.5</span></div><div class="model-chip vs-chip" data-vs="gpt-5.4"><span class="check">✓</span><span class="m-name">GPT-5.4</span></div><div class="model-chip vs-chip" data-vs="gpt-5.1"><span class="check">✓</span><span class="m-name">GPT-5.1</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#4d6bfe"></span> DeepSeek</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="deepseek-v4"><span class="check">✓</span><span class="m-name">DeepSeek V4</span></div><div class="model-chip vs-chip" data-vs="deepseek-v3.2"><span class="check">✓</span><span class="m-name">DeepSeek V3.2</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#4285f4"></span> Google</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="gemini-3.1-pro"><span class="check">✓</span><span class="m-name">Gemini 3.1 Pro</span></div><div class="model-chip vs-chip" data-vs="gemini-3.1-ultra"><span class="check">✓</span><span class="m-name">Gemini 3.1 Ultra</span></div><div class="model-chip vs-chip" data-vs="gemini-3.0-flash"><span class="check">✓</span><span class="m-name">Gemini 3.0 Flash</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#d4a574"></span> Anthropic</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="claude-opus-4.7"><span class="check">✓</span><span class="m-name">Claude Opus 4.7</span></div><div class="model-chip vs-chip" data-vs="claude-sonnet-4.6"><span class="check">✓</span><span class="m-name">Claude Sonnet 4.6</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#1a1a2e"></span> xAI</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="grok-3"><span class="check">✓</span><span class="m-name">Grok-3</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#ff6a00"></span> Alibaba</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="qwen-3.7-max"><span class="check">✓</span><span class="m-name">Qwen3.7-Max</span></div><div class="model-chip vs-chip" data-vs="qwen-3.5-plus"><span class="check">✓</span><span class="m-name">Qwen3.5-Plus</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#7c3aed"></span> Zhipu</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="glm-5"><span class="check">✓</span><span class="m-name">GLM-5</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#ff2d55"></span> Moonshot</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="kimi-2.6"><span class="check">✓</span><span class="m-name">Kimi 2.6</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#f59e0b"></span> 01.AI</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="yi-lightning-2"><span class="check">✓</span><span class="m-name">Yi-Lightning 2</span></div></div></div>
+          <div class="provider-section"><div class="provider-label"><span class="p-dot" style="background:#ff7000"></span> Mistral</div><div class="model-chips"><div class="model-chip vs-chip" data-vs="mistral-large-2"><span class="check">✓</span><span class="m-name">Mistral Large 2</span></div></div></div>
+        </div>
+        <div class="vs-grid" id="vsGrid"></div>
+        <div class="bar-section"><h3>📊 输出价格排行（$/1M tokens）</h3><div class="bar-compare" id="priceBars"></div></div>
+        <div class="price-grid" id="priceGrid"></div>
+        <div class="code-agent-section">
+          <h3>💻 代码 Agent 工具价格对比（含缓存命中）</h3>
+          <div class="code-agent-grid">
+            <div class="code-agent-card">
+              <h4>🤖 Claude Code</h4>
+              <div class="ca-sub">Anthropic CLI 编程助手 · 支持全系列 Claude 模型</div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#d4a574"></span> Claude Opus 4.7</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--red-text)">$15 / $75</div></div><div class="ca-price-cell"><div class="ca-label">冷写入缓存</div><div class="ca-val" style="color:var(--yellow-text)">$18.75 / $75</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$1.50 / $7.50</div></div></div></div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#d4a574"></span> Claude Sonnet 4.6</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--yellow-text)">$3 / $15</div></div><div class="ca-price-cell"><div class="ca-label">冷写入缓存</div><div class="ca-val" style="color:var(--yellow-text)">$3.75 / $15</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$0.30 / $1.50</div></div></div></div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#d4a574"></span> Claude Haiku 3.5</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--green-text)">$0.80 / $4</div></div><div class="ca-price-cell"><div class="ca-label">冷写入缓存</div><div class="ca-val" style="color:var(--accent)">$1.00 / $4</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$0.08 / $0.40</div></div></div></div>
+              <div class="ca-note">💡 缓存写入 1.25x · 命中后输入降 90% · 适合大型代码库重复对话</div>
+            </div>
+            <div class="code-agent-card">
+              <h4>🧠 Codex CLI</h4>
+              <div class="ca-sub">OpenAI 编程 Agent · 支持 GPT-5.x 全系列</div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#10a37f"></span> GPT-5.5</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--red-text)">$2.50 / $10</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$1.25 / $10</div></div><div class="ca-price-cell"><div class="ca-label">节省</div><div class="ca-val saving">-50%</div></div></div></div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#10a37f"></span> GPT-5.4</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--yellow-text)">$1.50 / $6</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$0.75 / $6</div></div><div class="ca-price-cell"><div class="ca-label">节省</div><div class="ca-val saving">-50%</div></div></div></div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#10a37f"></span> GPT-5.1</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--accent)">$0.80 / $3.20</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$0.40 / $3.20</div></div><div class="ca-price-cell"><div class="ca-label">节省</div><div class="ca-val saving">-50%</div></div></div></div>
+              <div class="ca-model-row"><div class="ca-model-name"><span class="ca-dot" style="background:#10a37f"></span> GPT-4.1 Mini</div><div class="ca-price-grid"><div class="ca-price-cell"><div class="ca-label">基础价格</div><div class="ca-val" style="color:var(--green-text)">$0.40 / $1.60</div></div><div class="ca-price-cell"><div class="ca-label">命中缓存 ⚡</div><div class="ca-val saving">$0.20 / $1.60</div></div><div class="ca-price-cell"><div class="ca-label">节省</div><div class="ca-val saving">-50%</div></div></div></div>
+              <div class="ca-note">💡 自动缓存前缀 · 命中后输入降 50% · GPT-5.1 性价比最优</div>
+            </div>
+          </div>
+        </div>
+        <div class="calc-section">
+          <h3>🧮 成本计算器</h3>
+          <div class="calc-grid">
+            <div><div class="calc-label">选择模型</div><select class="calc-select" id="calcModel"></select></div>
+            <div><div class="calc-label">月 token 用量</div><input type="number" class="calc-input" id="calcTokens" value="1000000" min="1000" step="100000"></div>
+            <button class="calc-btn" id="calcBtn">计算费用</button>
+          </div>
+          <div class="calc-result"><div class="amount" id="calcCost">$0.00</div><div class="unit" id="calcDetail"></div></div>
+        </div>
+        <div class="footer"><span>科Ke · 2026</span></div>
+      </div>
+    </div>
+
+    <!-- ═══ WORKSHOP PAGE ═══ -->
+    <div class="page" id="page-workshop">
+      <div class="tool-page">
+        <div class="page-title"><span class="grad" style="background:linear-gradient(135deg,#fb923c,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent">工作坊</span></div>
+        <div class="page-sub">创建、导入和编辑文件 · 浏览器本地运行</div>
+        <div class="ws-actions">
+          <button class="ws-btn primary" id="wsNewBtn"><span>📄</span> <span>新建文件</span></button>
+          <button class="ws-btn" id="wsImportBtn"><span>📥</span> <span>导入文件</span></button>
+          <button class="ws-btn" id="wsExportBtn"><span>📤</span> <span>导出文件</span></button>
+        </div>
+        <input type="file" id="fileInput" multiple>
+        <div class="card" style="margin-bottom:var(--sp-4)">
+          <div class="card-title"><span class="bar"></span><span>文件列表</span><span style="flex:1"></span><span id="wsFileCount" style="font-size:11.5px;color:var(--accent);font-weight:600;letter-spacing:.3px">0 个文件</span></div>
+          <div class="ws-file-list" id="wsFileList">
+            <div class="ws-empty" id="wsEmpty"><div class="icon">📂</div><p>暂无文件，点击「新建文件」或「导入文件」开始</p></div>
+          </div>
+        </div>
+        <div class="ws-editor-wrap" id="wsEditorWrap" style="display:none">
+          <div class="ws-editor-bar">
+            <span>📝</span>
+            <span class="fname" id="wsEditorName">untitled.txt</span>
+            <span class="spacer"></span>
+            <button id="wsSaveBtn">保存</button>
+            <button id="wsCloseBtn">关闭</button>
+          </div>
+          <textarea class="ws-editor" id="wsEditor" placeholder="在此输入内容..."></textarea>
+        </div>
+        <div class="footer"><span>科Ke · 2026</span>    <!-- AI PAGE -->
+    <div class="page" id="page-ai">
+      <div class="ai-shell">
+        <div class="ai-sidebar">
+          <div class="ai-sidebar-hdr"><h3>&#20250;&#35805;&#21015;&#34920;</h3><button id="aiNewChat">+ &#26032;&#24314;</button></div>
+          <div class="ai-convo-list" id="aiConvoList"><div class="ai-convo-empty"><div class="icon">&#128172;</div><p>&#26242;&#26080;&#20250;&#35805;<br>&#24320;&#22987;&#26032;&#23545;&#35805;&#21543;</p></div></div>
+        </div>
+        <div class="ai-main">
+          <div class="ai-model-bar" id="aiModelBar"></div>
+          <div class="ai-messages" id="aiMessages"><div class="ai-welcome"><div class="icon">&#10006;</div><p>&#27426;&#36814;&#20351;&#29992;&#31185;AI &#23454;&#20917;&#23545;&#35805;<br>&#36873;&#25321;&#19968;&#20010;&#27169;&#22411;&#24320;&#22987;&#23545;&#35805;</p></div></div>
+          <div class="ai-input-bar">
+            <div class="ai-input-wrap">
+              <textarea class="ai-textarea" id="aiInput" placeholder="&#36755;&#20837;&#20320;&#30340;&#38382;&#39064;..." rows="1"></textarea>
+              <button class="ai-send-btn" id="aiSendBtn" disabled>&#8593;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// TOP TAB SWITCH
+var currentTab = 'tools';
+document.querySelectorAll('.top-tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    currentTab = this.dataset.tab;
+    document.querySelectorAll('.top-tab-btn').forEach(function(b) { b.classList.toggle('active', b === btn) });
+    if (currentTab === 'ai') {
+      document.getElementById('leftSidebar').style.display = 'none';
+      document.getElementById('mainContent').style.marginLeft = '0';
+      document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active') });
+      document.getElementById('page-ai').classList.add('active');
+      initAIPage();
+    } else {
+      document.getElementById('leftSidebar').style.display = '';
+      var cp = localStorage.getItem('lastToolPage') || 'landing';
+      navigate(cp);
+    }
+  });
+});
+
+// SETTINGS
+document.getElementById('settingsBtn').addEventListener('click', function() {
+  document.getElementById('settingsOverlay').classList.add('show');
+  loadSettingsToUI();
+});
+document.getElementById('settingsClose').addEventListener('click', function() {
+  document.getElementById('settingsOverlay').classList.remove('show');
+  saveSettingsFromUI();
+});
+document.getElementById('settingsOverlay').addEventListener('click', function(e) {
+  if (e.target === this) {
+    document.getElementById('settingsOverlay').classList.remove('show');
+    saveSettingsFromUI();
+  }
+});
+document.querySelectorAll('.lang-opt-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.lang-opt-btn').forEach(function(b) { b.classList.remove('active') });
+    this.classList.add('active');
+    localStorage.setItem('appLang', this.dataset.lang);
+  });
+});
+document.getElementById('toggleParticles').addEventListener('click', function() {
+  var on = document.getElementById('particlesTrack').classList.toggle('on');
+  localStorage.setItem('particlesOn', on ? '1' : '0');
+  document.getElementById('particles').style.display = on ? 'block' : 'none';
+});
+document.getElementById('toggleNotif').addEventListener('click', function() {
+  document.getElementById('notifTrack').classList.toggle('on');
+});
+function saveSettingsFromUI() {
+  var keys = ['openai','deepseek','gemini','claude','grok','qwen','glm','kimi'];
+  var saved = {};
+  keys.forEach(function(k) {
+    var el = document.getElementById('s-key-' + k);
+    if (el && el.value) saved[k] = el.value;
+  });
+  localStorage.setItem('geo_api_keys', JSON.stringify(saved));
+}
+function loadSettingsToUI() {
+  var saved = JSON.parse(localStorage.getItem('geo_api_keys') || '{}');
+  var keys = ['openai','deepseek','gemini','claude','grok','qwen','glm','kimi'];
+  keys.forEach(function(k) {
+    var el = document.getElementById('s-key-' + k);
+    if (el && saved[k]) el.value = saved[k];
+  });
+  var particlesOn = localStorage.getItem('particlesOn') !== '0';
+  document.getElementById('particlesTrack').classList.toggle('on', particlesOn);
+  document.getElementById('notifTrack').classList.toggle('on', localStorage.getItem('notifOn') === '1');
+  document.getElementById('particles').style.display = particlesOn ? 'block' : 'none';
+  var appLang = localStorage.getItem('appLang') || 'zh-CN';
+  document.querySelectorAll('.lang-opt-btn').forEach(function(b) { b.classList.toggle('active', b.dataset.lang === appLang) });
+}
+
+// AUTH
+var currentUser = JSON.parse(localStorage.getItem('geo_user') || 'null');
+function updateUserSection() {
+  var section = document.getElementById('userSection');
+  if (currentUser) {
+    var uname = currentUser.email.split('@')[0];
+    section.innerHTML = '<div class="user-card"><div class="user-avatar">' + currentUser.email.charAt(0).toUpperCase() + '<span class="status-dot"></span></div><div class="user-info"><div class="user-name">' + uname + '</div><div class="user-email">' + currentUser.email + '</div></div></div>';
+  } else {
+    section.innerHTML = '<div class="login-card"><div class="lc-icon">&#128100;</div><div class="lc-title">&#30331;&#24405;&#31185;AI</div><div class="lc-sub">&#20445;&#23384;&#35760;&#24405;&#21644;&#20581;&#20540;</div></div>';
+  }
+  if (section) section.onclick = function() { openAuth('login') };
+}
+function openAuth(mode) {
+  document.getElementById('authTitle').textContent = mode === 'login' ? '&#30331;&#24405;' : '&#27880;&#20876;';
+  document.getElementById('authSub').textContent = mode === 'login' ? '&#30331;&#24405;&#21518;&#21487;&#20445;&#23384;&#26816;&#27979;&#35760;&#24405;&#21644;&#20581;&#20540;&#35774;&#32622;' : '&#27880;&#20876;&#36134;&#21495;&#20197;&#20445;&#23384;&#26816;&#27979;&#35760;&#24405;&#21644;&#20581;&#20540;';
+  document.getElementById('authSubmit').textContent = mode === 'login' ? '&#30331;&#24405;' : '&#27880;&#20876;';
+  document.getElementById('authSwitch').innerHTML = mode === 'login' ? '&#36824;&#27809;&#26377;&#36134;&#21495;&#65311;<a id="authSwitchLink">&#27880;&#20876;</a>' : '&#24050;&#26377;&#36134;&#21495;&#65311;<a id="authSwitchLink">&#30331;&#24405;</a>';
+  var link = document.getElementById('authSwitchLink');
+  if (link) link.addEventListener('click', function() { openAuth(mode === 'login' ? 'register' : 'login') });
+  document.getElementById('authModal').classList.add('show');
+  document.getElementById('authEmail').value = '';
+  document.getElementById('authPassword').value = '';
+  document.getElementById('authEmail').focus();
+}
+function closeAuth() { document.getElementById('authModal').classList.remove('show') }
+function submitAuth() {
+  var email = document.getElementById('authEmail').value.trim();
+  var pass = document.getElementById('authPassword').value;
+  if (!email || !pass) { alert('&#35831;&#22635;&#20889;&#37038;&#31665;&#21644;&#23494;&#30721;'); return; }
+  if (document.getElementById('authSubmit').textContent === '&#27880;&#20876;') {
+    var users = JSON.parse(localStorage.getItem('geo_users') || '[]');
+    if (users.find(function(u) { return u.email === email })) { alert('&#35813;&#37038;&#31665;&#24050;&#27880;&#20876;'); return; }
+    users.push({ email: email, password: pass });
+    localStorage.setItem('geo_users', JSON.stringify(users));
+  }
+  var users = JSON.parse(localStorage.getItem('geo_users') || '[]');
+  var found = users.find(function(u) { return u.email === email && u.password === pass });
+  if (!found) { alert('&#37038;&#31665;&#25110;&#23494;&#30721;&#38169;&#35823;'); return; }
+  currentUser = { email: email };
+  localStorage.setItem('geo_user', JSON.stringify(currentUser));
+  closeAuth();
+  updateUserSection();
+}
+document.getElementById('modalClose').addEventListener('click', closeAuth);
+document.getElementById('authModal').addEventListener('click', function(e) { if (e.target === this) closeAuth() });
+document.getElementById('authSubmit').addEventListener('click', submitAuth);
+updateUserSection();
+
+// AI PAGE
+var AI_MODELS = [
+  { id: 'gpt-5.5', name: 'GPT-5.5', color: '#10a37f' },
+  { id: 'deepseek-v4', name: 'DeepSeek V4', color: '#4d6bfe' },
+  { id: 'gemini-3.1-pro', name: 'Gemini 3.1 Pro', color: '#4285f4' },
+  { id: 'claude-opus-4.7', name: 'Claude Opus 4.7', color: '#d4a574' },
+  { id: 'grok-3', name: 'Grok-3', color: '#1a1a2e' },
+  { id: 'qwen-3.7-max', name: 'Qwen3.7-Max', color: '#ff6a00' },
+  { id: 'glm-5', name: 'GLM-5', color: '#7c3aed' },
+  { id: 'kimi-2.6', name: 'Kimi 2.6', color: '#ff2d55' },
+];
+var aiInitialized = false;
+var aiActiveModel = null;
+var aiMessages = [];
+var aiConversations = JSON.parse(localStorage.getItem('geo_ai_convos') || '[]');
+var aiActiveConvoId = null;
+
+function initAIPage() {
+  if (aiInitialized) return;
+  aiInitialized = true;
+  renderAIConvos();
+  renderAIModels();
+  var savedModel = localStorage.getItem('aiActiveModel');
+  if (savedModel) {
+    aiActiveModel = savedModel;
+    document.querySelectorAll('.ai-model-chip').forEach(function(ch) {
+      ch.classList.toggle('active', ch.dataset.model === savedModel);
+    });
+  }
+  document.getElementById('aiSendBtn').addEventListener('click', aiSend);
+  var input = document.getElementById('aiInput');
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); aiSend(); }
+  });
+  input.addEventListener('input', function() {
+    document.getElementById('aiSendBtn').disabled = !input.value.trim();
+    input.style.height = 'auto';
+    input.style.height = Math.min(input.scrollHeight, 200) + 'px';
+  });
+  document.getElementById('aiNewChat').addEventListener('click', function() {
+    aiActiveConvoId = null;
+    aiMessages = [];
+    renderAIMessages();
+    renderAIConvos();
+  });
+}
+
+function renderAIConvos() {
+  var list = document.getElementById('aiConvoList');
+  if (!list) return;
+  if (aiConversations.length === 0) {
+    list.innerHTML = '<div class="ai-convo-empty"><div class="icon">&#128172;</div><p>&#26242;&#26080;&#20250;&#35805;<br>&#24320;&#22987;&#26032;&#23545;&#35805;&#21543;</p></div>';
+    return;
+  }
+  list.innerHTML = aiConversations.map(function(c) {
+    return '<div class="ai-convo-item' + (c.id === aiActiveConvoId ? ' active' : '') + '" data-cid="' + c.id + '"><span class="ci-icon">&#128172;</span> ' + c.title + '</div>';
+  }).join('');
+  list.querySelectorAll('.ai-convo-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var cid = this.dataset.cid;
+      var convo = aiConversations.find(function(c) { return c.id === cid });
+      if (convo) {
+        aiActiveConvoId = cid;
+        aiMessages = convo.messages || [];
+        renderAIMessages();
+        renderAIConvos();
+      }
+    });
+  });
+}
+
+function renderAIModels() {
+  var bar = document.getElementById('aiModelBar');
+  if (!bar) return;
+  bar.innerHTML = AI_MODELS.map(function(m) {
+    return '<div class="ai-model-chip' + (m.id === aiActiveModel ? ' active' : '') + '" data-model="' + m.id + '"><span class="mc-dot"></span>' + m.name + '</div>';
+  }).join('');
+  bar.querySelectorAll('.ai-model-chip').forEach(function(ch) {
+    ch.addEventListener('click', function() {
+      aiActiveModel = this.dataset.model;
+      localStorage.setItem('aiActiveModel', aiActiveModel);
+      bar.querySelectorAll('.ai-model-chip').forEach(function(c) { c.classList.remove('active') });
+      this.classList.add('active');
+    });
+  });
+}
+
+function renderAIMessages() {
+  var container = document.getElementById('aiMessages');
+  if (!container) return;
+  if (aiMessages.length === 0) {
+    container.innerHTML = '<div class="ai-welcome"><div class="icon">&#10006;</div><p>&#27426;&#36814;&#20351;&#29992;&#31185;AI &#23454;&#20917;&#23545;&#35805;<br>&#36873;&#25321;&#19968;&#20010;&#27169;&#22411;&#24320;&#22987;&#23545;&#35805;</p></div>';
+    return;
+  }
+  container.innerHTML = aiMessages.map(function(m) {
+    var avatar = m.role === 'assistant' ? '&#10006;' : (m.email ? m.email.charAt(0).toUpperCase() : 'U');
+    return '<div class="ai-msg ' + m.role + '"><div class="ai-msg-avatar">' + avatar + '</div><div class="ai-msg-content"><div class="ai-msg-bubble">' + m.content.replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/
+/g,'<br>') + '</div><div class="ai-msg-time">' + (m.time || '') + '</div></div></div>';
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+function aiSend() {
+  var input = document.getElementById('aiInput');
+  var sendBtn = document.getElementById('aiSendBtn');
+  var text = input.value.trim();
+  if (!text || !aiActiveModel) return;
+  if (!currentUser) { openAuth('login'); return; }
+  var msg = { role: 'user', content: text, time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'}), email: currentUser.email };
+  aiMessages.push(msg);
+  renderAIMessages();
+  input.value = '';
+  sendBtn.disabled = true;
+  input.style.height = 'auto';
+  var container = document.getElementById('aiMessages');
+  var typing = document.createElement('div');
+  typing.className = 'ai-msg assistant';
+  typing.id = 'aiTyping';
+  typing.innerHTML = '<div class="ai-msg-avatar">&#10006;</div><div class="ai-msg-content"><div class="ai-msg-bubble ai-typing">&#27491;&#22312;&#24605;&#32771;...</div></div>';
+  container.appendChild(typing);
+  container.scrollTop = container.scrollHeight;
+  var modelName = (AI_MODELS.find(function(m){return m.id===aiActiveModel})||{}).name || aiActiveModel;
+  setTimeout(function() {
+    var resp = { role: 'assistant', content: '&#24744;&#22909;! &#25105;&#26159;&#31185;AI &#23454;&#20917;&#21161;&#25163;&#12290;&#24403;&#21069;&#20351;&#29992;&#30340;&#26159; ' + modelName + ' &#27169;&#22411;&#12290;&#25105;&#30446;&#21069;&#22788;&#20110;&#28436;&#31034;&#27169;&#24335;&#65292;&#23436;&#25972;&#30340; AI &#23545;&#35805;&#21151;&#33021;&#27491;&#22312;&#24320;&#21457;&#20013;&#12290;&#24744;&#21487;&#20197;&#23581;&#35797;&#36755;&#20837;&#20219;&#20309;&#38382;&#39064;&#65292;&#25105;&#20250;&#23613;&#21147;&#22238;&#31572;', time: new Date().toLocaleTimeString('zh-CN', {hour:'2-digit',minute:'2-digit'}) };
+    aiMessages.push(resp);
+    typing.remove();
+    renderAIMessages();
+    var title = text.substring(0, 20) + (text.length > 20 ? '...' : '');
+    if (!aiActiveConvoId) {
+      aiActiveConvoId = Date.now().toString();
+      aiConversations.unshift({ id: aiActiveConvoId, title: title, messages: aiMessages });
+    } else {
+      var convo = aiConversations.find(function(c) { return c.id === aiActiveConvoId });
+      if (convo) { convo.messages = aiMessages; convo.title = title; }
+    }
+    localStorage.setItem('geo_ai_convos', JSON.stringify(aiConversations.slice(0, 20)));
+    renderAIConvos();
+  }, 1200);
+}
+</div>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-// ── Sidebar ──
-let sidebarOpen = false;
-function toggleSidebar(){
-  sidebarOpen = !sidebarOpen;
-  document.getElementById("sidebar").classList.toggle("open", sidebarOpen);
-  document.getElementById("sidebarOverlay").classList.toggle("open", sidebarOpen);
-  document.body.classList.toggle("sidebar-open", sidebarOpen);
-  document.getElementById("app").classList.toggle("sidebar-open", sidebarOpen);
+// ══════════ Sidebar Collapse ══════════
+var sidebar=document.getElementById('leftSidebar');
+var mainContent=document.getElementById('mainContent');
+var collapseBtn=document.getElementById('collapseBtn');
+var sidebarCollapsed=localStorage.getItem('sidebarCollapsed')==='true';
+function applySidebarState(){
+  if(sidebarCollapsed){sidebar.classList.add('collapsed');mainContent.classList.add('sidebar-collapsed');collapseBtn.textContent='▶'}
+  else{sidebar.classList.remove('collapsed');mainContent.classList.remove('sidebar-collapsed');collapseBtn.textContent='◀'}
 }
+applySidebarState();
+collapseBtn.addEventListener('click',function(){
+  sidebarCollapsed=!sidebarCollapsed;
+  localStorage.setItem('sidebarCollapsed',sidebarCollapsed);
+  applySidebarState();
+});
 
-// ── Language ──
-let currentLang = "zh";
-const texts = {
-  zh: {
-    badge:"22 个模型 · 2026 年中版",
-    title:"AI 搜索<br><span class="grad">可见性分析</span>",
-    subtitle:"测量品牌在 22 个主流 AI 模型中的提及频率（2026 年中版）。获取可操作的 GEO 洞察。",
-    selectModels:"选择模型（多选）",
-    selectedCount:"已选",
-    apiKeys:"API 密钥",
-    toggleKeys:"展开",
-    toggleKeysHide:"收起",
-    openaiKey:"OpenAI API Key",
-    deepseekKey:"DeepSeek API Key",
-    geminiKey:"Gemini API Key",
-    claudeKey:"Claude API Key",
-    grokKey:"Grok API Key",
-    qwenKey:"通义千问 API Key",
-    glmKey:"智谱 GLM API Key",
-    kimiKey:"Kimi API Key",
-    keyHint:"🔒 密钥仅保存在浏览器本地，不会上传到服务器。<br>留空的平台将使用内置免费额度进行检测。",
-    brandLabel:"品牌 / 产品名称",
-    brandPlaceholder:"例如：华为、Nike、Notion",
-    runBtn:"▶ 开始分析",
-    scoreSub:"可见性评分",
-    suggestTitle:"优化建议",
-    running:"分析中...",
-    done:"分析完成！",
-    error:"请求失败",
-    noKey:"未配置密钥",
-    noModel:"请至少选择一个模型",
-    noBrand:"请输入品牌名称",
-    mentionYes:"已提及",
-    mentionNo:"未提及",
-    mentionErr:"请求出错"
-  },
-  en: {
-    badge:"22 Models · Mid-2026 Edition",
-    title:"AI Search<br><span class="grad">Visibility Analysis</span>",
-    subtitle:"Measure your brand's mention frequency across 22 leading AI models (Mid-2026). Get actionable GEO insights.",
-    selectModels:"Select Models (Multi)",
-    selectedCount:"selected",
-    apiKeys:"API Keys",
-    toggleKeys:"Expand",
-    toggleKeysHide:"Collapse",
-    openaiKey:"OpenAI API Key",
-    deepseekKey:"DeepSeek API Key",
-    geminiKey:"Gemini API Key",
-    claudeKey:"Claude API Key",
-    grokKey:"Grok API Key",
-    qwenKey:"Qwen API Key",
-    glmKey:"GLM API Key",
-    kimiKey:"Kimi API Key",
-    keyHint:"🔒 Keys are saved only in your browser, never uploaded.<br>Empty keys will use built-in free quota.",
-    brandLabel:"Brand / Product Name",
-    brandPlaceholder:"e.g. Huawei, Nike, Notion",
-    runBtn:"▶ Run Analysis",
-    scoreSub:"Visibility Score",
-    suggestTitle:"Optimization Suggestions",
-    running:"Analyzing...",
-    done:"Analysis Complete!",
-    error:"Request Failed",
-    noKey:"No key configured",
-    noModel:"Select at least one model",
-    noBrand:"Enter a brand name",
-    mentionYes:"Mentioned",
-    mentionNo:"Not Mentioned",
-    mentionErr:"Request Error"
+// ══════════ SPA Router ══════════
+var currentPage='landing';
+var pageTitles={landing:'',geo:'GEO 可见性分析',price:'AI 模型比价',workshop:'工作坊'};
+function navigate(page){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active')});
+  var el=document.getElementById('page-'+page);
+  if(el)el.classList.add('active');
+  document.querySelectorAll('.nav-item[data-page]').forEach(function(n){n.classList.toggle('active',n.dataset.page===page)});
+  currentPage=page;
+  document.getElementById('topBarTitle').textContent=pageTitles[page]||'';
+  document.getElementById('backBtn').style.display=page==='landing'?'none':'flex';
+  window.scrollTo({top:0,behavior:'smooth'});
+  sidebar.classList.remove('mobile-open');
+}
+document.querySelectorAll('.nav-item[data-page]').forEach(function(n){n.addEventListener('click',function(){navigate(this.dataset.page)})});
+document.querySelectorAll('.tool-card[data-goto]').forEach(function(c){c.addEventListener('click',function(){navigate(this.dataset.goto)})});
+document.getElementById('backBtn').addEventListener('click',function(){navigate('landing')});
+document.getElementById('mobileMenuBtn').addEventListener('click',function(){sidebar.classList.toggle('mobile-open')});
+
+// ══════════ Auth (localStorage mock) ══════════
+var currentUser=JSON.parse(localStorage.getItem('geo_user')||'null');
+var authMode='login';
+function updateAuthUI(){
+  var authBtns=document.getElementById('authButtons');
+  var userMenu=document.getElementById('userMenuBtn');
+  var userSection=document.getElementById('userSection');
+  var logoutLink=document.getElementById('logoutLink');
+  if(currentUser){
+    authBtns.style.display='none';userMenu.style.display='flex';
+    document.getElementById('miniAvatar').textContent=currentUser.email.charAt(0).toUpperCase();
+    document.getElementById('miniName').textContent=currentUser.email.split('@')[0];
+    logoutLink.style.display='inline';
+    userSection.innerHTML='<div class="user-card"><div class="user-avatar">'+currentUser.email.charAt(0).toUpperCase()+'</div><div class="user-info"><div class="user-name">'+currentUser.email.split('@')[0]+'</div><div class="user-email">'+currentUser.email+'</div></div></div>';
+  }else{
+    authBtns.style.display='flex';userMenu.style.display='none';
+    logoutLink.style.display='none';
+    userSection.innerHTML='<div class="login-prompt" id="loginPrompt"><a id="sidebarLoginLink">登录</a> 或 <a id="sidebarRegLink">注册</a></div>';
+    document.getElementById('sidebarLoginLink').addEventListener('click',function(){openAuth('login')});
+    document.getElementById('sidebarRegLink').addEventListener('click',function(){openAuth('register')});
   }
-};
-
-function switchLang(lang){
-  currentLang = lang;
-  document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.textContent === (lang==="zh"?"中文":"English")));
-  const t = texts[lang];
-  document.getElementById("t_badge").innerHTML = t.badge;
-  document.getElementById("t_title").innerHTML = t.title;
-  document.getElementById("t_subtitle").innerHTML = t.subtitle;
-  document.getElementById("t_selectModels").textContent = t.selectModels;
-  document.getElementById("t_apiKeys").textContent = t.apiKeys;
-  document.getElementById("t_toggleKeys").textContent = document.getElementById("keyPanel").classList.contains("open") ? t.toggleKeysHide : t.toggleKeys;
-  document.getElementById("t_openaiKey").textContent = t.openaiKey;
-  document.getElementById("t_deepseekKey").textContent = t.deepseekKey;
-  document.getElementById("t_geminiKey").textContent = t.geminiKey;
-  document.getElementById("t_claudeKey").textContent = t.claudeKey;
-  document.getElementById("t_grokKey").textContent = t.grokKey;
-  document.getElementById("t_qwenKey").textContent = t.qwenKey;
-  document.getElementById("t_glmKey").textContent = t.glmKey;
-  document.getElementById("t_kimiKey").textContent = t.kimiKey;
-  document.getElementById("t_keyHint").innerHTML = t.keyHint;
-  document.getElementById("t_brandLabel").textContent = t.brandLabel;
-  document.getElementById("t_brandPlaceholder").textContent = t.brandPlaceholder;
-  document.getElementById("t_runBtn").textContent = t.runBtn;
-  document.getElementById("t_scoreSub").textContent = t.scoreSub;
-  document.getElementById("t_suggestTitle").textContent = t.suggestTitle;
 }
-
-// ── Model chips ──
-function toggleChip(el){ el.classList.toggle("active"); updateSelectedCount(); }
-function updateSelectedCount(){
-  const n = document.querySelectorAll(".model-chip.active").length;
-  document.getElementById("t_selectedCount").textContent = n + " " + texts[currentLang].selectedCount;
+function openAuth(mode){
+  authMode=mode;
+  document.getElementById('authTitle').textContent=mode==='login'?'登录':'注册';
+  document.getElementById('authSub').textContent=mode==='login'?'登录后可保存检测记录和偏好设置':'注册账号以保存检测记录和偏好设置';
+  document.getElementById('authSubmit').textContent=mode==='login'?'登录':'注册';
+  document.getElementById('authSwitch').innerHTML=mode==='login'?'还没有账号？<a id="authSwitchLink">注册</a>':'已有账号？<a id="authSwitchLink">登录</a>';
+  document.getElementById('authSwitchLink').addEventListener('click',function(){openAuth(mode==='login'?'register':'login')});
+  document.getElementById('authModal').classList.add('show');
+  document.getElementById('authEmail').value='';document.getElementById('authPassword').value='';
+  document.getElementById('authEmail').focus();
 }
-function getSelectedModels(){
-  return Array.from(document.querySelectorAll(".model-chip.active")).map(c=>c.dataset.model);
+function closeAuth(){document.getElementById('authModal').classList.remove('show')}
+function submitAuth(){
+  var email=document.getElementById('authEmail').value.trim(),pass=document.getElementById('authPassword').value;
+  if(!email||!pass){alert('请填写邮箱和密码');return}
+  if(authMode==='register'){
+    var users=JSON.parse(localStorage.getItem('geo_users')||'[]');
+    if(users.find(function(u){return u.email===email})){alert('该邮箱已注册');return}
+    users.push({email:email,password:pass});localStorage.setItem('geo_users',JSON.stringify(users));
+    currentUser={email:email};localStorage.setItem('geo_user',JSON.stringify(currentUser));
+  }else{
+    var users=JSON.parse(localStorage.getItem('geo_users')||'[]');
+    var found=users.find(function(u){return u.email===email&&u.password===pass});
+    if(!found){alert('邮箱或密码错误');return}
+    currentUser={email:email};localStorage.setItem('geo_user',JSON.stringify(currentUser));
+  }
+  closeAuth();updateAuthUI();
 }
+document.getElementById('modalClose').addEventListener('click',closeAuth);
+document.getElementById('authModal').addEventListener('click',function(e){if(e.target===this)closeAuth()});
+document.getElementById('authSubmit').addEventListener('click',submitAuth);
+document.getElementById('topLoginBtn').addEventListener('click',function(){openAuth('login')});
+document.getElementById('topRegBtn').addEventListener('click',function(){openAuth('register')});
+document.getElementById('userMenuBtn').addEventListener('click',function(){openAuth('login')});
+document.getElementById('logoutLink').addEventListener('click',function(){currentUser=null;localStorage.removeItem('geo_user');updateAuthUI()});
 
-// ── Key panel ──
-function toggleKeyPanel(){
-  const panel = document.getElementById("keyPanel");
-  const btn = document.getElementById("t_toggleKeys");
-  panel.classList.toggle("open");
-  btn.textContent = panel.classList.contains("open") ? texts[currentLang].toggleKeysHide : texts[currentLang].toggleKeys;
-}
+// ══════════ Widget: Language toggle ══════════
+document.getElementById('widgetLang').addEventListener('click',function(){
+  var cur=document.documentElement.lang;
+  document.documentElement.lang=cur==='zh-CN'?'en':'zh-CN';
+  document.getElementById('widgetLangText').textContent=document.documentElement.lang==='zh-CN'?'中文':'EN';
+});
 
-// ── Eye toggle ──
-function toggleEye(btn){
-  const input = btn.parentElement.querySelector("input");
-  if(input.type === "password"){ input.type = "text"; btn.textContent = "🔒"; }
-  else { input.type = "password"; btn.textContent = "👁"; }
-}
+// ══════════ Particles ══════════
+(function(){
+  var canvas=document.getElementById('particles');var ctx=canvas.getContext('2d');var particles=[],PC=80;
+  function rz(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+  window.addEventListener('resize',rz);rz();
+  function P(){this.reset();this.y=Math.random()*canvas.height}
+  P.prototype.reset=function(){this.x=Math.random()*canvas.width;this.y=-10;this.size=Math.random()*2+.5;this.speedY=Math.random()*.3+.1;this.speedX=(Math.random()-.5)*.3;this.opacity=Math.random()*.5+.15};
+  P.prototype.update=function(){this.y+=this.speedY;this.x+=this.speedX;if(this.y>canvas.height+10){this.reset();this.y=-10}if(this.x<0)this.x=canvas.width;if(this.x>canvas.width)this.x=0};
+  P.prototype.draw=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle='rgba(129,140,248,'+this.opacity+')';ctx.fill()};
+  for(var i=0;i<PC;i++){var p=new P();p.y=Math.random()*canvas.height;particles.push(p)}
+  function an(){ctx.clearRect(0,0,canvas.width,canvas.height);
+    for(var i=0;i<particles.length;i++){for(var j=i+1;j<particles.length;j++){var dx=particles[i].x-particles[j].x,dy=particles[i].y-particles[j].y,dist=Math.sqrt(dx*dx+dy*dy);if(dist<120){ctx.beginPath();ctx.moveTo(particles[i].x,particles[i].y);ctx.lineTo(particles[j].x,particles[j].y);ctx.strokeStyle='rgba(129,140,248,'+(0.05*(1-dist/120))+')';ctx.lineWidth=.5;ctx.stroke()}}}
+    particles.forEach(function(p){p.update();p.draw()});requestAnimationFrame(an)}
+  an();
+})();
 
-// ── Model config ──
-const MODEL_CONFIG = {
-  "gpt-5.5":        {provider:"openai",  model:"gpt-5.5",           keyId:"key-openai"},
-  "gpt-5.4":        {provider:"openai",  model:"gpt-5.4",           keyId:"key-openai"},
-  "gpt-5.1":        {provider:"openai",  model:"gpt-5.1",           keyId:"key-openai"},
-  "deepseek-v4":     {provider:"deepseek",model:"deepseek-v4",        keyId:"key-deepseek"},
-  "deepseek-v3.2":   {provider:"deepseek",model:"deepseek-v3.2",      keyId:"key-deepseek"},
-  "gemini-3.1-pro":  {provider:"gemini",  model:"gemini-3.1-pro",   keyId:"key-gemini"},
-  "gemini-3.1-ultra":{provider:"gemini",  model:"gemini-3.1-ultra", keyId:"key-gemini"},
-  "gemini-3.0-flash":{provider:"gemini",  model:"gemini-3.0-flash", keyId:"key-gemini"},
-  "claude-opus-4.7": {provider:"claude",  model:"claude-opus-4.7",  keyId:"key-claude"},
-  "claude-sonnet-4.6":{provider:"claude", model:"claude-sonnet-4.6",keyId:"key-claude"},
-  "grok-3":          {provider:"grok",    model:"grok-3",            keyId:"key-grok"},
-  "grok-2":          {provider:"grok",    model:"grok-2",            keyId:"key-grok"},
-  "qwen-3.7-max":    {provider:"qwen",    model:"qwen-3.7-max",     keyId:"key-qwen"},
-  "qwen-3.5-plus":   {provider:"qwen",    model:"qwen-3.5-plus",    keyId:"key-qwen"},
-  "glm-5":           {provider:"glm",     model:"glm-5",             keyId:"key-glm"},
-  "glm-4-plus":      {provider:"glm",     model:"glm-4-plus",        keyId:"key-glm"},
-  "kimi-2.6":       {provider:"kimi",    model:"kimi-2.6",         keyId:"key-kimi"},
-  "yi-lightning-2":  {provider:"yi",      model:"yi-lightning-2",    keyId:null},
-  "mistral-large-2":  {provider:"mistral", model:"mistral-large-2",   keyId:null},
-  "baidu-ernie-5.0": {provider:"baidu",   model:"ernie-5.0",        keyId:null}
-};
+// ══════════ GEO Model Chips ══════════
+document.querySelectorAll('.geo-chip').forEach(function(ch){ch.addEventListener('click',function(){this.classList.toggle('active');updateSC()})});
+function updateSC(){var n=document.querySelectorAll('.geo-chip.active').length;document.getElementById('t_selectedCount').textContent=n+' 已选'}
+function gsm(){return Array.from(document.querySelectorAll('.geo-chip.active')).map(function(c){return c.dataset.model})}
 
-// ── Province endpoint ──
-const PROXY = "/api/proxy";
+document.getElementById('toggleKeyBtn').addEventListener('click',function(){var p=document.getElementById('keyPanel');p.classList.toggle('open');document.getElementById('t_toggleKeys').textContent=p.classList.contains('open')?'收起':'展开'});
+document.querySelectorAll('.eye').forEach(function(eye){eye.addEventListener('click',function(){var inp=this.parentElement.querySelector('input');if(inp.type==='password'){inp.type='text';this.textContent='🔒'}else{inp.type='password';this.textContent='👁'}})});
 
-// ── Run analysis ──
+var MC={'gpt-5.5':{provider:'openai',model:'gpt-5.5',keyId:'key-openai'},'gpt-5.4':{provider:'openai',model:'gpt-5.4',keyId:'key-openai'},'gpt-5.1':{provider:'openai',model:'gpt-5.1',keyId:'key-openai'},'deepseek-v4':{provider:'deepseek',model:'deepseek-v4',keyId:'key-deepseek'},'deepseek-v3.2':{provider:'deepseek',model:'deepseek-v3.2',keyId:'key-deepseek'},'gemini-3.1-pro':{provider:'gemini',model:'gemini-3.1-pro',keyId:'key-gemini'},'gemini-3.1-ultra':{provider:'gemini',model:'gemini-3.1-ultra',keyId:'key-gemini'},'gemini-3.0-flash':{provider:'gemini',model:'gemini-3.0-flash',keyId:'key-gemini'},'claude-opus-4.7':{provider:'claude',model:'claude-opus-4.7',keyId:'key-claude'},'claude-sonnet-4.6':{provider:'claude',model:'claude-sonnet-4.6',keyId:'key-claude'},'grok-3':{provider:'grok',model:'grok-3',keyId:'key-grok'},'grok-2':{provider:'grok',model:'grok-2',keyId:'key-grok'},'qwen-3.7-max':{provider:'qwen',model:'qwen-3.7-max',keyId:'key-qwen'},'qwen-3.5-plus':{provider:'qwen',model:'qwen-3.5-plus',keyId:'key-qwen'},'glm-5':{provider:'glm',model:'glm-5',keyId:'key-glm'},'glm-4-plus':{provider:'glm',model:'glm-4-plus',keyId:'key-glm'},'kimi-2.6':{provider:'kimi',model:'kimi-2.6',keyId:'key-kimi'},'yi-lightning-2':{provider:'yi',model:'yi-lightning-2',keyId:null},'mistral-large-2':{provider:'mistral',model:'mistral-large-2',keyId:null}};
+var PROXY='/api/proxy';
+
+document.getElementById('runBtn').addEventListener('click',runAnalysis);
 async function runAnalysis(){
-  const brand = document.getElementById("brandInput").value.trim();
-  const models = getSelectedModels();
-  const t = texts[currentLang];
-
-  if(!brand){ alert(t.noBrand); return; }
-  if(models.length === 0){ alert(t.noModel); return; }
-
-  const btn = document.getElementById("runBtn");
-  btn.disabled = true;
-  btn.innerHTML = `<span class="spinner"></span> ${t.running}`;
-
-  document.getElementById("progressWrap").classList.add("show");
-  document.getElementById("progressText").classList.add("show");
-  document.getElementById("results").classList.remove("show");
-
-  const total = models.length;
-  let completed = 0;
-  const results = [];
-
-  const updateProgress = () => {
-    completed++;
-    const pct = Math.round((completed / total) * 100);
-    document.getElementById("progressBar").style.width = pct + "%";
-    document.getElementById("progressText").textContent = `${t.done} ${completed}/${total} (${pct}%)`;
-  };
-
-  await Promise.all(models.map(async (modelKey) => {
-    const cfg = MODEL_CONFIG[modelKey];
-    const keyInput = cfg.keyId ? document.getElementById(cfg.keyId).value.trim() : "";
-    let mentioned = false, snippet = "", error = null;
-
-    try {
-      const resp = await fetch(PROXY, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-          provider: cfg.provider,
-          model: cfg.model,
-          brand: brand,
-          apiKey: keyInput
-        })
-      });
-      const data = await resp.json();
-      if(data.error){ error = data.error; }
-      else { mentioned = data.mentioned; snippet = data.snippet || ""; }
-    } catch(e){
-      error = e.message;
-    }
-
-    results.push({ modelKey, mentioned, snippet, error });
-    updateProgress();
-  }));
-
-  renderResults(brand, results);
-  btn.disabled = false;
-  btn.innerHTML = `<span id="t_runBtn">${t.runBtn}</span>`;
+  var brand=document.getElementById('brandInput').value.trim(),models=gsm();
+  if(!brand){alert('请输入品牌名称');return}if(models.length===0){alert('请至少选择一个模型');return}
+  var btn=document.getElementById('runBtn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> 分析中...';
+  document.getElementById('progressWrap').classList.add('show');document.getElementById('progressText').classList.add('show');document.getElementById('results').classList.remove('show');
+  var completed=0,results=[];var total=models.length;
+  var up=function(){completed++;var pct=Math.round(completed/total*100);document.getElementById('progressBar').style.width=pct+'%';document.getElementById('progressText').textContent='完成 '+completed+'/'+total+' ('+pct+'%)'};
+  await Promise.all(models.map(async function(mk){var cfg=MC[mk],ki=cfg.keyId?document.getElementById(cfg.keyId).value.trim():'';var mentioned=false,snippet='',error=null;try{var resp=await fetch(PROXY,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:cfg.provider,model:cfg.model,brand:brand,apiKey:ki})});var data=await resp.json();if(data.error){error=data.error}else{mentioned=data.mentioned;snippet=data.snippet||''}}catch(e){error=e.message}results.push({modelKey:mk,mentioned:mentioned,snippet:snippet,error:error});up()}));
+  rR(brand,results);btn.disabled=false;btn.innerHTML='<span>▶ 开始分析</span>';
 }
+function rR(brand,results){
+  var mc=results.filter(function(r){return r.mentioned}).length,total=results.length,score=total>0?Math.round(mc/total*100):0;
+  var C=2*Math.PI*72,O=C-score/100*C;
+  var ring=document.getElementById('ring');ring.style.strokeDasharray=C;ring.style.strokeDashoffset=O;
+  var ne=document.getElementById('scoreNum');var cur=0;var step=Math.max(1,Math.ceil(score/30));var iv=setInterval(function(){cur+=step;if(cur>=score){clearInterval(iv);cur=score}ne.textContent=cur},1200/Math.max(1,score));
+  var gr='',gc='';
+  if(score>=80){gr='优秀 · 品牌 AI 认知度极高';gc='var(--green-text)'}else if(score>=50){gr='一般 · 仍有较大提升空间';gc='var(--yellow-text)'}else{gr='较低 · 需加快推进 GEO 策略';gc='var(--red-text)'}
+  document.getElementById('scoreGrade').textContent=gr;document.getElementById('scoreGrade').style.color=gc;
+  document.getElementById('scoreMeta').textContent=brand+' · '+total+' 个模型中提及'+mc+' 次';
+  var grid=document.getElementById('resultsGrid');grid.innerHTML='';
+  results.forEach(function(r,i){var cls='rcard ',badge='',bc='';if(r.error){cls+='error';badge='请求出错';bc='err'}else if(r.mentioned){cls+='mentioned';badge='已提及';bc='yes'}else{cls+='not-mentioned';badge='未提及';bc='no'}
+  var c=document.createElement('div');c.className=cls;c.style.animationDelay=(i*80)+'ms';
+  c.innerHTML='<div class="rcard-head"><span class="icon">🤖</span><span class="name">'+r.modelKey+'</span><span class="badge '+bc+'">'+badge+'</span></div><div class="rcard-body">'+(r.error?'<span style="color:var(--yellow-text)">'+r.error+'</span>':(r.snippet||'<span style="color:var(--text4)">无相关片段</span>'))+'</div>';
+  grid.appendChild(c)});
+  document.getElementById('suggestText').textContent=gS(score,brand);document.getElementById('results').classList.add('show');setTimeout(function(){document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'})},150)}
+function gS(score,brand){if(score>=80)return '"'+brand+'" 在 AI 中具有很强可见性。继续保持高质量内容输出。';if(score>=50)return '"'+brand+'" 的 AI 可见性中等。建议增加行业案例和思想领袖内容。';return '"'+brand+'" 的 AI 可见性偏低。建议从创建权威内容入手。'}
 
-// ── Render results ──
-function renderResults(brand, results){
-  const t = texts[currentLang];
-  const mentionedCount = results.filter(r => r.mentioned).length;
-  const total = results.length;
-  const score = total > 0 ? Math.round((mentionedCount / total) * 100) : 0;
+// ══════════ AI Price Data ══════════
+var PD=[
+  {id:'gpt-5.5',icon:'🧠',name:'OpenAI',model:'GPT-5.5',input:2.50,output:10.00,tier:'premium',mmlu:92.3,he:98.2,math:95.1,swe:67.8,pos:['综合旗舰','商业推理','写作'],reco:'GPT-5.5 是 OpenAI 综合旗舰，适合企业级场景。开源替代：DeepSeek V4'},
+  {id:'gpt-5.4',icon:'🧠',name:'OpenAI',model:'GPT-5.4',input:1.50,output:6.00,tier:'premium',mmlu:91.1,he:97.0,math:93.5,swe:65.2,pos:['主力旗舰','开发辅助','知识问答'],reco:'GPT-5.4 日常开发最佳平衡点。Codex CLI 首选模型。'},
+  {id:'gpt-5.1',icon:'🧠',name:'OpenAI',model:'GPT-5.1',input:0.80,output:3.20,tier:'ok',mmlu:89.5,he:95.8,math:89.2,swe:58.3,pos:['经济之选','高并发','批处理'],reco:'GPT-5.1 性价比之选，比 5.4 便宜 47%。'},
+  {id:'deepseek-v4',icon:'🐋',name:'DeepSeek',model:'V4',input:0.14,output:0.28,tier:'best',mmlu:91.8,he:94.5,math:96.3,swe:63.1,pos:['数学之王','开源最强','极致性价比'],reco:'DeepSeek V4 数学推理超越 GPT-5.5，价格仅 1/35。'},
+  {id:'deepseek-v3.2',icon:'🐋',name:'DeepSeek',model:'V3.2',input:0.07,output:0.14,tier:'best',mmlu:88.7,he:91.2,math:92.1,swe:55.8,pos:['极致低价','日常对话','新手入门'],reco:'当前市场最低价。覆盖 80% 常见需求。'},
+  {id:'gemini-3.1-pro',icon:'🌐',name:'Google',model:'Gemini 3.1 Pro',input:1.25,output:5.00,tier:'good',mmlu:93.1,he:95.2,math:94.8,swe:62.5,pos:['多模态之王','知识广度','长上下文'],reco:'200 万 token 上下文窗口，多模态能力顶级。'},
+  {id:'gemini-3.1-ultra',icon:'🌐',name:'Google',model:'Gemini 3.1 Ultra',input:3.00,output:12.00,tier:'premium',mmlu:94.2,he:97.8,math:96.0,swe:65.9,pos:['Google 最强','综合旗舰','研究级'],reco:'MMLU-Pro 顶尖。价格不到 Opus 的 1/5。'},
+  {id:'gemini-3.0-flash',icon:'🌐',name:'Google',model:'Gemini 3.0 Flash',input:0.15,output:0.60,tier:'best',mmlu:85.2,he:88.5,math:86.3,swe:48.2,pos:['极速推理','轻量任务','实时场景'],reco:'Google 最轻量高性能模型，实时场景首选。'},
+  {id:'claude-opus-4.7',icon:'🎭',name:'Anthropic',model:'Claude Opus 4.7',input:15.00,output:75.00,tier:'premium',mmlu:94.5,he:98.5,math:96.8,swe:72.1,pos:['编程之王','安全第一','深度推理'],reco:'SWE-bench 第一（72.1）。编程最强选择。'},
+  {id:'claude-sonnet-4.6',icon:'🎭',name:'Anthropic',model:'Claude Sonnet 4.6',input:3.00,output:15.00,tier:'premium',mmlu:91.2,he:96.3,math:93.0,swe:68.4,pos:['编程第二','安全合规','长文档'],reco:'编程性价比之王，价格仅为 Opus 的 1/5。'},
+  {id:'grok-3',icon:'⚡',name:'xAI',model:'Grok-3',input:3.00,output:15.00,tier:'premium',mmlu:90.5,he:92.8,math:94.2,swe:59.7,pos:['实时信息','X平台集成','创意写作'],reco:'独有 X 平台深度集成和实时数据访问。'},
+  {id:'qwen-3.7-max',icon:'🧧',name:'阿里巴巴',model:'Qwen3.7-Max',input:0.50,output:2.00,tier:'good',mmlu:90.8,he:93.5,math:93.8,swe:61.2,pos:['中文最强','阿里云原生','全模态'],reco:'中文理解能力业界领先。阿里云生态深度集成。'},
+  {id:'qwen-3.5-plus',icon:'🧧',name:'阿里巴巴',model:'Qwen3.5-Plus',input:0.20,output:0.80,tier:'best',mmlu:87.5,he:90.2,math:89.8,swe:54.1,pos:['中文性价比','轻量部署','教育场景'],reco:'中文场景最具性价比选择。'},
+  {id:'glm-5',icon:'🔮',name:'智谱',model:'GLM-5',input:0.30,output:1.20,tier:'good',mmlu:89.2,he:91.8,math:91.5,swe:57.3,pos:['国产自主','科研合作','中文深度'],reco:'国产自主可控。清华系团队。'},
+  {id:'glm-4-plus',icon:'🔮',name:'智谱',model:'GLM-4-Plus',input:0.15,output:0.60,tier:'best',mmlu:86.8,he:88.3,math:87.2,swe:50.1,pos:['轻量自主','批量推理','创业团队'],reco:'国产模型中性价比突出。'},
+  {id:'kimi-2.6',icon:'🚀',name:'Moonshot',model:'Kimi 2.6',input:0.20,output:0.80,tier:'good',mmlu:87.8,he:90.1,math:90.2,swe:54.6,pos:['长文本之王','读书助手','知识检索'],reco:'超长上下文，适合论文阅读和法律文书。'},
+  {id:'yi-lightning-2',icon:'⚡',name:'01.AI',model:'Yi-Lightning 2',input:0.15,output:0.60,tier:'best',mmlu:86.1,he:88.0,math:86.5,swe:49.8,pos:['推理速度','轻量部署','端侧推理'],reco:'推理速度极快，适合端侧部署。'},
+  {id:'mistral-large-2',icon:'🦅',name:'Mistral',model:'Large 2',input:2.00,output:6.00,tier:'ok',mmlu:88.5,he:91.0,math:88.2,swe:57.8,pos:['欧洲标杆','开源生态','多语言'],reco:'欧洲 AI 最强代表，开源友好。'}
+];
+function bv(v,max){return v<=max*.1?'cheap':v<=max*.35?'mid':'costly'}
+function tierL(t){return t==='best'?'💎 低价':t==='good'?'👍 性价比':t==='ok'?'⚖️ 中等':'💎 高价'}
+function benchV(id,v){var max=Math.max.apply(null,PD.map(function(d){return d[id]}));if(v>=max-2)return'top';if(v>=max-8)return'good';return'mid'}
 
-  // Ring
-  const circumference = 2 * Math.PI * 68;
-  const offset = circumference - (score / 100) * circumference;
-  const ring = document.getElementById("ring");
-  ring.style.strokeDasharray = circumference;
-  ring.style.strokeDashoffset = offset;
+document.querySelectorAll('.vs-chip').forEach(function(ch){ch.addEventListener('click',function(){
+  var sel=document.querySelectorAll('.vs-chip.active');
+  if(!this.classList.contains('active')&&sel.length>=4)return;
+  this.classList.toggle('active');
+  document.getElementById('vsCount').textContent=document.querySelectorAll('.vs-chip.active').length+' 已选';
+  renderVS();
+})});
 
-  // Animate number
-  const numEl = document.getElementById("scoreNum");
-  let current = 0;
-  const interval = setInterval(() => {
-    current += 1;
-    if(current >= score){ clearInterval(interval); current = score; }
-    numEl.textContent = current;
-  }, 1200 / score);
-
-  // Grade
-  let grade = "", gradeColor = "";
-  if(score >= 80){ grade = "优秀 · 品牌 AI 认知度极高"; gradeColor = "var(--green)"; }
-  else if(score >= 50){ grade = "一般 · 仍有较大提升空间"; gradeColor = "var(--yellow)"; }
-  else { grade = "较低 · 需 urgently 优化 GEO"; gradeColor = "var(--red)"; }
-  const gradeEl = document.getElementById("scoreGrade");
-  gradeEl.textContent = grade;
-  gradeEl.style.color = gradeColor;
-
-  document.getElementById("scoreMeta").textContent = `${brand} 在 ${total} 个模型中被提及 ${mentionedCount} 次`;
-
-  // Cards
-  const grid = document.getElementById("resultsGrid");
-  grid.innerHTML = "";
-  results.forEach(r => {
-    const cfg = MODEL_CONFIG[r.modelKey];
-    const mName = r.modelKey;
-    let cls = "rcard ", badge = "", badgeCls = "";
-    if(r.error){ cls += "error"; badge = t.mentionErr; badgeCls = "err"; }
-    else if(r.mentioned){ cls += "mentioned"; badge = t.mentionYes; badgeCls = "yes"; }
-    else { cls += "not-mentioned"; badge = t.mentionNo; badgeCls = "no"; }
-
-    const card = document.createElement("div");
-    card.className = cls;
-    card.innerHTML = `
-      <div class="rcard-head">
-        <span class="icon">🤖</span>
-        <span class="name">${mName}</span>
-        <span class="badge ${badgeCls}">${badge}</span>
-      </div>
-      <div class="rcard-body">${r.error ? "<span style="color:var(--yellow)">"+r.error+"</span>" : (r.snippet || "<span style="color:var(--text3)">无相关片段</span>")}</div>
-    `;
+function renderVS(){
+  var ids=Array.from(document.querySelectorAll('.vs-chip.active')).map(function(c){return c.dataset.vs});
+  var grid=document.getElementById('vsGrid');grid.innerHTML='';
+  if(ids.length===0){grid.style.display='none';return}
+  grid.style.display='grid';grid.className='vs-grid n'+Math.min(ids.length,4);
+  var selected=ids.map(function(id){return PD.find(function(d){return d.id===id})}).filter(Boolean);
+  selected.forEach(function(d,i){
+    var card=document.createElement('div');card.className='vs-card rank-'+(i+1);
+    var bm='<div class="bench-row"><span class="bench-name">MMLU-Pro 知识</span><span class="bench-val '+benchV('mmlu',d.mmlu)+'">'+d.mmlu+'</span></div>'+
+      '<div class="bench-row"><span class="bench-name">HumanEval 编程</span><span class="bench-val '+benchV('he',d.he)+'">'+d.he+'</span></div>'+
+      '<div class="bench-row"><span class="bench-name">MATH 500 数学</span><span class="bench-val '+benchV('math',d.math)+'">'+d.math+'</span></div>'+
+      '<div class="bench-row"><span class="bench-name">SWE-bench 工程</span><span class="bench-val '+benchV('swe',d.swe)+'">'+d.swe+'</span></div>'+
+      '<div class="bench-row"><span class="bench-name">💰 输入/1M</span><span class="bench-val '+bv(d.input,Math.max.apply(null,PD.map(function(x){return x.output})))+'">$'+d.input.toFixed(2)+'</span></div>'+
+      '<div class="bench-row"><span class="bench-name">💰 输出/1M</span><span class="bench-val '+bv(d.output,Math.max.apply(null,PD.map(function(x){return x.output})))+'">$'+d.output.toFixed(2)+'</span></div>';
+    var posHtml=d.pos.map(function(p){return '<span class="vs-tag">'+p+'</span>'}).join('');
+    card.innerHTML='<div class="vs-card-head"><span class="vs-icon">'+d.icon+'</span><span class="vs-name">'+d.name+' '+d.model+'</span></div>'+bm+'<div class="vs-pos">'+posHtml+'</div><div class="vs-reco">💡 '+d.reco+'</div>';
     grid.appendChild(card);
   });
-
-  // Suggestion
-  document.getElementById("suggestText").textContent = getSuggestion(score, brand);
-
-  document.getElementById("results").classList.add("show");
-  setTimeout(() => { document.getElementById("results").scrollIntoView({behavior:"smooth", block:"start"}); }, 100);
+}
+function rPC(){
+  var maxOut=Math.max.apply(null,PD.map(function(d){return d.output}));var grid=document.getElementById('priceGrid');grid.innerHTML='';
+  PD.forEach(function(d){
+    var card=document.createElement('div');card.className='price-card '+d.tier;
+    card.innerHTML='<div class="price-card-head"><span class="p-icon">'+d.icon+'</span><div class="p-info"><div class="p-name">'+d.name+' '+d.model+'</div></div><span class="p-tier '+d.tier+'">'+tierL(d.tier)+'</span></div><div class="price-rows"><div class="price-row"><span class="pr-label">📥 输入/1M</span><span class="pr-value '+bv(d.input,maxOut)+'">$'+d.input.toFixed(2)+'</span></div><div class="price-row"><span class="pr-label">📤 输出/1M</span><span class="pr-value '+bv(d.output,maxOut)+'">$'+d.output.toFixed(2)+'</span></div><div class="price-row"><span class="pr-label">💰 综合均价/1M</span><span class="pr-value '+bv((d.input+d.output)/2,maxOut)+'">$'+((d.input+d.output)/2).toFixed(2)+'</span></div></div>';
+    grid.appendChild(card);
+  });
+}
+function rPB(){
+  var sorted=PD.slice().sort(function(a,b){return a.output-b.output}),maxOut=sorted[sorted.length-1].output;
+  var container=document.getElementById('priceBars');container.innerHTML='';
+  var colors={best:'linear-gradient(90deg,#34d399,#6ee7b7)',good:'linear-gradient(90deg,#818cf8,#a78bfa)',ok:'linear-gradient(90deg,#fbbf24,#fcd34d)',premium:'linear-gradient(90deg,#f87171,#fca5a5)'};
+  sorted.forEach(function(d){var pct=d.output/maxOut*100;container.innerHTML+='<div class="bar-row"><span class="bar-label">'+d.name+' '+d.model+'</span><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+colors[d.tier]+'"><span class="bp">$'+d.output.toFixed(2)+'</span></div></div></div>'});
+}
+function iPC(){
+  var select=document.getElementById('calcModel');
+  select.innerHTML=PD.map(function(d){return '<option value="'+d.id+'">'+d.name+' '+d.model+'</option>'}).join('');
+  document.getElementById('calcBtn').addEventListener('click',function(){
+    var modelId=select.value,tokens=parseInt(document.getElementById('calcTokens').value)||1000000;
+    var d=PD.find(function(p){return p.id===modelId});if(!d)return;
+    var tokenM=tokens/1000000,cost=(d.input*.7+d.output*.3)*tokenM;
+    document.getElementById('calcCost').textContent='$'+cost.toFixed(2);
+    document.getElementById('calcDetail').textContent=d.name+' '+d.model+' · '+tokens.toLocaleString()+' tokens/月 · 输入 $'+(d.input*tokenM).toFixed(2)+' + 输出 $'+(d.output*tokenM).toFixed(2)+' (70:30)';
+  });
 }
 
-// ── Suggestion ──
-function getSuggestion(score, brand){
-  if(currentLang === "en"){
-    if(score >= 80) return `🎉 Your brand "${brand}" has strong AI visibility. Keep publishing high-quality content and maintain an active online presence to sustain your lead.`;
-    if(score >= 50) return `📈 "${brand}" shows moderate AI visibility. Consider publishing more industry insights, case studies, and thought leadership content to improve model recall.`;
-    return `⚠️ "${brand}" has low AI visibility. Start by creating authoritative content, getting featured in industry publications, and optimizing for AI training data sources.`;
-  }
-  if(score >= 80) return `🎉 品牌"${brand}"在 AI 中具有较强可见性。建议继续发布高质量内容，保持活跃的在线存在感，以维持领先地位。`;
-  if(score >= 50) return `📈 "${brand}"的 AI 可见性中等。建议发布更多行业洞察、案例研究和思想领导力内容，提升模型对品牌的记忆度。`;
-  return `⚠️ "${brand}"的 AI 可见性较低。建议从创建权威内容、争取行业媒体曝光、优化 AI 训练数据源入手，系统提升 GEO 表现。`;
+// ══════════ Workshop ══════════
+var wsFiles=JSON.parse(localStorage.getItem('wsFiles')||'[]');
+var wsActive=null;
+function wsSave(){localStorage.setItem('wsFiles',JSON.stringify(wsFiles))}
+function updateWSFileCount(){document.getElementById('wsFileCount').textContent=wsFiles.length+' 个文件'}
+function renderWSFiles(){
+  var list=document.getElementById('wsFileList');var empty=document.getElementById('wsEmpty');
+  if(wsFiles.length===0){list.innerHTML='';list.appendChild(empty);empty.style.display='block';updateWSFileCount();return}
+  empty.style.display='none';list.innerHTML='';
+  wsFiles.forEach(function(f,i){
+    var item=document.createElement('div');item.className='ws-file-item'+(wsActive===i?' active':'');
+    item.innerHTML='<span class="ws-file-icon">'+fileIcon(f.name)+'</span><div class="ws-file-info"><div class="ws-file-name">'+f.name+'</div><div class="ws-file-meta">'+f.content.length+' 字节</div></div><button class="ws-file-del" data-idx="'+i+'">✕</button>';
+    item.addEventListener('click',function(e){if(e.target.classList.contains('ws-file-del'))return;wsOpenFile(i)});
+    list.appendChild(item);
+  });
+  list.querySelectorAll('.ws-file-del').forEach(function(btn){btn.addEventListener('click',function(e){
+    e.stopPropagation();var idx=parseInt(this.dataset.idx);
+    if(confirm('确定删除此文件？')){wsFiles.splice(idx,1);if(wsActive===idx){wsActive=null;document.getElementById('wsEditorWrap').style.display='none'}else if(wsActive>idx){wsActive--}wsSave();renderWSFiles()}
+  })});
+  updateWSFileCount();
 }
+function fileIcon(name){var ext=name.split('.').pop().toLowerCase();if(['js','ts','jsx','tsx'].includes(ext))return '📜';if(['html','htm'].includes(ext))return '🌐';if(['css','scss','less'].includes(ext))return '🎨';if(['py'].includes(ext))return '🐍';if(['json','yaml','yml','toml'].includes(ext))return '📋';if(['md','txt'].includes(ext))return '📝';if(['sh','bat','ps1'].includes(ext))return '⚡';return '📄'}
+function wsOpenFile(idx){wsActive=idx;var f=wsFiles[idx];document.getElementById('wsEditorName').textContent=f.name;document.getElementById('wsEditor').value=f.content;document.getElementById('wsEditorWrap').style.display='block';renderWSFiles()}
+document.getElementById('wsNewBtn').addEventListener('click',function(){var name=prompt('文件名：','未命名.txt');if(!name)return;wsFiles.push({name:name,content:''});wsSave();renderWSFiles();wsOpenFile(wsFiles.length-1)});
+document.getElementById('wsImportBtn').addEventListener('click',function(){document.getElementById('fileInput').click()});
+document.getElementById('fileInput').addEventListener('change',function(e){Array.from(e.target.files).forEach(function(file){var reader=new FileReader();reader.onload=function(ev){wsFiles.push({name:file.name,content:ev.target.result});wsSave();renderWSFiles()};reader.readAsText(file)});this.value=''});
+document.getElementById('wsExportBtn').addEventListener('click',function(){if(wsActive===null){alert('未选择文件');return}var f=wsFiles[wsActive];var blob=new Blob([f.content],{type:'text/plain;charset=utf-8'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=f.name;a.click();URL.revokeObjectURL(url)});
+document.getElementById('wsSaveBtn').addEventListener('click',function(){if(wsActive===null)return;wsFiles[wsActive].content=document.getElementById('wsEditor').value;wsSave();renderWSFiles()});
+document.getElementById('wsCloseBtn').addEventListener('click',function(){if(wsActive!==null){wsFiles[wsActive].content=document.getElementById('wsEditor').value;wsSave()}wsActive=null;document.getElementById('wsEditorWrap').style.display='none';renderWSFiles()});
 
-// ── Init ──
-updateSelectedCount();
+// ══════════ Init ══════════
+updateAuthUI();updateSC();rPC();rPB();iPC();renderVS();renderWSFiles();
 </script>
 </body>
 </html>
-
-
-
