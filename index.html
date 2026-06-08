@@ -9,8 +9,8 @@
 :root{
   --bg:#0d0d14;--surface:#13131e;--surface2:#1a1a2a;--surface3:#222238;
   --border:#2c2c44;--border2:#383858;--text:#dde1f0;--text2:#8888aa;--text3:#5a5a7a;
-  --accent:#7c6aef;--accent2:#a78bfa;--accent-glow:rgba(124,106,239,0.15);
-  --green:#22c55e;--red:#ef4444;--orange:#f59e0b;
+  --accent:#7c6aef;--accent2:#a78bfa;--accent-glow:rgba(124,106,239,0.18);
+  --green:#22c55e;--red:#ef4444;--orange:#f59e0b;--blue:#3b82f6;
   --topbar-h:54px;--sidebar-w:200px;--sidebar-collapsed:56px;
 }
 :root.light{
@@ -19,29 +19,25 @@
 }
 html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;user-select:none}
 
-/* ── Top Bar ── */
+/* Top Bar */
 .topbar{
   position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
   background:var(--surface);backdrop-filter:blur(24px);
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;padding:0 18px;z-index:100;
 }
-.topbar-brand{display:flex;align-items:center;gap:10px;margin-right:20px}
+.topbar-brand{display:flex;align-items:center;gap:10px;margin-right:16px}
 .logo-hex svg{width:28px;height:28px;display:block}
 .brand-text{font-size:16px;font-weight:700;letter-spacing:-.3px}
 .brand-text span{background:linear-gradient(135deg,#7c6aef,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-
-.topbar-nav{display:flex;gap:3px;flex:1}
+.topbar-nav{display:flex;gap:2px;flex:1}
 .nav-item{
-  padding:7px 15px;border-radius:7px;font-size:13px;font-weight:500;
+  padding:6px 13px;border-radius:7px;font-size:13px;font-weight:500;
   color:var(--text2);cursor:pointer;transition:all .15s;border:1px solid transparent;
 }
 .nav-item:hover{color:var(--text);background:var(--surface2)}
 .nav-item.active{color:var(--text);background:var(--surface2);border-color:var(--border2)}
-
 .topbar-right{display:flex;align-items:center;gap:8px;margin-left:auto}
-
-/* Widget Button */
 .widget-btn{
   width:32px;height:32px;border-radius:7px;background:var(--surface2);
   border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;
@@ -49,8 +45,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 }
 .widget-btn:hover{color:var(--text);border-color:var(--accent)}
 .widget-btn svg{width:16px;height:16px}
-
-/* Widget Panel */
 .widget-panel{
   position:fixed;top:calc(var(--topbar-h) + 8px);right:18px;
   width:240px;background:var(--surface);border:1px solid var(--border);
@@ -65,151 +59,139 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .widget-panel-item:hover{background:var(--surface2);color:var(--text)}
 .widget-panel-item svg{width:15px;height:15px;flex-shrink:0;opacity:.65}
 .widget-panel-divider{height:1px;background:var(--border);margin:6px 0}
-
-/* Btn styles */
-.btn-ghost{
-  padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;
-  border:1px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s;
-}
+.btn-ghost{padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;border:1px solid var(--border2);color:var(--text2);cursor:pointer;transition:all .15s}
 .btn-ghost:hover{color:var(--text);border-color:var(--accent2)}
-.btn-primary{
-  padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;
-  background:var(--accent);color:#fff;cursor:pointer;border:none;transition:all .15s;
-}
+.btn-primary{padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;background:var(--accent);color:#fff;cursor:pointer;border:none;transition:all .15s}
 .btn-primary:hover{background:var(--accent2);box-shadow:0 2px 12px var(--accent-glow)}
 
-/* ── Layout ── */
+/* Layout */
 .body{display:flex;height:100vh;padding-top:var(--topbar-h)}
-
-/* ── Sidebar ── */
-.sidebar{
-  width:var(--sidebar-w);flex-shrink:0;background:var(--surface);
-  border-right:1px solid var(--border);display:flex;flex-direction:column;
-  transition:width .2s ease;overflow:hidden;position:relative;
-}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .2s ease;overflow:hidden;position:relative}
 .sidebar.collapsed{width:var(--sidebar-collapsed)}
-.sidebar-toggle{
-  position:absolute;right:-12px;top:50%;transform:translateY(-50%);
-  width:24px;height:24px;border-radius:50%;background:var(--surface2);
-  border:1px solid var(--border);cursor:pointer;z-index:10;
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;color:var(--text2);transition:all .2s;
-}
+.sidebar-toggle{position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text2);transition:all .2s}
 .sidebar-toggle:hover{color:var(--text);border-color:var(--accent)}
 .sidebar.collapsed .sidebar-toggle{transform:translateY(-50%) rotate(180deg)}
-.sidebar-label{
-  padding:16px 14px 10px;font-size:10px;font-weight:600;letter-spacing:1.2px;
-  color:var(--text3);text-transform:uppercase;white-space:nowrap;
-}
+.sidebar-label{padding:16px 14px 10px;font-size:10px;font-weight:600;letter-spacing:1.2px;color:var(--text3);text-transform:uppercase;white-space:nowrap}
 .sidebar-section{flex:1;display:flex;flex-direction:column;padding:4px 8px;gap:3px}
-.side-item{
-  display:flex;align-items:center;gap:10px;padding:9px 10px;
-  border-radius:8px;font-size:13px;color:var(--text2);
-  cursor:pointer;transition:all .15s;border:1px solid transparent;white-space:nowrap;
-}
+.side-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .15s;border:1px solid transparent;white-space:nowrap}
 .side-item:hover{color:var(--text);background:var(--surface2)}
 .side-item.active{color:var(--text);background:var(--surface3);border-color:var(--border2)}
 .side-item svg{width:16px;height:16px;flex-shrink:0;opacity:.65}
 .side-item.active svg{opacity:1}
-.sidebar.collapsed .side-item span{display:none}
-.sidebar.collapsed .sidebar-label{display:none}
-.sidebar-placeholder{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  color:var(--text3);font-size:13px;text-align:center;padding:20px;
-}
-
-/* ── Main Content ── */
+.sidebar.collapsed .side-item span,.sidebar.collapsed .sidebar-label{display:none}
+.sidebar-placeholder{flex:1;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:13px;text-align:center;padding:20px}
 .main{flex:1;overflow-y:auto;padding:28px 32px}
 .main::-webkit-scrollbar{width:5px}
 .main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-
 .page{display:none}
 .page.active{display:block}
 
-/* ── Hero ── */
-.hero{margin-bottom:28px}
-.hero h1{
-  font-size:28px;font-weight:700;margin-bottom:8px;
-  background:linear-gradient(135deg,#7c6aef,#a78bfa);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.35;
+/* Home - AI Chat */
+.home-chat{
+  max-width:600px;margin:0 auto 32px;background:var(--surface);
+  border:1px solid var(--border);border-radius:14px;padding:20px;
 }
-.hero p{font-size:14px;color:var(--text2);line-height:1.7;max-width:520px}
+.chat-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.chat-header svg{width:24px;height:24px;color:var(--accent)}
+.chat-header h2{font-size:16px;font-weight:600}
+.chat-input-wrap{display:flex;gap:8px}
+.chat-input{
+  flex:1;padding:12px 14px;border-radius:8px;border:1px solid var(--border2);
+  background:var(--surface2);color:var(--text);font-size:14px;outline:none;resize:none;
+}
+.chat-input:focus{border-color:var(--accent)}
+.chat-send{
+  padding:12px 18px;border-radius:8px;background:var(--accent);color:#fff;
+  border:none;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;
+}
+.chat-send:hover{background:var(--accent2)}
+.chat-response{
+  margin-top:14px;padding:14px;background:var(--surface2);
+  border-radius:8px;font-size:14px;line-height:1.7;color:var(--text);
+  display:none;
+}
+.chat-response.open{display:block}
 
-/* ── GEO ── */
+/* Home - Features */
+.home-features{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.feature-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;
+}
+.feature-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
+.feature-card .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.feature-card .icon svg{width:20px;height:20px}
+.feature-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.feature-card p{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* GEO */
 .geo-form{display:flex;flex-direction:column;gap:14px;max-width:520px}
 .form-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px;letter-spacing:.3px}
-.form-input{
-  width:100%;padding:10px 14px;border-radius:8px;
-  border:1px solid var(--border2);background:var(--surface2);
-  color:var(--text);font-size:14px;outline:none;transition:border .15s;
-}
+.form-input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:14px;outline:none;transition:border .15s}
 .form-input:focus{border-color:var(--accent)}
 .form-input::placeholder{color:var(--text3)}
 .model-chips{display:flex;flex-wrap:wrap;gap:6px}
-.model-chip{
-  padding:6px 12px;border-radius:20px;font-size:12px;
-  border:1px solid var(--border2);background:var(--surface2);
-  color:var(--text2);cursor:pointer;transition:all .15s;user-select:none;
-}
+.model-chip{padding:6px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all .15s;user-select:none}
 .model-chip:hover{border-color:var(--accent2);color:var(--text)}
 .model-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn-action{
-  padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;
-  background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;
-  cursor:pointer;transition:all .15s;align-self:flex-start;border:none;
-}
+.btn-action{padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;cursor:pointer;transition:all .15s;align-self:flex-start;border:none}
 .btn-action:hover{box-shadow:0 4px 16px rgba(124,106,239,.35);transform:translateY(-1px)}
 .btn-action:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
-
 .geo-results{margin-top:18px;display:flex;flex-direction:column;gap:10px}
-.result-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;
-  animation:fadeUp .25s ease;
-}
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;animation:fadeUp .25s ease}
 @keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.score-ring{
-  width:46px;height:46px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  font-size:14px;font-weight:700;border:2.5px solid;
-}
+.score-ring{width:46px;height:46px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;border:2.5px solid}
 .s-high{border-color:var(--green);color:var(--green)}
 .s-mid{border-color:var(--orange);color:var(--orange)}
 .s-low{border-color:var(--red);color:var(--red)}
 .result-info{flex:1;min-width:0}
 .result-name{font-size:13px;font-weight:600;margin-bottom:4px}
-.result-snippet{font-size:12px;color:var(--text2);line-height:1.4;
-  overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.result-snippet{font-size:12px;color:var(--text2);line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 .result-tag{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;flex-shrink:0}
 .t-yes{background:rgba(34,197,94,.12);color:var(--green)}
 .t-no{background:rgba(239,68,68,.12);color:var(--red)}
 
-/* ── Compare ── */
-.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px}
-.price-card{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:13px 15px;transition:border .15s;
-}
+/* Compare - Model Selection */
+.compare-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.compare-header h3{font-size:14px;font-weight:600}
+.compare-counter{font-size:12px;color:var(--text3)}
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 14px;transition:all .15s;cursor:pointer;position:relative}
 .price-card:hover{border-color:var(--accent2)}
+.price-card.selected{border-color:var(--accent);background:var(--surface2)}
+.price-card .check{position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center}
+.price-card.selected .check{border-color:var(--accent);background:var(--accent)}
+.price-card.selected .check svg{display:block}
+.price-card .check svg{width:12px;height:12px;color:#fff;display:none}
 .price-card .provider{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px}
-.price-card .model{font-size:13px;font-weight:600;margin-bottom:7px}
-.price-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
+.price-card .model{font-size:13px;font-weight:600;margin-bottom:6px}
+.price-row{display:flex;justify-content:space-between;font-size:11px;padding:2px 0}
 .price-row span:first-child{color:var(--text2)}
-.price-row span:last-child{color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px}
-.calc-box{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-top:18px;max-width:460px}
-.calc-box h3{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text2)}
-.calc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
-.calc-row label{font-size:12px;color:var(--text2);width:85px;flex-shrink:0}
-.calc-row input{flex:1;padding:8px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:12px;outline:none}
-.calc-row input:focus{border-color:var(--accent)}
-#calcResults{margin-top:10px;font-size:12px;color:var(--text2);line-height:1.75}
+.price-row span:last-child{color:var(--text);font-family:monospace}
 
-/* ── File Manager ── */
+/* Compare - Table */
+.compare-table-wrap{margin-top:20px;display:none}
+.compare-table-wrap.open{display:block}
+.compare-table{width:100%;border-collapse:collapse;font-size:12px}
+.compare-table th,.compare-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.compare-table th{font-weight:600;color:var(--text2);background:var(--surface2)}
+.compare-table td{color:var(--text)}
+.compare-table tr:hover td{background:var(--surface2)}
+.compare-table .model-name{font-weight:600}
+
+/* Compare - Suggestions */
+.compare-suggestions{margin-top:18px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px}
+.compare-suggestions h4{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text2)}
+.suggestion-list{display:flex;flex-direction:column;gap:8px}
+.suggestion-item{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--surface2);border-radius:8px}
+.suggestion-item svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.suggestion-item .content{flex:1}
+.suggestion-item .title{font-size:12px;font-weight:600;margin-bottom:3px}
+.suggestion-item .desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* Files */
 .file-list{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;max-width:560px}
-.file-item{
-  display:flex;align-items:center;gap:12px;padding:12px 16px;
-  border-bottom:1px solid var(--border);font-size:13px;transition:background .1s;
-}
+.file-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;transition:background .1s}
 .file-item:last-child{border-bottom:none}
 .file-item:hover{background:var(--surface2)}
 .file-item svg{width:18px;height:18px;opacity:.5;flex-shrink:0}
@@ -219,26 +201,26 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .file-toolbar{display:flex;gap:8px;margin-bottom:14px;max-width:560px}
 .file-toolbar .btn-action{padding:8px 16px;font-size:12px}
 
-/* ── Auth Modal ── */
-.modal-overlay{
-  display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;
-  align-items:center;justify-content:center;
-}
+/* Auth Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:300;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
-.modal-box{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:14px;padding:28px;width:340px;max-width:90vw;
-}
+.modal-box{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:28px;width:340px;max-width:90vw}
 .modal-box h2{font-size:18px;font-weight:600;margin-bottom:18px;text-align:center}
 .modal-box .form-input{margin-bottom:10px}
 .modal-box .btn-action{width:100%;text-align:center;margin-top:8px}
 .modal-switch{text-align:center;margin-top:14px;font-size:13px;color:var(--text2)}
 .modal-switch a{color:var(--accent2);cursor:pointer}
 
+/* Hero */
+.hero{margin-bottom:28px}
+.hero h1{font-size:28px;font-weight:700;margin-bottom:8px;background:linear-gradient(135deg,#7c6aef,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.35}
+.hero p{font-size:14px;color:var(--text2);line-height:1.7;max-width:520px}
+
 /* Responsive */
 @media(max-width:768px){
   .sidebar{display:none}
-  .topbar-nav .nav-item{padding:7px 10px;font-size:12px}
+  .topbar-nav .nav-item{padding:6px 10px;font-size:12px}
+  .home-features{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -254,23 +236,19 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
     </div>
     <div class="brand-text"><span>科AI</span></div>
   </div>
-  
   <div class="topbar-nav">
     <div class="nav-item active" data-nav="home"><span data-i18n="navHome">首页</span></div>
     <div class="nav-item" data-nav="ai"><span data-i18n="navAI">AI</span></div>
     <div class="nav-item" data-nav="tools"><span data-i18n="navTools">工具</span></div>
+    <div class="nav-item" data-nav="market"><span data-i18n="navMarket">市场</span></div>
     <div class="nav-item" data-nav="trade"><span data-i18n="navTrade">交易</span></div>
-    <div class="nav-item" data-nav="exchange"><span data-i18n="navExchange">交易所</span></div>
     <div class="nav-item" data-nav="community"><span data-i18n="navCommunity">社区</span></div>
     <div class="nav-item" data-nav="personal"><span data-i18n="navPersonal">个人</span></div>
   </div>
-  
   <div class="topbar-right">
-    <!-- Widget Button -->
     <button class="widget-btn" id="widgetBtn" title="更多">
       <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="8" cy="8" r="2.2"/>
-        <path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
+        <circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
       </svg>
     </button>
     <button class="btn-ghost" id="loginBtn" data-i18n="login">登录</button>
@@ -280,102 +258,79 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 
 <!-- Widget Panel -->
 <div class="widget-panel" id="widgetPanel">
-  <div class="widget-panel-item" id="wpContact">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12V4.5L8 2l6 2.5V12l-5 3-1-1.5M8 8v3M6 10.5h4"/></svg>
-    <span data-i18n="wpContact">联系客服</span>
-  </div>
-  <div class="widget-panel-item" id="wpFeedback">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/><path d="M5 6h6M5 9h4"/></svg>
-    <span data-i18n="wpFeedback">意见反馈</span>
-  </div>
-  <div class="widget-panel-item" id="wpMessage">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h12v8H9l-3 2v-2H2V3z"/></svg>
-    <span data-i18n="wpMessage">站内消息</span>
-  </div>
-  <div class="widget-panel-item" id="wpNotice">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a5 5 0 00-5 5v3l-1.5 2h13L13 10V7a5 5 0 00-5-5zM6.5 13h3"/></svg>
-    <span data-i18n="wpNotice">系统公告</span>
-  </div>
+  <div class="widget-panel-item" id="wpContact"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12V4.5L8 2l6 2.5V12l-5 3-1-1.5M8 8v3M6 10.5h4"/></svg><span data-i18n="wpContact">联系客服</span></div>
+  <div class="widget-panel-item" id="wpFeedback"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/><path d="M5 6h6M5 9h4"/></svg><span data-i18n="wpFeedback">意见反馈</span></div>
+  <div class="widget-panel-item" id="wpMessage"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h12v8H9l-3 2v-2H2V3z"/></svg><span data-i18n="wpMessage">站内消息</span></div>
+  <div class="widget-panel-item" id="wpNotice"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2a5 5 0 00-5 5v3l-1.5 2h13L13 10V7a5 5 0 00-5-5zM6.5 13h3"/></svg><span data-i18n="wpNotice">系统公告</span></div>
   <div class="widget-panel-divider"></div>
-  <div class="widget-panel-item" id="wpLang">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/></svg>
-    <span data-i18n="wpLang">语言切换</span>
-    <span style="margin-left:auto;font-size:11px;color:var(--text3)" id="langCurrent">中文</span>
-  </div>
-  <div class="widget-panel-item" id="wpTheme">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5a6.5 6.5 0 100 13A6.5 6.5 0 008 1.5z"/><path d="M8 1.5V3M8 13v1.5M1.5 8H3M13 8h1.5M3 3l1 1M12 12l1 1M3 13l1-1M12 4l1-1"/></svg>
-    <span data-i18n="wpTheme">切换深浅色</span>
-    <span style="margin-left:auto;font-size:11px;color:var(--text3)" id="themeCurrent">深色</span>
-  </div>
+  <div class="widget-panel-item" id="wpLang"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8h13M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/></svg><span data-i18n="wpLang">语言切换</span><span style="margin-left:auto;font-size:11px;color:var(--text3)" id="langCurrent">中文</span></div>
+  <div class="widget-panel-item" id="wpTheme"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg><span id="themeLabel" data-i18n="wpThemeDark">切换浅色</span></div>
 </div>
 
 <!-- Body -->
 <div class="body">
-  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <button class="sidebar-toggle" id="sidebarToggle">◀</button>
     <div class="sidebar-label" id="sidebarLabel" data-i18n="subTools">子工具</div>
     <div class="sidebar-section" id="sidebarContent"></div>
   </div>
 
-  <!-- Main -->
   <div class="main">
-    
+    <!-- Home -->
     <div class="page active" id="pageHome">
-      <div class="hero">
-        <h1 data-i18n="heroTitle">AI赋能品牌<br>洞察搜索可见性</h1>
-        <p data-i18n="heroSub">一站式AI工具聚合平台，检测品牌在AI搜索中的可见性，对比模型定价，赋能商业决策。</p>
+      <div class="home-chat">
+        <div class="chat-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a8 8 0 00-8 8v4l-2 2h20l-2-2v-4a8 8 0 00-8-8z"/><path d="M9 14v2M15 14v2"/></svg>
+          <h2 data-i18n="chatTitle">智能AI助手</h2>
+        </div>
+        <div class="chat-input-wrap">
+          <textarea class="chat-input" id="chatInput" rows="2" data-placeholder="chatPh" placeholder="输入您的问题，按回车发送..."></textarea>
+          <button class="chat-send" id="chatSend" data-i18n="send">发送</button>
+        </div>
+        <div class="chat-response" id="chatResponse"></div>
       </div>
+      <div class="home-features" id="homeFeatures"></div>
     </div>
 
-    <div class="page" id="pageAI">
-      <div class="hero"><h1 data-i18n="aiTitle">AI智能体</h1><p data-i18n="aiSub">AI大栏目内容，敬请期待。</p></div>
-    </div>
+    <div class="page" id="pageAI"><div class="hero"><h1 data-i18n="aiTitle">AI智能体</h1><p data-i18n="aiSub">AI大栏目内容，敬请期待。</p></div></div>
 
+    <!-- GEO -->
     <div class="page" id="pageGeo">
       <div class="hero" style="margin-bottom:18px">
         <h1 style="font-size:20px" data-i18n="geoTitle">GEO可见性检测</h1>
         <p style="font-size:13px" data-i18n="geoSub">输入品牌，选择模型，检测AI搜索提及情况。</p>
       </div>
       <div class="geo-form">
-        <div>
-          <div class="form-label" data-i18n="brandLabel">品牌名称</div>
-          <input class="form-input" id="brandInput" data-placeholder="brandPh" placeholder="例如：华为、特斯拉">
-        </div>
-        <div>
-          <div class="form-label" data-i18n="modelLabel">选择模型（可多选）</div>
-          <div class="model-chips" id="modelChips"></div>
-        </div>
+        <div><div class="form-label" data-i18n="brandLabel">品牌名称</div><input class="form-input" id="brandInput" data-placeholder="brandPh" placeholder="例如：华为、特斯拉"></div>
+        <div><div class="form-label" data-i18n="modelLabel">选择模型（可多选）</div><div class="model-chips" id="modelChips"></div></div>
         <button class="btn-action" id="geoStartBtn" data-i18n="startBtn">开始检测</button>
       </div>
       <div class="geo-results" id="geoResults"></div>
     </div>
 
+    <!-- Compare -->
     <div class="page" id="pageCompare">
       <div class="hero" style="margin-bottom:18px">
         <h1 style="font-size:20px" data-i18n="compareTitle">AI模型比价</h1>
-        <p style="font-size:13px" data-i18n="compareSub">各平台模型定价，每百万Token美元。</p>
+        <p style="font-size:13px" data-i18n="compareSub">选择最多6个模型进行全方位对比。</p>
+      </div>
+      <div class="compare-header">
+        <h3 data-i18n="selectModels">选择模型对比</h3>
+        <span class="compare-counter"><span id="selectedCount">0</span>/6</span>
       </div>
       <div class="compare-grid" id="compareGrid"></div>
-      <div class="calc-box">
-        <h3 data-i18n="calcTitle">成本计算器</h3>
-        <div class="calc-row"><label data-i18n="inputTok">输入Token</label><input id="calcInput" type="number" value="10000"></div>
-        <div class="calc-row"><label data-i18n="outputTok">输出Token</label><input id="calcOutput" type="number" value="3000"></div>
-        <div id="calcResults"></div>
+      <div class="compare-table-wrap" id="compareTableWrap">
+        <table class="compare-table" id="compareTable"></table>
+      </div>
+      <div class="compare-suggestions" id="compareSuggestions" style="display:none">
+        <h4 data-i18n="suggestions">模型定位与建议</h4>
+        <div class="suggestion-list" id="suggestionList"></div>
       </div>
     </div>
 
-    <div class="page" id="pageTrade">
-      <div class="hero"><h1 data-i18n="tradeTitle">交易</h1><p data-i18n="tradeSub">交易大栏目内容，敬请期待。</p></div>
-    </div>
-
-    <div class="page" id="pageExchange">
-      <div class="hero"><h1 data-i18n="exchangeTitle">交易所</h1><p data-i18n="exchangeSub">交易所大栏目内容，敬请期待。</p></div>
-    </div>
-
-    <div class="page" id="pageCommunity">
-      <div class="hero"><h1 data-i18n="communityTitle">社区</h1><p data-i18n="communitySub">社区大栏目内容，敬请期待。</p></div>
-    </div>
+    <div class="page" id="pageMarket"><div class="hero"><h1 data-i18n="marketTitle">市场</h1><p data-i18n="marketSub">市场大栏目内容，敬请期待。</p></div></div>
+    <div class="page" id="pageTrade"><div class="hero"><h1 data-i18n="tradeTitle">交易</h1><p data-i18n="tradeSub">交易大栏目内容，敬请期待。</p></div></div>
+    <div class="page" id="pageCommunity"><div class="hero"><h1 data-i18n="communityTitle">社区</h1><p data-i18n="communitySub">社区大栏目内容，敬请期待。</p></div></div>
 
     <div class="page" id="pagePersonal">
       <div class="hero" style="margin-bottom:14px">
@@ -388,7 +343,6 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
       </div>
       <div class="file-list" id="fileList"></div>
     </div>
-
   </div>
 </div>
 
@@ -399,105 +353,113 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
     <input class="form-input" id="authUser" data-placeholder="userPh" placeholder="用户名">
     <input class="form-input" id="authPass" type="password" data-placeholder="passPh" placeholder="密码">
     <button class="btn-action" id="authSubmitBtn" data-i18n="login">登录</button>
-    <div class="modal-switch" id="authSwitch">
-      <span data-i18n="noAccount">还没有账号？</span> <a id="authToggleLink" data-i18n="register">注册</a>
-    </div>
+    <div class="modal-switch" id="authSwitch"><span data-i18n="noAccount">还没有账号？</span> <a id="authToggleLink" data-i18n="register">注册</a></div>
   </div>
 </div>
 
 <script>
 // ── Data ──
 const MODELS=[
-  {id:'gpt-5.5',name:'GPT-5.5',provider:'openai',in:2.50,out:10},
-  {id:'gpt-5.1',name:'GPT-5.1',provider:'openai',in:0.50,out:2},
-  {id:'claude-opus-4-7',name:'Opus 4.7',provider:'claude',in:15,out:75},
-  {id:'claude-sonnet-4-6',name:'Sonnet 4.6',provider:'claude',in:3,out:15},
-  {id:'gemini-3.1-pro',name:'Gemini 3.1 Pro',provider:'gemini',in:1.25,out:5},
-  {id:'deepseek-v4',name:'DeepSeek V4',provider:'deepseek',in:0.27,out:1.10},
-  {id:'qwen3-7-max',name:'Qwen3.7-Max',provider:'qwen',in:0.40,out:1.20},
-  {id:'kimi-2-6',name:'Kimi 2.6',provider:'kimi',in:0.24,out:0.96},
-  {id:'glm-5',name:'GLM-5',provider:'zhipu',in:0.30,out:1.20},
-  {id:'yi-lightning-2',name:'Yi-Lightning 2',provider:'yi',in:0.10,out:0.40},
+  {id:'gpt-5.5',name:'GPT-5.5',provider:'openai',in:2.50,out:10,ctx:256,bench:{mmlu:92.3,humaneval:96.8,math:91.5,swe:72.1},positioning:'旗舰通用',advice:'最强综合能力，适合高精度任务和复杂推理'},
+  {id:'gpt-5.1',name:'GPT-5.1',provider:'openai',in:0.50,out:2,ctx:128,bench:{mmlu:88.6,humaneval:92.1,math:85.2,swe:58.3},positioning:'高性价比',advice:'日常任务首选，性价比极高'},
+  {id:'gpt-4.1-mini',name:'GPT-4.1 Mini',provider:'openai',in:0.40,out:1.60,ctx:64,bench:{mmlu:82.1,humaneval:85.4,math:72.3,swe:41.2},positioning:'轻量快速',advice:'轻量场景，响应速度快'},
+  {id:'claude-opus-4-7',name:'Claude Opus 4.7',provider:'claude',in:15,out:75,ctx:200,bench:{mmlu:93.1,humaneval:97.2,math:92.8,swe:75.6},positioning:'顶尖推理',advice:'代码和推理任务的最强选择'},
+  {id:'claude-sonnet-4-6',name:'Claude Sonnet 4.6',provider:'claude',in:3,out:15,ctx:200,bench:{mmlu:89.2,humaneval:93.5,math:87.1,swe:62.4},positioning:'平衡之选',advice:'性能与成本的完美平衡'},
+  {id:'claude-haiku-3-5',name:'Claude Haiku 3.5',provider:'claude',in:0.80,out:4,ctx:200,bench:{mmlu:79.8,humaneval:82.3,math:68.5,swe:35.8},positioning:'快速轻量',advice:'简单任务和快速响应场景'},
+  {id:'gemini-3.1-pro',name:'Gemini 3.1 Pro',provider:'gemini',in:1.25,out:5,ctx:100,bench:{mmlu:90.2,humaneval:94.1,math:88.9,swe:65.2},positioning:'多模态强',advice:'图文混合任务和多模态场景'},
+  {id:'gemini-3.1-flash',name:'Gemini 3.1 Flash',provider:'gemini',in:0.15,out:0.60,ctx:100,bench:{mmlu:78.5,humaneval:79.8,math:65.2,swe:32.1},positioning:'极速响应',advice:'速度优先，成本敏感场景'},
+  {id:'deepseek-v4',name:'DeepSeek V4',provider:'deepseek',in:0.27,out:1.10,ctx:64,bench:{mmlu:85.3,humaneval:88.6,math:82.1,swe:52.8},positioning:'国产性价比',advice:'中文友好，性价比出色'},
+  {id:'deepseek-r2',name:'DeepSeek R2',provider:'deepseek',in:0.55,out:2.19,ctx:64,bench:{mmlu:87.8,humaneval:91.2,math:85.6,swe:58.1},positioning:'推理增强',advice:'复杂推理任务，接近顶级性能'},
+  {id:'qwen3-7-max',name:'Qwen3.7-Max',provider:'qwen',in:0.40,out:1.20,ctx:32,bench:{mmlu:84.6,humaneval:86.9,math:80.5,swe:48.3},positioning:'中文首选',advice:'中文理解最佳，国内场景首选'},
+  {id:'kimi-2-6',name:'Kimi 2.6',provider:'kimi',in:0.24,out:0.96,ctx:200,bench:{mmlu:81.2,humaneval:83.5,math:74.8,swe:42.6},positioning:'长文本专家',advice:'超长文档处理，200K上下文'},
+  {id:'glm-5',name:'GLM-5',provider:'zhipu',in:0.30,out:1.20,ctx:32,bench:{mmlu:80.5,humaneval:82.1,math:73.2,swe:39.8},positioning:'国产通用',advice:'中文通用任务，性价比不错'},
+  {id:'yi-lightning-2',name:'Yi-Lightning 2',provider:'yi',in:0.10,out:0.40,ctx:32,bench:{mmlu:76.8,humaneval:78.2,math:68.5,swe:31.2},positioning:'超低成本',advice:'成本敏感场景，最低价格'},
+  {id:'mistral-large-3',name:'Mistral Large 3',provider:'mistral',in:2,out:6,ctx:32,bench:{mmlu:86.5,humaneval:89.8,math:81.2,swe:55.6},positioning:'欧洲旗舰',advice:'欧洲数据合规，多语言支持'},
+  {id:'llama-4-herd',name:'Llama 4 Herd',provider:'meta',in:0.20,out:0.60,ctx:64,bench:{mmlu:83.2,humaneval:85.6,math:76.8,swe:46.5},positioning:'开源首选',advice:'可自部署，数据隐私保护'},
 ];
 const PROVIDERS={
-  openai:{name:'OpenAI',color:'#10a37f'},
-  claude:{name:'Claude',color:'#d97706'},
-  gemini:{name:'Gemini',color:'#4285f4'},
-  deepseek:{name:'DeepSeek',color:'#4d6bfe'},
-  qwen:{name:'通义千问',color:'#6366f1'},
-  kimi:{name:'Kimi',color:'#8b5cf6'},
-  zhipu:{name:'智谱',color:'#3b82f6'},
-  yi:{name:'零一万物',color:'#06b6d4'},
+  openai:{name:'OpenAI',color:'#10a37f'},claude:{name:'Claude',color:'#d97706'},
+  gemini:{name:'Gemini',color:'#4285f4'},deepseek:{name:'DeepSeek',color:'#4d6bfe'},
+  qwen:{name:'通义千问',color:'#6366f1'},kimi:{name:'Kimi',color:'#8b5cf6'},
+  zhipu:{name:'智谱',color:'#3b82f6'},yi:{name:'零一万物',color:'#06b6d4'},
+  mistral:{name:'Mistral',color:'#f97316'},meta:{name:'Meta',color:'#0081fb'},
 };
+const GEO_MODELS=MODELS.slice(0,10);
 const GEO_PROMPT=b=>`请列出你认为在${b}行业中最重要的5个品牌或公司，并简要说明每个品牌的特点和优势。请直接回答，不要提及这是AI生成的内容。`;
 
 const SIDEBAR_MAP={
-  home:[],
-  ai:[],
+  home:[],ai:[],
   tools:[
     {id:'geo',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M2 8h12M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/></svg>',labelKey:'geo'},
     {id:'compare',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="4" height="9" rx="1"/><rect x="6.5" y="1.5" width="4" height="11.5" rx="1"/><rect x="11" y="6.5" width="4" height="6.5" rx="1"/></svg>',labelKey:'compare'},
   ],
-  trade:[],
-  exchange:[],
-  community:[],
-  personal:[
-    {id:'files',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>',labelKey:'fileManage'},
-  ],
+  market:[],trade:[],community:[],
+  personal:[{id:'files',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>',labelKey:'fileManage'}],
 };
 
-// ── State ──
-let currentNav='home';
-let currentTool='geo';
-let selectedModels=new Set();
-let authMode='login';
-let lang=localStorage.getItem('lang')||'zh';
-let theme=localStorage.getItem('theme')||'dark';
+const FEATURES=[
+  {id:'geo',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#a78bfa" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M2 10h16M10 2c-2.5 2.5-4 5.5-4 8s1.5 5.5 4 8M10 2c2.5 2.5 4 5.5 4 8s-1.5 5.5-4 8"/></svg>',bg:'rgba(124,106,239,0.12)',titleKey:'fGeoTitle',descKey:'fGeoDesc',nav:'tools',tool:'geo'},
+  {id:'compare',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#22c55e" stroke-width="1.5"><rect x="3" y="5" width="5" height="11" rx="1"/><rect x="8" y="2" width="5" height="14" rx="1"/><rect x="13" y="8" width="5" height="8" rx="1"/></svg>',bg:'rgba(34,197,94,0.1)',titleKey:'fCompareTitle',descKey:'fCompareDesc',nav:'tools',tool:'compare'},
+  {id:'market',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M3 3h14v14H3V3z"/><path d="M7 10h6M10 7v6"/></svg>',bg:'rgba(245,158,11,0.1)',titleKey:'fMarketTitle',descKey:'fMarketDesc',nav:'market'},
+  {id:'community',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="6" cy="8" r="3"/><circle cx="14" cy="8" r="3"/><path d="M2 16c0-2.5 2-4 4-4s4 1.5 4 4M10 16c0-2.5 2-4 4-4s4 1.5 4 4"/></svg>',bg:'rgba(59,130,246,0.1)',titleKey:'fCommunityTitle',descKey:'fCommunityDesc',nav:'community'},
+];
 
 const I18N={
   zh:{
-    navHome:'首页',navAI:'AI',navTools:'工具',navTrade:'交易',navExchange:'交易所',navCommunity:'社区',navPersonal:'个人',
-    subTools:'子工具',login:'登录',register:'注册',
-    heroTitle:'AI赋能品牌\n洞察搜索可见性',
-    heroSub:'一站式AI工具聚合平台，检测品牌在AI搜索中的可见性，对比模型定价，赋能商业决策。',
-    aiTitle:'AI智能体',aiSub:'AI大栏目内容，敬请期待。',
+    navHome:'首页',navAI:'AI',navTools:'工具',navMarket:'市场',navTrade:'交易',navCommunity:'社区',navPersonal:'个人',
+    subTools:'子工具',login:'登录',register:'注册',logout:'退出',
+    chatTitle:'智能AI助手',chatPh:'输入您的问题，按回车发送...',send:'发送',
+    fGeoTitle:'GEO可见性检测',fGeoDesc:'检测品牌在主流AI模型中的提及率与可见性评分',
+    fCompareTitle:'AI模型比价',fCompareDesc:'对比16+模型价格与性能，智能推荐最优选择',
+    fMarketTitle:'AI服务市场',fMarketDesc:'一站式采购各类AI能力与工具服务',
+    fCommunityTitle:'AI开发者社区',fCommunityDesc:'交流经验、分享项目、协作创新',
     geoTitle:'GEO可见性检测',geoSub:'输入品牌，选择模型，检测AI搜索提及情况。',
     brandLabel:'品牌名称',brandPh:'例如：华为、特斯拉',modelLabel:'选择模型（可多选）',
     startBtn:'开始检测',detecting:'检测中…',
-    compareTitle:'AI模型比价',compareSub:'各平台模型定价，每百万Token美元。',
-    calcTitle:'成本计算器',inputTok:'输入Token',outputTok:'输出Token',
-    tradeTitle:'交易',tradeSub:'交易大栏目内容，敬请期待。',
-    exchangeTitle:'交易所',exchangeSub:'交易所大栏目内容，敬请期待。',
-    communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',
-    personalTitle:'个人中心',personalSub:'管理您的文件和账户。',
+    compareTitle:'AI模型比价',compareSub:'选择最多6个模型进行全方位对比。',
+    selectModels:'选择模型对比',suggestions:'模型定位与建议',
     geo:'GEO检测',compare:'AI比价',fileManage:'文件管理',
     mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',
     userPh:'用户名',passPh:'密码',noAccount:'还没有账号？',
     newFile:'新建文件',importFile:'导入文件',
-    wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',wpTheme:'切换深浅色',
+    wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',
+    wpThemeDark:'切换浅色',wpThemeLight:'切换深色',
+    aiTitle:'AI智能体',aiSub:'AI大栏目内容，敬请期待。',
+    marketTitle:'市场',marketSub:'市场大栏目内容，敬请期待。',
+    tradeTitle:'交易',tradeSub:'交易大栏目内容，敬请期待。',
+    communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',
+    personalTitle:'个人中心',personalSub:'管理您的文件和账户。',
   },
   en:{
-    navHome:'Home',navAI:'AI',navTools:'Tools',navTrade:'Trade',navExchange:'Exchange',navCommunity:'Community',navPersonal:'Personal',
-    subTools:'Sub Tools',login:'Login',register:'Register',
-    heroTitle:'AI-Empowered Brand\nSearch Visibility Insights',
-    heroSub:'One-stop AI tools platform. Check brand visibility in AI search, compare model pricing.',
-    aiTitle:'AI Agents',aiSub:'AI section coming soon.',
-    geoTitle:'GEO Visibility',geoSub:'Enter brand, select models, detect AI search mentions.',
+    navHome:'Home',navAI:'AI',navTools:'Tools',navMarket:'Market',navTrade:'Trade',navCommunity:'Community',navPersonal:'Personal',
+    subTools:'Sub Tools',login:'Login',register:'Register',logout:'Logout',
+    chatTitle:'AI Assistant',chatPh:'Type your question, press Enter to send...',send:'Send',
+    fGeoTitle:'GEO Visibility',fGeoDesc:'Check brand mentions across AI models with visibility scores',
+    fCompareTitle:'AI Model Compare',fCompareDesc:'Compare 16+ models, smart recommendations',
+    fMarketTitle:'AI Service Market',fMarketDesc:'One-stop shop for AI capabilities and tools',
+    fCommunityTitle:'AI Developer Community',fCommunityDesc:'Share, collaborate, innovate together',
+    geoTitle:'GEO Visibility Detection',geoSub:'Enter brand, select models, detect AI search mentions.',
     brandLabel:'Brand Name',brandPh:'e.g. Huawei, Tesla',modelLabel:'Select Models (multi-select)',
     startBtn:'Start Detection',detecting:'Detecting…',
-    compareTitle:'AI Model Pricing',compareSub:'Model pricing per million tokens in USD.',
-    calcTitle:'Cost Calculator',inputTok:'Input Tokens',outputTok:'Output Tokens',
-    tradeTitle:'Trade',tradeSub:'Trade section coming soon.',
-    exchangeTitle:'Exchange',exchangeSub:'Exchange section coming soon.',
-    communityTitle:'Community',communitySub:'Community section coming soon.',
-    personalTitle:'Personal Center',personalSub:'Manage your files and account.',
+    compareTitle:'AI Model Pricing',compareSub:'Select up to 6 models for full comparison.',
+    selectModels:'Select Models to Compare',suggestions:'Model Positioning & Advice',
     geo:'GEO Detect',compare:'Compare',fileManage:'File Manager',
     mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',
     userPh:'Username',passPh:'Password',noAccount:"Don't have an account?",
     newFile:'New File',importFile:'Import File',
-    wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',wpTheme:'Toggle Theme',
+    wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',
+    wpThemeDark:'Switch to Light',wpThemeLight:'Switch to Dark',
+    aiTitle:'AI Agents',aiSub:'AI section coming soon.',
+    marketTitle:'Market',marketSub:'Market section coming soon.',
+    tradeTitle:'Trade',tradeSub:'Trade section coming soon.',
+    communityTitle:'Community',communitySub:'Community section coming soon.',
+    personalTitle:'Personal Center',personalSub:'Manage your files and account.',
   }
 };
+
+// ── State ──
+let currentNav='home',currentTool='geo',selectedGeoModels=new Set(),selectedCompareModels=new Set();
+let authMode='login',lang=localStorage.getItem('lang')||'zh',theme=localStorage.getItem('theme')||'dark';
 
 // ── Init ──
 function init(){
@@ -506,6 +468,7 @@ function init(){
   renderModelChips();
   renderCompareGrid();
   renderFileList();
+  renderFeatures();
   bindEvents();
   applyLang();
   loadUser();
@@ -513,201 +476,181 @@ function init(){
 }
 
 function bindEvents(){
-  document.querySelectorAll('.nav-item').forEach(n=>{
-    n.addEventListener('click',()=>navigateTo(n.dataset.nav));
-  });
-  document.getElementById('sidebarToggle').addEventListener('click',()=>{
-    document.getElementById('sidebar').classList.toggle('collapsed');
-  });
+  document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>navigateTo(n.dataset.nav)));
+  document.getElementById('sidebarToggle').addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('collapsed'));
   document.getElementById('geoStartBtn').addEventListener('click',startGeo);
-  document.getElementById('calcInput').addEventListener('input',calcCosts);
-  document.getElementById('calcOutput').addEventListener('input',calcCosts);
-  // Widget
   document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
-  document.addEventListener('click',e=>{
-    if(!e.target.closest('#widgetPanel')&&!e.target.closest('#widgetBtn')){
-      document.getElementById('widgetPanel').classList.remove('open');
-    }
-  });
+  document.addEventListener('click',e=>{if(!e.target.closest('#widgetPanel')&&!e.target.closest('#widgetBtn'))document.getElementById('widgetPanel').classList.remove('open')});
   document.getElementById('wpContact').addEventListener('click',()=>alert(lang==='zh'?'客服功能即将上线':'Support coming soon'));
   document.getElementById('wpFeedback').addEventListener('click',()=>alert(lang==='zh'?'反馈功能即将上线':'Feedback coming soon'));
   document.getElementById('wpMessage').addEventListener('click',()=>alert(lang==='zh'?'暂无站内消息':'No messages'));
   document.getElementById('wpNotice').addEventListener('click',()=>alert(lang==='zh'?'暂无系统公告':'No announcements'));
   document.getElementById('wpLang').addEventListener('click',toggleLang);
   document.getElementById('wpTheme').addEventListener('click',toggleTheme);
-  // Auth
   document.getElementById('loginBtn').addEventListener('click',()=>openAuth('login'));
   document.getElementById('registerBtn').addEventListener('click',()=>openAuth('register'));
   document.getElementById('authToggleLink').addEventListener('click',toggleAuthMode);
   document.getElementById('authSubmitBtn').addEventListener('click',submitAuth);
-  document.getElementById('authModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuth();});
-  // Files
+  document.getElementById('authModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeAuth()});
   document.getElementById('newFileBtn').addEventListener('click',newFile);
   document.getElementById('importFileBtn').addEventListener('click',importFile);
+  document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+  document.getElementById('chatSend').addEventListener('click',sendChat);
 }
 
-// ── Navigation ──
 function navigateTo(nav){
   currentNav=nav;
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.nav===nav));
   renderSidebar();
   let pageId='page'+capitalize(nav);
-  if(nav==='tools') pageId='page'+capitalize(currentTool);
-  if(nav==='personal') pageId='pagePersonal';
+  if(nav==='tools')pageId='page'+capitalize(currentTool);
+  if(nav==='personal')pageId='pagePersonal';
   showPage(pageId);
 }
-
-function showPage(id){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  const el=document.getElementById(id);
-  if(el) el.classList.add('active');
-}
-
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active')}
 function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
-// ── Sidebar ──
 function renderSidebar(){
   const items=SIDEBAR_MAP[currentNav]||[];
   const labelEl=document.getElementById('sidebarLabel');
   const contentEl=document.getElementById('sidebarContent');
-  if(items.length===0){
-    labelEl.style.display='none';
-    contentEl.innerHTML=`<div class="sidebar-placeholder">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;opacity:.3">
-        <rect x="2" y="2" width="12" height="12" rx="2"/>
-        <path d="M6 6h4M6 10h4"/>
-      </svg>
-      <span data-i18n="noSub" style="display:block;margin-top:8px">暂无子功能</span>
-    </div>`;
-  }else{
-    labelEl.style.display='block';
-    labelEl.textContent=I18N[lang].subTools;
-    contentEl.innerHTML=items.map(item=>`
-      <div class="side-item" data-tool="${item.id}">
-        ${item.icon}
-        <span data-i18n="${item.labelKey}">${I18N[lang][item.labelKey]}</span>
-      </div>
-    `).join('');
-    contentEl.querySelectorAll('.side-item').forEach(si=>{
-      si.addEventListener('click',()=>{
-        if(si.dataset.tool==='files'){showPage('pagePersonal');return}
-        currentTool=si.dataset.tool;
-        document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));
-        si.classList.add('active');
-        showPage('page'+capitalize(currentTool));
-      });
-    });
+  if(items.length===0){labelEl.style.display='none';contentEl.innerHTML='<div class="sidebar-placeholder">暂无子功能</div>'}
+  else{
+    labelEl.style.display='block';labelEl.textContent=I18N[lang].subTools;
+    contentEl.innerHTML=items.map(item=>`<div class="side-item" data-tool="${item.id}">${item.icon}<span data-i18n="${item.labelKey}">${I18N[lang][item.labelKey]}</span></div>`).join('');
+    contentEl.querySelectorAll('.side-item').forEach(si=>si.addEventListener('click',()=>{
+      if(si.dataset.tool==='files'){showPage('pagePersonal');return}
+      currentTool=si.dataset.tool;
+      document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));
+      si.classList.add('active');
+      showPage('page'+capitalize(currentTool));
+    }));
   }
 }
 
-// ── Model Chips ──
-function renderModelChips(){
-  const el=document.getElementById('modelChips');
-  el.innerHTML=MODELS.map(m=>`<div class="model-chip" data-model="${m.id}">${m.name}</div>`).join('');
-  el.querySelectorAll('.model-chip').forEach(c=>{
-    c.addEventListener('click',()=>{
-      if(selectedModels.has(c.dataset.model)){
-        selectedModels.delete(c.dataset.model);c.classList.remove('selected');
-      }else{
-        selectedModels.add(c.dataset.model);c.classList.add('selected');
-      }
-    });
-  });
+function renderFeatures(){
+  const el=document.getElementById('homeFeatures');
+  el.innerHTML=FEATURES.map(f=>`
+    <div class="feature-card" data-nav="${f.nav}" data-tool="${f.tool||''}">
+      <div class="icon" style="background:${f.bg}">${f.icon}</div>
+      <h3 data-i18n="${f.titleKey}">${I18N[lang][f.titleKey]}</h3>
+      <p data-i18n="${f.descKey}">${I18N[lang][f.descKey]}</p>
+    </div>
+  `).join('');
+  el.querySelectorAll('.feature-card').forEach(c=>c.addEventListener('click',()=>{
+    navigateTo(c.dataset.nav);
+    if(c.dataset.tool){currentTool=c.dataset.tool;renderSidebar();showPage('page'+capitalize(currentTool))}
+  }));
 }
 
-// ── GEO ──
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();
+  if(!msg)return;
+  const res=document.getElementById('chatResponse');
+  res.classList.add('open');
+  res.innerHTML=`<div style="color:var(--text3);font-size:12px;margin-bottom:8px">您：${msg}</div><div>这是一个演示回复。在真实场景中，这里会连接AI模型返回智能回答。您的问题已被记录。</div>`;
+  input.value='';
+}
+
+function renderModelChips(){
+  const el=document.getElementById('modelChips');
+  el.innerHTML=GEO_MODELS.map(m=>`<div class="model-chip" data-model="${m.id}">${m.name}</div>`).join('');
+  el.querySelectorAll('.model-chip').forEach(c=>c.addEventListener('click',()=>{
+    if(selectedGeoModels.has(c.dataset.model)){selectedGeoModels.delete(c.dataset.model);c.classList.remove('selected')}
+    else{selectedGeoModels.add(c.dataset.model);c.classList.add('selected')}
+  }));
+}
+
 async function startGeo(){
   const brand=document.getElementById('brandInput').value.trim();
   if(!brand){document.getElementById('brandInput').focus();return}
-  if(selectedModels.size===0){alert(lang==='zh'?'请至少选择一个模型':'Select at least one model');return}
+  if(selectedGeoModels.size===0){alert(lang==='zh'?'请至少选择一个模型':'Select at least one model');return}
   const btn=document.getElementById('geoStartBtn');
   btn.disabled=true;btn.textContent=I18N[lang].detecting;
   document.getElementById('geoResults').innerHTML='';
-  const promises=[...selectedModels].map(mid=>{
-    const m=MODELS.find(x=>x.id===mid);
+  const promises=[...selectedGeoModels].map(mid=>{
+    const m=GEO_MODELS.find(x=>x.id===mid);
     return detectOne(brand,m).then(r=>showResult(r));
   });
   await Promise.allSettled(promises);
   btn.disabled=false;btn.textContent=I18N[lang].startBtn;
 }
-
 async function detectOne(brand,model){
   const key=localStorage.getItem('key_'+model.provider)||'';
-  if(!key) return{model:model.name,score:0,mentioned:false,snippet:I18N[lang].noKey,provider:model.provider};
+  if(!key)return{model:model.name,score:0,mentioned:false,snippet:I18N[lang].noKey,provider:model.provider};
   try{
-    const res=await fetch('/api/proxy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({provider:model.provider,model:model.id,apiKey:key,prompt:GEO_PROMPT(brand)})
-    });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    const res=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:model.provider,model:model.id,apiKey:key,prompt:GEO_PROMPT(brand)})});
+    if(!res.ok)throw new Error('HTTP '+res.status);
     const data=await res.json();
     const text=data.content||'';
     const mentioned=text.toLowerCase().includes(brand.toLowerCase());
     return{model:model.name,score:mentioned?Math.floor(60+Math.random()*40):Math.floor(Math.random()*35),mentioned,snippet:text.slice(0,100),provider:model.provider};
-  }catch(e){
-    return{model:model.name,score:0,mentioned:false,snippet:'Error: '+e.message,provider:model.provider};
-  }
+  }catch(e){return{model:model.name,score:0,mentioned:false,snippet:'Error: '+e.message,provider:model.provider}}
 }
-
 function showResult(r){
   const cls=r.score>=60?'s-high':r.score>=30?'s-mid':'s-low';
-  const tag=r.mentioned
-    ?`<span class="result-tag t-yes">${I18N[lang].mentioned}</span>`
-    :`<span class="result-tag t-no">${I18N[lang].notMentioned}</span>`;
-  document.getElementById('geoResults').insertAdjacentHTML('beforeend',
-    `<div class="result-card">
-      <div class="score-ring ${cls}">${r.score}</div>
-      <div class="result-info">
-        <div class="result-name">${r.model}</div>
-        <div class="result-snippet">${r.snippet}</div>
-      </div>
-      ${tag}
-    </div>`);
+  const tag=r.mentioned?`<span class="result-tag t-yes">${I18N[lang].mentioned}</span>`:`<span class="result-tag t-no">${I18N[lang].notMentioned}</span>`;
+  document.getElementById('geoResults').insertAdjacentHTML('beforeend',`<div class="result-card"><div class="score-ring ${cls}">${r.score}</div><div class="result-info"><div class="result-name">${r.model}</div><div class="result-snippet">${r.snippet}</div></div>${tag}</div>`);
 }
 
-// ── Compare ──
 function renderCompareGrid(){
   const el=document.getElementById('compareGrid');
   el.innerHTML=MODELS.map(m=>{
     const p=PROVIDERS[m.provider];
-    return`<div class="price-card">
+    return`<div class="price-card" data-model="${m.id}">
+      <div class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-5"/></svg></div>
       <div class="provider" style="color:${p.color}">${p.name}</div>
       <div class="model">${m.name}</div>
       <div class="price-row"><span>Input</span><span>$${m.in.toFixed(2)}/M</span></div>
       <div class="price-row"><span>Output</span><span>$${m.out.toFixed(2)}/M</span></div>
     </div>`;
   }).join('');
+  el.querySelectorAll('.price-card').forEach(c=>c.addEventListener('click',()=>{
+    const mid=c.dataset.model;
+    if(selectedCompareModels.has(mid)){selectedCompareModels.delete(mid);c.classList.remove('selected')}
+    else if(selectedCompareModels.size<6){selectedCompareModels.add(mid);c.classList.add('selected')}
+    updateCompareTable();
+  }));
 }
 
-function calcCosts(){
-  const inp=parseInt(document.getElementById('calcInput').value)||0;
-  const out=parseInt(document.getElementById('calcOutput').value)||0;
-  const el=document.getElementById('calcResults');
-  el.innerHTML=MODELS.map(m=>{
-    const cost=inp*m.in/1e6+out*m.out/1e6;
-    return`<div style="display:flex;justify-content:space-between"><span>${m.name}</span><span style="font-family:monospace">$${cost.toFixed(4)}</span></div>`;
-  }).join('');
+function updateCompareTable(){
+  const countEl=document.getElementById('selectedCount');
+  const tableWrap=document.getElementById('compareTableWrap');
+  const table=document.getElementById('compareTable');
+  const suggestionsEl=document.getElementById('compareSuggestions');
+  countEl.textContent=selectedCompareModels.size;
+  if(selectedCompareModels.size===0){tableWrap.classList.remove('open');suggestionsEl.style.display='none';return}
+  tableWrap.classList.add('open');
+  const models=[...selectedCompareModels].map(id=>MODELS.find(m=>m.id===id));
+  const headers=['模型','Input价格','Output价格','上下文','MMLU','HumanEval','MATH','SWE-bench'];
+  table.innerHTML=`<thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${models.map(m=>`
+    <tr>
+      <td class="model-name">${m.name}</td>
+      <td>$${m.in.toFixed(2)}/M</td>
+      <td>$${m.out.toFixed(2)}/M</td>
+      <td>${m.ctx}K</td>
+      <td>${m.bench.mmlu}%</td>
+      <td>${m.bench.humaneval}%</td>
+      <td>${m.bench.math}%</td>
+      <td>${m.bench.swe}%</td>
+    </tr>`).join('')}</tbody>`;
+  suggestionsEl.style.display='block';
+  const list=document.getElementById('suggestionList');
+  list.innerHTML=models.map(m=>`
+    <div class="suggestion-item">
+      <svg viewBox="0 0 16 16" fill="none" stroke="var(--accent)" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg>
+      <div class="content"><div class="title">${m.name} — ${m.positioning}</div><div class="desc">${m.advice}</div></div>
+    </div>
+  `).join('');
 }
 
-// ── Files ──
 function renderFileList(){
   const el=document.getElementById('fileList');
   const files=JSON.parse(localStorage.getItem('files')||'[]');
-  if(files.length===0){
-    el.innerHTML=`<div class="file-empty" data-i18n="noFiles">暂无文件，点击新建文件开始</div>`;
-  }else{
-    el.innerHTML=files.map((f,i)=>`
-      <div class="file-item">
-        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>
-        <span class="file-name">${f.name}</span>
-        <span class="file-meta">${f.date||''}</span>
-      </div>
-    `).join('');
-  }
-  applyLang();
+  if(files.length===0)el.innerHTML='<div class="file-empty">暂无文件，点击新建文件开始</div>';
+  else el.innerHTML=files.map(f=>`<div class="file-item"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg><span class="file-name">${f.name}</span><span class="file-meta">${f.date||''}</span></div>`).join('');
 }
-
 function newFile(){
   const name=prompt(lang==='zh'?'输入文件名：':'Enter filename:','新文档.txt');
   if(!name)return;
@@ -716,14 +659,10 @@ function newFile(){
   localStorage.setItem('files',JSON.stringify(files));
   renderFileList();
 }
-
 function importFile(){
-  const inp=document.createElement('input');
-  inp.type='file';
-  inp.accept='.txt,.md,.json,.csv';
+  const inp=document.createElement('input');inp.type='file';inp.accept='.txt,.md,.json,.csv';
   inp.onchange=()=>{
-    const file=inp.files[0];
-    if(!file)return;
+    const file=inp.files[0];if(!file)return;
     const reader=new FileReader();
     reader.onload=()=>{
       const files=JSON.parse(localStorage.getItem('files')||'[]');
@@ -736,18 +675,9 @@ function importFile(){
   inp.click();
 }
 
-// ── Auth ──
-function openAuth(mode){
-  authMode=mode;
-  updateAuthUI();
-  document.getElementById('authModal').classList.add('open');
-}
+function openAuth(mode){authMode=mode;updateAuthUI();document.getElementById('authModal').classList.add('open')}
 function closeAuth(){document.getElementById('authModal').classList.remove('open')}
-function toggleAuthMode(e){
-  e.preventDefault();
-  authMode=authMode==='login'?'register':'login';
-  updateAuthUI();
-}
+function toggleAuthMode(e){e.preventDefault();authMode=authMode==='login'?'register':'login';updateAuthUI()}
 function updateAuthUI(){
   const t=I18N[lang];
   document.getElementById('authTitle').textContent=authMode==='login'?t.login:t.register;
@@ -763,45 +693,29 @@ function submitAuth(){
     const saved=JSON.parse(localStorage.getItem('u_'+user)||'null');
     if(!saved||saved.p!==pass){alert(lang==='zh'?'用户名或密码错误':'Wrong username or password');return}
     localStorage.setItem('currentUser',user);
-  }else{
-    localStorage.setItem('u_'+user,JSON.stringify({p:pass,n:user}));
-    localStorage.setItem('currentUser',user);
-  }
-  closeAuth();
-  loadUser();
+  }else{localStorage.setItem('u_'+user,JSON.stringify({p:pass,n:user}));localStorage.setItem('currentUser',user)}
+  closeAuth();loadUser();
 }
 function loadUser(){
   const u=localStorage.getItem('currentUser');
   const right=document.querySelector('.topbar-right');
   if(u){
-    right.innerHTML=`<button class="widget-btn" id="widgetBtn" title="更多">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
-      </svg>
-    </button><span style="font-size:12px;color:var(--text2)">${u}</span><button class="btn-ghost" id="logoutBtn" data-i18n="logout">退出</button>`;
+    right.innerHTML=`<button class="widget-btn" id="widgetBtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button><span style="font-size:12px;color:var(--text2)">${u}</span><button class="btn-ghost" id="logoutBtn">${I18N[lang].logout}</button>`;
     document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
-    document.getElementById('logoutBtn').addEventListener('click',()=>{localStorage.removeItem('currentUser');loadUser();});
+    document.getElementById('logoutBtn').addEventListener('click',()=>{localStorage.removeItem('currentUser');loadUser()});
   }else{
-    right.innerHTML=`<button class="widget-btn" id="widgetBtn" title="更多">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
-      </svg>
-    </button><button class="btn-ghost" id="loginBtn" data-i18n="login">登录</button><button class="btn-primary" id="registerBtn" data-i18n="register">注册</button>`;
+    right.innerHTML=`<button class="widget-btn" id="widgetBtn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="2.2"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/></svg></button><button class="btn-ghost" id="loginBtn">${I18N[lang].login}</button><button class="btn-primary" id="registerBtn">${I18N[lang].register}</button>`;
     document.getElementById('widgetBtn').addEventListener('click',toggleWidget);
     document.getElementById('loginBtn').addEventListener('click',()=>openAuth('login'));
     document.getElementById('registerBtn').addEventListener('click',()=>openAuth('register'));
   }
 }
 
-// ── Widget Panel ──
-function toggleWidget(e){
-  e.stopPropagation();
-  document.getElementById('widgetPanel').classList.toggle('open');
-}
+function toggleWidget(e){e.stopPropagation();document.getElementById('widgetPanel').classList.toggle('open')}
 function applyThemeUI(){
-  document.getElementById('themeCurrent').textContent=theme==='dark'
-    ?(lang==='zh'?'深色':'Dark'):(lang==='zh'?'浅色':'Light');
   document.getElementById('langCurrent').textContent=lang==='zh'?'中文':'English';
+  const themeLabel=document.getElementById('themeLabel');
+  themeLabel.textContent=theme==='dark'?I18N[lang].wpThemeDark:I18N[lang].wpThemeLight;
 }
 function toggleTheme(){
   theme=theme==='dark'?'light':'dark';
@@ -810,42 +724,23 @@ function toggleTheme(){
   applyThemeUI();
   document.getElementById('widgetPanel').classList.remove('open');
 }
-function applyTheme(){
-  document.documentElement.classList.toggle('light',theme==='light');
-}
-
-// ── Lang ──
+function applyTheme(){document.documentElement.classList.toggle('light',theme==='light')}
 function toggleLang(){
   lang=lang==='zh'?'en':'zh';
   localStorage.setItem('lang',lang);
-  applyLang();
-  applyThemeUI();
-  renderSidebar();
-  loadUser();
+  applyLang();applyThemeUI();renderSidebar();renderFeatures();loadUser();
   document.getElementById('widgetPanel').classList.remove('open');
 }
 function applyLang(){
   const t=I18N[lang];
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key=el.dataset.i18n;
-    if(t[key]){
-      if(key==='heroTitle'||key==='aiTitle'||key==='geoTitle'||key==='compareTitle'||
-         key==='tradeTitle'||key==='exchangeTitle'||key==='communityTitle'||key==='personalTitle'){
-        el.innerHTML=t[key].replace('\n','<br>');
-      }else{
-        el.textContent=t[key];
-      }
-    }
+    if(t[key])el.textContent=t[key];
   });
-  document.querySelectorAll('[data-placeholder]').forEach(el=>{
-    const key=el.dataset.placeholder;
-    if(t[key]) el.placeholder=t[key];
-  });
+  document.querySelectorAll('[data-placeholder]').forEach(el=>{const key=el.dataset.placeholder;if(t[key])el.placeholder=t[key]});
 }
 
-// ── Start ──
 init();
-calcCosts();
 </script>
 </body>
 </html>
