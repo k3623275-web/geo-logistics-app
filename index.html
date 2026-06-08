@@ -1160,61 +1160,7 @@ document.getElementById('mobileMenuBtn').addEventListener('click',function(){sid
 
 // ══════════ Auth (localStorage mock) ══════════
 var currentUser=JSON.parse(localStorage.getItem('geo_user')||'null');
-var authMode='login';
-function updateAuthUI(){
-  var authBtns=document.getElementById('authButtons');
-  var userMenu=document.getElementById('userMenuBtn');
-  var userSection=document.getElementById('userSection');
-  var logoutLink=document.getElementById('logoutLink');
-  if(currentUser){
-    authBtns.style.display='none';userMenu.style.display='flex';
-    document.getElementById('miniAvatar').textContent=currentUser.email.charAt(0).toUpperCase();
-    document.getElementById('miniName').textContent=currentUser.email.split('@')[0];
-    logoutLink.style.display='inline';
-    userSection.innerHTML='<div class="user-card"><div class="user-avatar">'+currentUser.email.charAt(0).toUpperCase()+'</div><div class="user-info"><div class="user-name">'+currentUser.email.split('@')[0]+'</div><div class="user-email">'+currentUser.email+'</div></div></div>';
-  }else{
-    authBtns.style.display='flex';userMenu.style.display='none';
-    logoutLink.style.display='none';
-    userSection.innerHTML='<div class="login-prompt" id="loginPrompt"><a id="sidebarLoginLink">登录</a> 或 <a id="sidebarRegLink">注册</a></div>';
-    document.getElementById('sidebarLoginLink').addEventListener('click',function(){openAuth('login')});
-    document.getElementById('sidebarRegLink').addEventListener('click',function(){openAuth('register')});
-  }
-}
-function openAuth(mode){
-  authMode=mode;
-  document.getElementById('authTitle').textContent=mode==='login'?'登录':'注册';
-  document.getElementById('authSub').textContent=mode==='login'?'登录后可保存检测记录和偏好设置':'注册账号以保存检测记录和偏好设置';
-  document.getElementById('authSubmit').textContent=mode==='login'?'登录':'注册';
-  document.getElementById('authSwitch').innerHTML=mode==='login'?'还没有账号？<a id="authSwitchLink">注册</a>':'已有账号？<a id="authSwitchLink">登录</a>';
-  document.getElementById('authSwitchLink').addEventListener('click',function(){openAuth(mode==='login'?'register':'login')});
-  document.getElementById('authModal').classList.add('show');
-  document.getElementById('authEmail').value='';document.getElementById('authPassword').value='';
-  document.getElementById('authEmail').focus();
-}
-function closeAuth(){document.getElementById('authModal').classList.remove('show')}
-function submitAuth(){
-  var email=document.getElementById('authEmail').value.trim(),pass=document.getElementById('authPassword').value;
-  if(!email||!pass){alert('请填写邮箱和密码');return}
-  if(authMode==='register'){
-    var users=JSON.parse(localStorage.getItem('geo_users')||'[]');
-    if(users.find(function(u){return u.email===email})){alert('该邮箱已注册');return}
-    users.push({email:email,password:pass});localStorage.setItem('geo_users',JSON.stringify(users));
-    currentUser={email:email};localStorage.setItem('geo_user',JSON.stringify(currentUser));
-  }else{
-    var users=JSON.parse(localStorage.getItem('geo_users')||'[]');
-    var found=users.find(function(u){return u.email===email&&u.password===pass});
-    if(!found){alert('邮箱或密码错误');return}
-    currentUser={email:email};localStorage.setItem('geo_user',JSON.stringify(currentUser));
-  }
-  closeAuth();updateAuthUI();
-}
-document.getElementById('modalClose').addEventListener('click',closeAuth);
-document.getElementById('authModal').addEventListener('click',function(e){if(e.target===this)closeAuth()});
-document.getElementById('authSubmit').addEventListener('click',submitAuth);
-document.getElementById('topLoginBtn').addEventListener('click',function(){openAuth('login')});
-document.getElementById('topRegBtn').addEventListener('click',function(){openAuth('register')});
-document.getElementById('userMenuBtn').addEventListener('click',function(){openAuth('login')});
-document.getElementById('logoutLink').addEventListener('click',function(){currentUser=null;localStorage.removeItem('geo_user');updateAuthUI()});
+// (auth/setting handlers moved to new top-bar JS section above)
 
 // ══════════ Widget: Language toggle ══════════
 document.getElementById('widgetLang').addEventListener('click',function(){
