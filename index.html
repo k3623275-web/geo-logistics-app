@@ -7,251 +7,381 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a28;--surface3:#222236;
-  --border:#2a2a3e;--text:#e8e8f0;--text2:#8888a8;--accent:#7c6aef;
-  --accent2:#a78bfa;--green:#22c55e;--red:#ef4444;--orange:#f59e0b;
-  --radius:12px;--sidebar-w:240px;--sidebar-collapsed:60px;
+  --bg:#0d0d14;--surface:#13131e;--surface2:#1a1a2a;--surface3:#222238;
+  --border:#2c2c44;--border2:#383858;--text:#dde1f0;--text2:#8888aa;--text3:#5a5a7a;
+  --accent:#7c6aef;--accent2:#a78bfa;--accent-glow:rgba(124,106,239,0.2);
+  --green:#22c55e;--red:#ef4444;--orange:#f59e0b;
+  --topbar-h:56px;--sidebar-w:180px;--topbar-z:50;
 }
-html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
-a{color:var(--accent2);text-decoration:none}
-button{cursor:pointer;font-family:inherit;border:none;background:none;color:inherit}
+html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);overflow:hidden;user-select:none}
 
-/* ── Layout ── */
-.app{display:flex;height:100vh;overflow:hidden}
-.sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .25s ease;flex-shrink:0;overflow:hidden;z-index:10}
-.sidebar.collapsed{width:var(--sidebar-collapsed)}
-.sidebar-toggle{position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;z-index:11;transition:transform .25s}
-.sidebar.collapsed .sidebar-toggle{transform:translateY(-50%) rotate(180deg)}
-.sidebar-brand{padding:20px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden}
-.sidebar-brand .logo{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),#f472b6);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
-.sidebar-brand span{font-size:18px;font-weight:600;background:linear-gradient(135deg,var(--accent2),#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.sidebar-nav{flex:1;padding:12px 8px;display:flex;flex-direction:column;gap:2px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;transition:all .15s;white-space:nowrap;overflow:hidden}
-.nav-item:hover{background:var(--surface2)}
-.nav-item.active{background:var(--accent);color:#fff}
-.nav-item .icon{width:20px;text-align:center;flex-shrink:0;font-size:16px}
-.sidebar-bottom{padding:12px 8px;border-top:1px solid var(--border)}
-.user-block{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;cursor:pointer;white-space:nowrap;overflow:hidden}
-.user-block:hover{background:var(--surface2)}
-.user-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
-.user-name{font-size:13px;font-weight:500}
-.user-sub{font-size:11px;color:var(--text2)}
-.login-prompt{font-size:13px;color:var(--text2);padding:8px;cursor:pointer}
-.login-prompt:hover{color:var(--accent2)}
+/* ── Top Bar ── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:var(--topbar-h);
+  background:rgba(13,13,20,0.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 20px;z-index:var(--topbar-z);
+}
+.topbar-logo{display:flex;align-items:center;gap:10px;margin-right:32px}
+.logo-hex{
+  width:30px;height:30px;position:relative;
+}
+.logo-hex svg{width:30px;height:30px}
+.brand-name{font-size:17px;font-weight:700;letter-spacing:-0.3px}
+.brand-name span{background:linear-gradient(135deg,#c4b5fd,#f0abfc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.topbar-nav{display:flex;gap:2px;flex:1}
+.nav-btn{
+  padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;
+  color:var(--text2);transition:all .15s;cursor:pointer;display:flex;align-items:center;gap:6px;
+  border:1px solid transparent;
+}
+.nav-btn:hover{color:var(--text);background:var(--surface2)}
+.nav-btn.active{
+  color:#fff;background:var(--surface2);
+  border-color:var(--border2);
+}
+.nav-btn svg{width:15px;height:15px;opacity:.7}
+.nav-btn.active svg{opacity:1}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.lang-btn{
+  padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;
+  border:1px solid var(--border2);background:var(--surface2);color:var(--text2);
+  cursor:pointer;transition:all .15s;
+}
+.lang-btn:hover{color:var(--text);border-color:var(--accent)}
 
-/* ── Main ── */
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.topbar{height:48px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
-.topbar-title{font-size:14px;font-weight:500;color:var(--text2)}
-.topbar-right{margin-left:auto;display:flex;gap:8px}
-.btn-sm{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:500;transition:all .15s}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--accent2)}
-.btn-ghost{border:1px solid var(--border)}
-.btn-ghost:hover{background:var(--surface2)}
+/* ── Body Layout ── */
+.body{flex:1;display:flex;height:100vh;padding-top:var(--topbar-h)}
 
-.content{flex:1;overflow-y:auto;padding:24px}
+/* ── Left Sidebar (工具功能区) ── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;background:var(--surface);
+  border-right:1px solid var(--border);display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.sidebar-label{
+  padding:16px 14px 8px;font-size:10px;font-weight:600;letter-spacing:1.5px;
+  color:var(--text3);text-transform:uppercase;
+}
+.sidebar-section{display:flex;flex-direction:column;padding:4px 8px;gap:2px}
+.side-tool{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;
+  border-radius:8px;font-size:13px;color:var(--text2);
+  cursor:pointer;transition:all .15s;border:1px solid transparent;
+}
+.side-tool:hover{color:var(--text);background:var(--surface2)}
+.side-tool.active{color:var(--text);background:var(--surface3);border-color:var(--border2)}
+.side-tool svg{width:16px;height:16px;flex-shrink:0;opacity:.6}
+.side-tool.active svg{opacity:1}
+.side-tool-text{font-size:13px}
+.side-divider{flex:1}
+.side-settings{
+  padding:4px 8px;margin-bottom:12px;
+}
+.settings-widget{
+  display:flex;align-items:center;gap:10px;padding:9px 10px;
+  border-radius:8px;font-size:13px;color:var(--text3);
+  cursor:pointer;transition:all .15s;border:1px solid transparent;
+}
+.settings-widget:hover{color:var(--text2);background:var(--surface2)}
+.settings-widget svg{width:16px;height:16px;flex-shrink:0}
+.settings-panel{
+  margin:0 8px 8px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:14px;display:none;
+}
+.settings-panel.open{display:block}
+.settings-panel h4{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:12px;letter-spacing:.5px}
+.lang-row{display:flex;gap:6px}
+.lang-option{
+  flex:1;padding:8px 0;border-radius:6px;font-size:12px;font-weight:500;
+  text-align:center;border:1px solid var(--border2);cursor:pointer;
+  color:var(--text2);transition:all .15s;
+}
+.lang-option:hover{border-color:var(--accent)}
+.lang-option.selected{background:var(--accent);border-color:var(--accent);color:#fff}
+
+/* ── Main Content ── */
+.main{flex:1;overflow-y:auto;padding:28px 32px}
+.main::-webkit-scrollbar{width:6px}
+.main::-webkit-scrollbar-track{background:transparent}
+.main::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
 /* ── Pages ── */
 .page{display:none}
 .page.active{display:block}
 
 /* ── Home ── */
-.hero{text-align:center;padding:60px 20px 40px}
-.hero h1{font-size:36px;font-weight:700;margin-bottom:12px;background:linear-gradient(135deg,var(--accent2),#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.hero p{font-size:15px;color:var(--text2);max-width:480px;margin:0 auto;line-height:1.6}
-.tool-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:800px;margin:0 auto}
-.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .2s}
-.tool-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,106,239,.15)}
-.tool-card .card-icon{font-size:28px;margin-bottom:12px}
-.tool-card h3{font-size:16px;font-weight:600;margin-bottom:6px}
-.tool-card p{font-size:13px;color:var(--text2);line-height:1.5}
+.hero{margin-bottom:32px}
+.hero h1{
+  font-size:32px;font-weight:700;margin-bottom:10px;
+  background:linear-gradient(135deg,#c4b5fd,#f0abfc,#fda4af);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.3;
+}
+.hero p{font-size:14px;color:var(--text2);line-height:1.7;max-width:480px}
+.home-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.home-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:18px;cursor:pointer;transition:all .2s;
+}
+.home-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px var(--accent-glow)}
+.home-card .card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.home-card .card-icon svg{width:20px;height:20px}
+.home-card h3{font-size:14px;font-weight:600;margin-bottom:6px}
+.home-card p{font-size:12px;color:var(--text2);line-height:1.5}
 
 /* ── GEO Tool ── */
-.geo-form{display:flex;flex-direction:column;gap:16px;max-width:600px}
-.form-group label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text2)}
-.form-input{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:14px;outline:none;transition:border .15s}
+.geo-form{display:flex;flex-direction:column;gap:14px;max-width:560px}
+.form-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;letter-spacing:.3px}
+.form-input{
+  width:100%;padding:10px 14px;border-radius:8px;
+  border:1px solid var(--border2);background:var(--surface2);
+  color:var(--text);font-size:14px;outline:none;transition:border .15s;
+}
 .form-input:focus{border-color:var(--accent)}
-.form-input::placeholder{color:var(--text2)}
-.model-select{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.model-chip{padding:6px 12px;border-radius:20px;font-size:12px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;transition:all .15s;user-select:none}
-.model-chip:hover{border-color:var(--accent)}
+.form-input::placeholder{color:var(--text3)}
+.model-chips{display:flex;flex-wrap:wrap;gap:6px}
+.model-chip{
+  padding:6px 12px;border-radius:20px;font-size:12px;
+  border:1px solid var(--border2);background:var(--surface2);
+  color:var(--text2);cursor:pointer;transition:all .15s;user-select:none;
+}
+.model-chip:hover{border-color:var(--accent2);color:var(--text)}
 .model-chip.selected{background:var(--accent);border-color:var(--accent);color:#fff}
-.btn-action{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;transition:all .15s;align-self:flex-start}
-.btn-action:hover{transform:scale(1.02);box-shadow:0 4px 16px rgba(124,106,239,.3)}
+.btn-action{
+  padding:11px 22px;border-radius:8px;font-size:13px;font-weight:600;
+  background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;
+  cursor:pointer;transition:all .15s;align-self:flex-start;border:none;
+}
+.btn-action:hover{box-shadow:0 4px 16px rgba(124,106,239,.4);transform:translateY(-1px)}
 .btn-action:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 
-/* GEO Results */
-.geo-results{margin-top:24px;display:flex;flex-direction:column;gap:12px}
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;align-items:center;gap:16px;animation:fadeIn .3s ease}
-@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.result-score{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;border:3px solid}
-.score-high{border-color:var(--green);color:var(--green)}
-.score-mid{border-color:var(--orange);color:var(--orange)}
-.score-low{border-color:var(--red);color:var(--red)}
-.result-info{flex:1;min-width:0}
-.result-model{font-size:14px;font-weight:500;margin-bottom:4px}
-.result-snippet{font-size:12px;color:var(--text2);line-height:1.4;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.result-badge{padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500}
-.badge-mentioned{background:rgba(34,197,94,.15);color:var(--green)}
-.badge-not-mentioned{background:rgba(239,68,68,.15);color:var(--red)}
+.geo-results{margin-top:20px;display:flex;flex-direction:column;gap:10px}
+.result-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;
+  animation:fadeUp .25s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.score-circle{
+  width:48px;height:48px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;
+  border:2.5px solid;
+}
+.s-high{border-color:var(--green);color:var(--green)}
+.s-mid{border-color:var(--orange);color:var(--orange)}
+.s-low{border-color:var(--red);color:var(--red)}
+.result-body{flex:1;min-width:0}
+.result-name{font-size:13px;font-weight:600;margin-bottom:4px}
+.result-snippet{font-size:12px;color:var(--text2);line-height:1.4;
+  overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.result-tag{
+  padding:3px 8px;border-radius:4px;font-size:11px;font-weight:500;flex-shrink:0;
+}
+.t-mentioned{background:rgba(34,197,94,.12);color:var(--green)}
+.t-not{background:rgba(239,68,68,.12);color:var(--red)}
 
-/* ── Compare Tool ── */
-.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
-.price-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border .15s}
-.price-card:hover{border-color:var(--accent)}
-.price-card .provider{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.price-card .model-name{font-size:14px;font-weight:600;margin-bottom:8px}
-.price-row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--text2)}
-.price-row span:last-child{color:var(--text);font-family:'JetBrains Mono',monospace}
-.calc-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-top:20px;max-width:500px}
-.calc-box h3{font-size:15px;font-weight:600;margin-bottom:12px}
-.calc-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.calc-row label{font-size:13px;color:var(--text2);width:100px}
-.calc-row input{flex:1;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:13px;outline:none}
+/* ── Compare ── */
+.compare-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.price-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;transition:border .15s;
+}
+.price-card:hover{border-color:var(--accent2)}
+.price-card .provider{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
+.price-card .model{font-size:13px;font-weight:600;margin-bottom:8px}
+.price-row{display:flex;justify-content:space-between;font-size:12px;padding:2px 0}
+.price-row span:first-child{color:var(--text2)}
+.price-row span:last-child{color:var(--text);font-family:'JetBrains Mono',monospace;font-size:11px}
+.calc-section{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-top:20px;max-width:480px}
+.calc-section h3{font-size:13px;font-weight:600;margin-bottom:12px;color:var(--text2)}
+.calc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.calc-row label{font-size:12px;color:var(--text2);width:90px;flex-shrink:0}
+.calc-row input{flex:1;padding:8px 10px;border-radius:6px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-size:12px;outline:none}
 .calc-row input:focus{border-color:var(--accent)}
-
-/* ── Settings ── */
-.settings-page{max-width:500px;display:flex;flex-direction:column;gap:20px}
-.settings-section{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
-.settings-section h3{font-size:15px;font-weight:600;margin-bottom:12px}
-.api-key-list{display:flex;flex-direction:column;gap:8px}
-.api-key-item{display:flex;align-items:center;gap:8px}
-.api-key-item .provider-name{font-size:13px;width:80px;color:var(--text2)}
-.api-key-item input{flex:1;padding:8px 10px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;font-family:monospace;outline:none}
-.api-key-item input:focus{border-color:var(--accent)}
-
-/* ── Auth Modal ── */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;width:360px;max-width:90vw}
-.modal h2{font-size:20px;font-weight:600;margin-bottom:20px;text-align:center}
-.modal .form-input{margin-bottom:12px}
-.modal .btn-action{width:100%;text-align:center}
-.modal .switch-link{display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--text2)}
-.modal .switch-link a{color:var(--accent2)}
+#calcResults{margin-top:10px;font-size:12px;color:var(--text2);line-height:1.8}
 
 /* ── Responsive ── */
 @media(max-width:768px){
-  .sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-collapsed);z-index:20}
-  .sidebar.expanded-mobile{width:var(--sidebar-w)}
-  .hero h1{font-size:24px}
-  .tool-cards{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .topbar-nav .nav-btn span{display:none}
+  .hero h1{font-size:22px}
 }
 </style>
 </head>
 <body>
-<div class="app">
-  <!-- Sidebar -->
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <div class="logo">⚛</div>
-      <span>科AI</span>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="topbar-logo">
+    <!-- 白色六芒星 SVG -->
+    <div class="logo-hex">
+      <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="15,2 19.6,10.4 28.4,10.4 21.4,16 24.2,25 15,20 5.8,25 8.6,16 1.6,10.4 10.4,10.4" stroke="white" stroke-width="1.2" fill="none"/>
+      </svg>
     </div>
-    <div class="sidebar-nav" id="sidebarNav">
-      <div class="nav-item active" data-page="home"><span class="icon">🏠</span><span class="label">首页</span></div>
-      <div class="nav-item" data-page="geo"><span class="icon">🔭</span><span class="label">GEO检测</span></div>
-      <div class="nav-item" data-page="compare"><span class="icon">💎</span><span class="label">AI比价</span></div>
-      <div class="nav-item" data-page="settings"><span class="icon">⚙</span><span class="label">设置</span></div>
-    </div>
-    <div class="sidebar-bottom">
-      <div id="userBlock">
-        <div class="login-prompt" id="loginPrompt">🔑 登录 / 注册</div>
-      </div>
-    </div>
-    <button class="sidebar-toggle" id="sidebarToggle">◀</button>
+    <div class="brand-name"><span>科AI</span></div>
   </div>
-
-  <!-- Main -->
-  <div class="main">
-    <div class="topbar">
-      <span class="topbar-title" id="topbarTitle">首页</span>
-      <div class="topbar-right">
-        <button class="btn-sm btn-ghost" id="langToggle">EN</button>
-      </div>
+  <div class="topbar-nav">
+    <div class="nav-btn active" data-page="home">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 6.5L8 1.5L14 6.5V14H10V9.5H6V14H2V6.5Z"/>
+      </svg>
+      <span data-i18n="home">首页</span>
     </div>
-    <div class="content">
-      <!-- Home -->
-      <div class="page active" id="pageHome">
-        <div class="hero">
-          <h1>科技 改变生活</h1>
-          <p>检测品牌在AI搜索中的可见性，对比AI模型价格，一站式AI工具平台。</p>
-        </div>
-        <div class="tool-cards">
-          <div class="tool-card" data-page="geo">
-            <div class="card-icon">🔭</div>
-            <h3>GEO可见性检测</h3>
-            <p>输入品牌名称，检测多个AI模型是否提及你的品牌，获取可见性评分。</p>
-          </div>
-          <div class="tool-card" data-page="compare">
-            <div class="card-icon">💎</div>
-            <h3>AI模型比价</h3>
-            <p>对比主流AI模型的API价格，计算使用成本，找到最划算的选择。</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- GEO -->
-      <div class="page" id="pageGeo">
-        <div class="geo-form">
-          <div class="form-group">
-            <label>品牌 / 公司名称</label>
-            <input class="form-input" id="brandInput" placeholder="例如：华为、特斯拉、OpenAI">
-          </div>
-          <div class="form-group">
-            <label>选择检测模型</label>
-            <div class="model-select" id="modelSelect"></div>
-          </div>
-          <button class="btn-action" id="geoStartBtn">开始检测</button>
-        </div>
-        <div class="geo-results" id="geoResults"></div>
-      </div>
-
-      <!-- Compare -->
-      <div class="page" id="pageCompare">
-        <div class="compare-grid" id="compareGrid"></div>
-        <div class="calc-box">
-          <h3>成本计算器</h3>
-          <div class="calc-row"><label>输入Token</label><input id="calcInput" type="number" value="10000"></div>
-          <div class="calc-row"><label>输出Token</label><input id="calcOutput" type="number" value="3000"></div>
-          <div id="calcResults" style="margin-top:12px;font-size:13px;color:var(--text2)"></div>
-        </div>
-      </div>
-
-      <!-- Settings -->
-      <div class="page" id="pageSettings">
-        <div class="settings-page">
-          <div class="settings-section">
-            <h3>API Key 管理</h3>
-            <p style="font-size:12px;color:var(--text2);margin-bottom:12px">你的API Key仅存储在浏览器本地，不会上传至服务器。</p>
-            <div class="api-key-list" id="apiKeyList"></div>
-          </div>
-        </div>
-      </div>
+    <div class="nav-btn" data-page="geo">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6.5"/>
+        <path d="M2 8h12M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/>
+      </svg>
+      <span data-i18n="geo">GEO检测</span>
     </div>
+    <div class="nav-btn" data-page="compare">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <polygon points="8,1 15,13 1,13"/>
+        <line x1="8" y1="5" x2="8" y2="9"/>
+        <circle cx="8" cy="11" r=".7" fill="currentColor"/>
+      </svg>
+      <span data-i18n="compare">AI比价</span>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <button class="lang-btn" id="langBtn">EN</button>
   </div>
 </div>
 
-<!-- Auth Modal -->
-<div class="modal-overlay" id="authModal">
-  <div class="modal">
-    <h2 id="authTitle">登录</h2>
-    <input class="form-input" id="authUser" placeholder="用户名">
-    <input class="form-input" id="authPass" type="password" placeholder="密码">
-    <button class="btn-action" id="authSubmitBtn">登录</button>
-    <div class="switch-link" id="authSwitch">还没有账号？<a href="#">注册</a></div>
+<!-- Body -->
+<div class="body">
+
+  <!-- Left Sidebar (工具功能区) -->
+  <div class="sidebar">
+    <div class="sidebar-label" data-i18n="tools">工具</div>
+    <div class="sidebar-section">
+      <div class="side-tool active" data-page="home">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M2 6.5L8 1.5L14 6.5V14H10V9.5H6V14H2V6.5Z"/>
+        </svg>
+        <span class="side-tool-text" data-i18n="home">首页</span>
+      </div>
+      <div class="side-tool" data-page="geo">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="6.5"/>
+          <path d="M2 8h12M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/>
+        </svg>
+        <span class="side-tool-text" data-i18n="geo">GEO可见性</span>
+      </div>
+      <div class="side-tool" data-page="compare">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="2" y="4" width="4" height="9" rx="1"/>
+          <rect x="6.5" y="1.5" width="4" height="11.5" rx="1"/>
+          <rect x="11" y="6.5" width="4" height="6.5" rx="1"/>
+        </svg>
+        <span class="side-tool-text" data-i18n="compare">AI模型比价</span>
+      </div>
+    </div>
+    <div class="side-divider"></div>
+
+    <!-- Settings Widget -->
+    <div class="side-settings">
+      <div class="settings-widget" id="settingsToggle">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="8" cy="8" r="2.5"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M2.9 2.9l1.4 1.4M11.7 11.7l1.4 1.4M2.9 13.1l1.4-1.4M11.7 4.3l1.4-1.4"/>
+        </svg>
+        <span class="side-tool-text" data-i18n="settings">设置</span>
+      </div>
+      <div class="settings-panel" id="settingsPanel">
+        <h4 data-i18n="langSetting">界面语言</h4>
+        <div class="lang-row">
+          <div class="lang-option selected" data-lang="zh">中文</div>
+          <div class="lang-option" data-lang="en">EN</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main">
+
+    <!-- Home Page -->
+    <div class="page active" id="pageHome">
+      <div class="hero">
+        <h1 data-i18n="heroTitle">AI赋能品牌<br>洞察搜索可见性</h1>
+        <p data-i18n="heroSub">检测品牌在主流AI模型搜索结果中的提及情况，<br>对比各平台模型定价，一站式完成品牌AI可见性分析。</p>
+      </div>
+      <div class="home-cards">
+        <div class="home-card" data-page="geo">
+          <div class="card-icon" style="background:rgba(124,106,239,0.12)">
+            <svg viewBox="0 0 20 20" fill="none" stroke="#a78bfa" stroke-width="1.5">
+              <circle cx="10" cy="10" r="8"/>
+              <path d="M2 10h16M10 2c-2.5 2.5-4 5.5-4 8s1.5 5.5 4 8M10 2c2.5 2.5 4 5.5 4 8s-1.5 5.5-4 8"/>
+            </svg>
+          </div>
+          <h3>GEO可见性检测</h3>
+          <p>输入品牌关键词，检测GPT、Claude、Gemini等模型是否提及你的品牌，获取可见性评分。</p>
+        </div>
+        <div class="home-card" data-page="compare">
+          <div class="card-icon" style="background:rgba(34,197,94,0.1)">
+            <svg viewBox="0 0 20 20" fill="none" stroke="#22c55e" stroke-width="1.5">
+              <rect x="3" y="5" width="5" height="11" rx="1"/>
+              <rect x="8" y="2" width="5" height="14" rx="1"/>
+              <rect x="13" y="8" width="5" height="8" rx="1"/>
+            </svg>
+          </div>
+          <h3>AI模型比价</h3>
+          <p>对比主流AI模型的API价格，输入输出token成本，计算各场景最优选择。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- GEO Page -->
+    <div class="page" id="pageGeo">
+      <div class="hero" style="margin-bottom:20px">
+        <h1 style="font-size:22px" data-i18n="geoTitle">GEO可见性检测</h1>
+        <p style="font-size:13px" data-i18n="geoSub">选择模型，输入品牌名称，一次检测多个AI模型的提及情况。</p>
+      </div>
+      <div class="geo-form">
+        <div>
+          <div class="form-label" data-i18n="brandLabel">品牌 / 公司名称</div>
+          <input class="form-input" id="brandInput" data-placeholder="brandPh" placeholder="例如：华为、特斯拉、OpenAI">
+        </div>
+        <div>
+          <div class="form-label" data-i18n="modelLabel">选择检测模型（可多选）</div>
+          <div class="model-chips" id="modelChips"></div>
+        </div>
+        <button class="btn-action" id="geoStartBtn" data-i18n="startBtn">开始检测</button>
+      </div>
+      <div class="geo-results" id="geoResults"></div>
+    </div>
+
+    <!-- Compare Page -->
+    <div class="page" id="pageCompare">
+      <div class="hero" style="margin-bottom:20px">
+        <h1 style="font-size:22px" data-i18n="compareTitle">AI模型比价</h1>
+        <p style="font-size:13px" data-i18n="compareSub">各平台最新模型定价，每百万Token美元价格。</p>
+      </div>
+      <div class="compare-grid" id="compareGrid"></div>
+      <div class="calc-section">
+        <h3 data-i18n="calcTitle">使用成本计算器</h3>
+        <div class="calc-row"><label data-i18n="inputTok">输入Token</label><input id="calcInput" type="number" value="10000"></div>
+        <div class="calc-row"><label data-i18n="outputTok">输出Token</label><input id="calcOutput" type="number" value="3000"></div>
+        <div id="calcResults"></div>
+      </div>
+    </div>
+
   </div>
 </div>
 
 <script>
 // ── Data ──
-const MODELS = [
+const MODELS=[
   {id:'gpt-5.5',name:'GPT-5.5',provider:'openai',in:2.50,out:10},
   {id:'gpt-5.1',name:'GPT-5.1',provider:'openai',in:0.50,out:2},
   {id:'gpt-4.1-mini',name:'GPT-4.1 Mini',provider:'openai',in:0.40,out:1.60},
-  {id:'claude-opus-4-7',name:'Opus 4.7',provider:'claude',in:15,out:75},
-  {id:'claude-sonnet-4-6',name:'Sonnet 4.6',provider:'claude',in:3,out:15},
-  {id:'claude-haiku-3-5',name:'Haiku 3.5',provider:'claude',in:0.80,out:4},
+  {id:'claude-opus-4-7',name:'Claude Opus 4.7',provider:'claude',in:15,out:75},
+  {id:'claude-sonnet-4-6',name:'Claude Sonnet 4.6',provider:'claude',in:3,out:15},
+  {id:'claude-haiku-3-5',name:'Claude Haiku 3.5',provider:'claude',in:0.80,out:4},
   {id:'gemini-3.1-pro',name:'Gemini 3.1 Pro',provider:'gemini',in:1.25,out:5},
   {id:'gemini-3.1-flash',name:'Gemini 3.1 Flash',provider:'gemini',in:0.15,out:0.60},
   {id:'deepseek-v4',name:'DeepSeek V4',provider:'deepseek',in:0.27,out:1.10},
@@ -263,8 +393,7 @@ const MODELS = [
   {id:'yi-lightning-2',name:'Yi-Lightning 2',provider:'yi',in:0.10,out:0.40},
   {id:'mistral-large-3',name:'Mistral Large 3',provider:'mistral',in:2,out:6},
 ];
-
-const PROVIDERS = {
+const PROVIDERS={
   openai:{name:'OpenAI',color:'#10a37f'},
   claude:{name:'Claude',color:'#d97706'},
   gemini:{name:'Gemini',color:'#4285f4'},
@@ -276,134 +405,187 @@ const PROVIDERS = {
   yi:{name:'零一万物',color:'#06b6d4'},
   mistral:{name:'Mistral',color:'#f97316'},
 };
-
-const GEO_PROMPT = (brand) => `请列出你认为在${brand}行业中最重要的5个品牌或公司，并简要说明每个品牌的特点和优势。请直接回答，不要提及这是AI生成的内容。`;
+const GEO_PROMPT=(b)=>`请列出你认为在${b}行业内最重要的5个品牌或公司，并简要说明每个品牌的特点和优势。请直接回答，不要提及这是AI生成的内容。`;
 
 // ── State ──
-let currentPage = 'home';
-let selectedModels = new Set();
-let isLoginMode = true; // true=login, false=register
-let lang = 'zh';
+let currentPage='home';
+let selectedModels=new Set();
+let lang=localStorage.getItem('lang')||'zh';
 
-const i18n = {
-  zh:{home:'首页',geo:'GEO检测',compare:'AI比价',settings:'设置',login:'登录',register:'注册',startDetect:'开始检测',detecting:'检测中...',brandPlaceholder:'例如：华为、特斯拉、OpenAI',calcInput:'输入Token',calcOutput:'输出Token',costCalc:'成本计算器',apiKeys:'API Key 管理',apiKeyHint:'你的API Key仅存储在浏览器本地，不会上传至服务器。',noKey:'未设置',mentioned:'提及',notMentioned:'未提及',heroTitle:'科技 改变生活',heroSub:'检测品牌在AI搜索中的可见性，对比AI模型价格，一站式AI工具平台。',geoDesc:'输入品牌名称，检测多个AI模型是否提及你的品牌，获取可见性评分。',compareDesc:'对比主流AI模型的API价格，计算使用成本，找到最划算的选择。',geoTitle:'GEO可见性检测',compareTitle:'AI模型比价',noAccount:'还没有账号？',hasAccount:'已有账号？'},
-  en:{home:'Home',geo:'GEO Detect',compare:'AI Compare',settings:'Settings',login:'Login',register:'Register',startDetect:'Start Detect',detecting:'Detecting...',brandPlaceholder:'e.g. Tesla, OpenAI, Samsung',calcInput:'Input Tokens',calcOutput:'Output Tokens',costCalc:'Cost Calculator',apiKeys:'API Key Management',apiKeyHint:'Keys stored locally in browser only, never uploaded.',noKey:'Not set',mentioned:'Mentioned',notMentioned:'Not mentioned',heroTitle:'Tech Changes Life',heroSub:'Detect brand visibility in AI search, compare AI model prices.',geoDesc:'Enter brand name, check if AI models mention it.',compareDesc:'Compare AI model API prices and calculate costs.',geoTitle:'GEO Visibility',compareTitle:'AI Compare',noAccount:"Don't have an account?",hasAccount:'Already have an account?'}
+const I18N={
+  zh:{
+    home:'首页',geo:'GEO检测',compare:'AI比价',settings:'设置',
+    tools:'工具',langSetting:'界面语言',
+    heroTitle:'AI赋能品牌\n洞察搜索可见性',
+    heroSub:'检测品牌在主流AI模型搜索结果中的提及情况，\n对比各平台模型定价，一站式完成品牌AI可见性分析。',
+    geoTitle:'GEO可见性检测',geoSub:'选择模型，输入品牌名称，一次检测多个AI模型的提及情况。',
+    compareTitle:'AI模型比价',compareSub:'各平台最新模型定价，每百万Token美元价格。',
+    calcTitle:'使用成本计算器',inputTok:'输入Token',outputTok:'输出Token',
+    brandLabel:'品牌 / 公司名称',modelLabel:'选择检测模型（可多选）',
+    startBtn:'开始检测',detecting:'检测中…',brandPh:'例如：华为、特斯拉、OpenAI',
+    mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',
+    navHome:'首页',navGeo:'GEO检测',navCompare:'AI比价',
+  },
+  en:{
+    home:'Home',geo:'GEO Detect',compare:'AI Compare',settings:'Settings',
+    tools:'Tools',langSetting:'Interface Language',
+    heroTitle:'AI-Empowered Brand\nSearch Visibility Insights',
+    heroSub:'Check if major AI models mention your brand in search results.\nCompare model pricing across platforms, all in one place.',
+    geoTitle:'GEO Visibility Detection',geoSub:'Select models, enter brand name, detect mentions across AI models.',
+    compareTitle:'AI Model Compare',compareSub:'Latest model pricing per million tokens in USD.',
+    calcTitle:'Cost Calculator',inputTok:'Input Tokens',outputTok:'Output Tokens',
+    brandLabel:'Brand / Company',modelLabel:'Select Models (multi-select)',
+    startBtn:'Start Detection',detecting:'Detecting…',brandPh:'e.g. Tesla, OpenAI, Huawei',
+    mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',
+    navHome:'Home',navGeo:'GEO Detect',navCompare:'Compare',
+  }
 };
 
 // ── Init ──
 function init(){
   renderModelChips();
   renderCompareGrid();
-  renderApiKeyList();
-  loadUser();
   bindEvents();
-  lang = localStorage.getItem('lang') || 'zh';
-  if(lang==='en') document.getElementById('langToggle').textContent='中文';
+  applyLang();
 }
 
 function bindEvents(){
-  // Nav
-  document.querySelectorAll('.nav-item,.tool-card').forEach(el=>{
-    el.addEventListener('click',()=>navigateTo(el.dataset.page));
+  // Top nav
+  document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>navTo(b.dataset.page)));
+  // Side tool
+  document.querySelectorAll('.side-tool').forEach(t=>t.addEventListener('click',()=>navTo(t.dataset.page)));
+  // Home cards
+  document.querySelectorAll('.home-card').forEach(c=>c.addEventListener('click',()=>navTo(c.dataset.page)));
+  // Settings toggle
+  document.getElementById('settingsToggle').addEventListener('click',()=>{
+    document.getElementById('settingsPanel').classList.toggle('open');
   });
-  // Sidebar toggle
-  document.getElementById('sidebarToggle').addEventListener('click',()=>{
-    document.getElementById('sidebar').classList.toggle('collapsed');
+  // Lang options in settings panel
+  document.querySelectorAll('.lang-option').forEach(o=>{
+    o.addEventListener('click',()=>{
+      lang=o.dataset.lang;
+      localStorage.setItem('lang',lang);
+      document.querySelectorAll('.lang-option').forEach(x=>x.classList.remove('selected'));
+      o.classList.add('selected');
+      document.getElementById('langBtn').textContent=lang==='zh'?'EN':'中文';
+      applyLang();
+    });
+  });
+  // Top lang toggle
+  document.getElementById('langBtn').addEventListener('click',()=>{
+    lang=lang==='zh'?'en':'zh';
+    localStorage.setItem('lang',lang);
+    document.getElementById('langBtn').textContent=lang==='zh'?'EN':'中文';
+    document.querySelectorAll('.lang-option').forEach(x=>{
+      x.classList.toggle('selected',x.dataset.lang===lang);
+    });
+    applyLang();
   });
   // GEO
   document.getElementById('geoStartBtn').addEventListener('click',startGeo);
   // Calc
   document.getElementById('calcInput').addEventListener('input',calcCosts);
   document.getElementById('calcOutput').addEventListener('input',calcCosts);
-  // Auth
-  document.getElementById('loginPrompt').addEventListener('click',openAuth);
-  document.getElementById('authSwitch').addEventListener('click',toggleAuthMode);
-  document.getElementById('authSubmitBtn').addEventListener('click',submitAuth);
-  document.getElementById('authModal').addEventListener('click',e=>{
-    if(e.target===e.currentTarget) closeAuth();
-  });
-  // Lang
-  document.getElementById('langToggle').addEventListener('click',toggleLang);
 }
 
-// ── Navigation ──
-function navigateTo(page){
+function navTo(page){
   currentPage=page;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page'+capitalize(page)).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n=>{
-    n.classList.toggle('active',n.dataset.page===page);
-  });
-  const t=i18n[lang];
-  const titles={home:t.home,geo:t.geoTitle,compare:t.compareTitle,settings:t.settings};
-  document.getElementById('topbarTitle').textContent=titles[page]||t.home;
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+  document.querySelectorAll('.side-tool').forEach(t=>t.classList.toggle('active',t.dataset.page===page));
 }
 
 function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1)}
 
+function applyLang(){
+  const t=I18N[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.dataset.i18n;
+    if(t[key]){
+      if(key==='heroTitle'){el.innerHTML=t[key].replace('\n','<br>')}
+      else{el.textContent=t[key]}
+    }
+  });
+  document.querySelectorAll('[data-placeholder]').forEach(el=>{
+    const key=el.dataset.placeholder;
+    if(t[key]) el.placeholder=t[key];
+  });
+  document.querySelectorAll('.nav-btn span').forEach((el,i)=>{
+    const keys=['navHome','geo','compare'];
+    el.textContent=t[keys[i]];
+  });
+  document.querySelectorAll('.side-tool .side-tool-text').forEach((el,i)=>{
+    const keys=['navHome','geo','compare'];
+    el.textContent=t[keys[i]];
+  });
+}
+
 // ── Model Chips ──
 function renderModelChips(){
-  const el=document.getElementById('modelSelect');
+  const el=document.getElementById('modelChips');
   el.innerHTML=MODELS.map(m=>`<div class="model-chip" data-model="${m.id}">${m.name}</div>`).join('');
-  el.querySelectorAll('.model-chip').forEach(chip=>{
-    chip.addEventListener('click',()=>{
-      const mid=chip.dataset.model;
-      if(selectedModels.has(mid)){selectedModels.delete(mid);chip.classList.remove('selected')}
-      else{selectedModels.add(mid);chip.classList.add('selected')}
+  el.querySelectorAll('.model-chip').forEach(c=>{
+    c.addEventListener('click',()=>{
+      if(selectedModels.has(c.dataset.model)){
+        selectedModels.delete(c.dataset.model);c.classList.remove('selected');
+      }else{
+        selectedModels.add(c.dataset.model);c.classList.add('selected');
+      }
     });
   });
 }
 
-// ── GEO Detection ──
+// ── GEO ──
 async function startGeo(){
   const brand=document.getElementById('brandInput').value.trim();
   if(!brand){document.getElementById('brandInput').focus();return}
   if(selectedModels.size===0){alert(lang==='zh'?'请至少选择一个模型':'Select at least one model');return}
   const btn=document.getElementById('geoStartBtn');
-  btn.disabled=true;
-  btn.textContent=i18n[lang].detecting;
+  btn.disabled=true;btn.textContent=I18N[lang].detecting;
   const results=document.getElementById('geoResults');
   results.innerHTML='';
-  const models=[...selectedModels];
-  const promises=models.map(mid=>{
+  const promises=[...selectedModels].map(mid=>{
     const m=MODELS.find(x=>x.id===mid);
     return detectOne(brand,m).then(r=>showResult(r));
   });
   await Promise.allSettled(promises);
-  btn.disabled=false;
-  btn.textContent=i18n[lang].startDetect;
+  btn.disabled=false;btn.textContent=I18N[lang].startBtn;
 }
 
 async function detectOne(brand,model){
-  const key=getApiKey(model.provider);
-  if(!key) return {model:model.name,score:0,mentioned:false,snippet:i18n[lang].noKey,provider:model.provider};
+  const key=localStorage.getItem('key_'+model.provider)||'';
+  if(!key) return{model:model.name,score:0,mentioned:false,snippet:I18N[lang].noKey,provider:model.provider};
   try{
     const res=await fetch('/api/proxy',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({provider:model.provider,model:model.id,apiKey:key,prompt:GEO_PROMPT(brand)})
     });
-    if(!res.ok) throw new Error('API error '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data=await res.json();
     const text=data.content||'';
     const mentioned=text.toLowerCase().includes(brand.toLowerCase());
-    return {model:model.name,score:mentioned?Math.floor(60+Math.random()*40):Math.floor(Math.random()*30),mentioned,snippet:text.slice(0,120)+'...',provider:model.provider};
+    return{model:model.name,score:mentioned?Math.floor(62+Math.random()*38):Math.floor(Math.random()*35),mentioned,snippet:text.slice(0,100),provider:model.provider};
   }catch(e){
-    return {model:model.name,score:0,mentioned:false,snippet:'Error: '+e.message,provider:model.provider};
+    return{model:model.name,score:0,mentioned:false,snippet:'Error: '+e.message,provider:model.provider};
   }
 }
 
 function showResult(r){
-  const cls=r.score>=60?'score-high':r.score>=30?'score-mid':'score-low';
-  const badge=r.mentioned?`<span class="result-badge badge-mentioned">${i18n[lang].mentioned}</span>`:`<span class="result-badge badge-not-mentioned">${i18n[lang].notMentioned}</span>`;
-  const html=`<div class="result-card">
-    <div class="result-score ${cls}">${r.score}</div>
-    <div class="result-info">
-      <div class="result-model">${r.model} ${badge}</div>
-      <div class="result-snippet">${r.snippet}</div>
-    </div>
-  </div>`;
-  document.getElementById('geoResults').insertAdjacentHTML('beforeend',html);
+  const cls=r.score>=60?'s-high':r.score>=30?'s-mid':'s-low';
+  const tag=r.mentioned
+    ?`<span class="result-tag t-mentioned">${I18N[lang].mentioned}</span>`
+    :`<span class="result-tag t-not">${I18N[lang].notMentioned}</span>`;
+  document.getElementById('geoResults').insertAdjacentHTML('beforeend',
+    `<div class="result-card">
+      <div class="score-circle ${cls}">${r.score}</div>
+      <div class="result-body">
+        <div class="result-name">${r.model}</div>
+        <div class="result-snippet">${r.snippet}</div>
+      </div>
+      ${tag}
+    </div>`);
 }
 
 // ── Compare ──
@@ -411,11 +593,11 @@ function renderCompareGrid(){
   const el=document.getElementById('compareGrid');
   el.innerHTML=MODELS.map(m=>{
     const p=PROVIDERS[m.provider];
-    return `<div class="price-card">
+    return`<div class="price-card">
       <div class="provider" style="color:${p.color}">${p.name}</div>
-      <div class="model-name">${m.name}</div>
-      <div class="price-row"><span>输入</span><span>$${m.in.toFixed(2)}/M</span></div>
-      <div class="price-row"><span>输出</span><span>$${m.out.toFixed(2)}/M</span></div>
+      <div class="model">${m.name}</div>
+      <div class="price-row"><span>Input</span><span>$${m.in.toFixed(2)}/M</span></div>
+      <div class="price-row"><span>Output</span><span>$${m.out.toFixed(2)}/M</span></div>
     </div>`;
   }).join('');
 }
@@ -424,99 +606,10 @@ function calcCosts(){
   const inp=parseInt(document.getElementById('calcInput').value)||0;
   const out=parseInt(document.getElementById('calcOutput').value)||0;
   const el=document.getElementById('calcResults');
-  const rows=MODELS.map(m=>{
-    const cost=(inp*m.in/1e6+out*m.out/1e6);
-    return `<div style="display:flex;justify-content:space-between;padding:2px 0"><span>${m.name}</span><span style="font-family:monospace">$${cost.toFixed(4)}</span></div>`;
-  });
-  el.innerHTML=rows.join('');
-}
-
-// ── API Keys ──
-function renderApiKeyList(){
-  const el=document.getElementById('apiKeyList');
-  el.innerHTML=Object.entries(PROVIDERS).map(([id,p])=>{
-    const saved=localStorage.getItem('key_'+id);
-    return `<div class="api-key-item"><span class="provider-name" style="color:${p.color}">${p.name}</span><input type="password" placeholder="sk-..." value="${saved||''}" data-provider="${id}"></div>`;
+  el.innerHTML=MODELS.map(m=>{
+    const cost=inp*m.in/1e6+out*m.out/1e6;
+    return`<div style="display:flex;justify-content:space-between"><span>${m.name}</span><span style="font-family:monospace">$${cost.toFixed(4)}</span></div>`;
   }).join('');
-  el.querySelectorAll('input').forEach(inp=>{
-    inp.addEventListener('change',()=>{
-      localStorage.setItem('key_'+inp.dataset.provider,inp.value);
-    });
-  });
-}
-
-function getApiKey(provider){return localStorage.getItem('key_'+provider)||''}
-
-// ── Auth ──
-function openAuth(){
-  isLoginMode=true;
-  updateAuthUI();
-  document.getElementById('authModal').classList.add('open');
-}
-function closeAuth(){document.getElementById('authModal').classList.remove('open')}
-function toggleAuthMode(e){
-  e.preventDefault();
-  isLoginMode=!isLoginMode;
-  updateAuthUI();
-}
-function updateAuthUI(){
-  const t=i18n[lang];
-  document.getElementById('authTitle').textContent=isLoginMode?t.login:t.register;
-  document.getElementById('authSubmitBtn').textContent=isLoginMode?t.login:t.register;
-  const switchEl=document.getElementById('authSwitch');
-  switchEl.innerHTML=isLoginMode?`${t.noAccount}<a href="#">${t.register}</a>`:`${t.hasAccount}<a href="#">${t.login}</a>`;
-}
-function submitAuth(){
-  const user=document.getElementById('authUser').value.trim();
-  const pass=document.getElementById('authPass').value;
-  if(!user||!pass)return;
-  if(isLoginMode){
-    const saved=JSON.parse(localStorage.getItem('user_'+user));
-    if(!saved||saved.pass!==pass){alert(lang==='zh'?'用户名或密码错误':'Wrong username or password');return}
-    localStorage.setItem('currentUser',user);
-  }else{
-    localStorage.setItem('user_'+user,JSON.stringify({pass,name:user}));
-    localStorage.setItem('currentUser',user);
-  }
-  closeAuth();
-  loadUser();
-}
-function loadUser(){
-  const user=localStorage.getItem('currentUser');
-  const block=document.getElementById('userBlock');
-  if(user){
-    block.innerHTML=`<div class="user-block"><div class="user-avatar">${user[0].toUpperCase()}</div><div><div class="user-name">${user}</div><div class="user-sub">${i18n[lang].home}</div></div></div>`;
-    block.querySelector('.user-block').addEventListener('click',()=>{
-      localStorage.removeItem('currentUser');
-      loadUser();
-    });
-  }else{
-    block.innerHTML=`<div class="login-prompt" id="loginPrompt">🔑 ${i18n[lang].login} / ${i18n[lang].register}</div>`;
-    document.getElementById('loginPrompt').addEventListener('click',openAuth);
-  }
-}
-
-// ── Lang ──
-function toggleLang(){
-  lang=lang==='zh'?'en':'zh';
-  localStorage.setItem('lang',lang);
-  document.getElementById('langToggle').textContent=lang==='zh'?'EN':'中文';
-  // Update static text
-  const t=i18n[lang];
-  document.querySelector('.hero h1').textContent=t.heroTitle;
-  document.querySelector('.hero p').textContent=t.heroSub;
-  document.querySelectorAll('.tool-card').forEach((c,i)=>{
-    if(i===0){c.querySelector('h3').textContent=t.geoTitle;c.querySelector('p').textContent=t.geoDesc}
-    if(i===1){c.querySelector('h3').textContent=t.compareTitle;c.querySelector('p').textContent=t.compareDesc}
-  });
-  document.querySelectorAll('.nav-item .label').forEach((l,i)=>{
-    const keys=['home','geo','compare','settings'];
-    l.textContent=t[keys[i]];
-  });
-  document.querySelector('.settings-section h3').textContent=t.apiKeys;
-  document.querySelector('.settings-section p').textContent=t.apiKeyHint;
-  document.getElementById('topbarTitle').textContent=t[currentPage]||t.home;
-  loadUser();
 }
 
 // ── Start ──
