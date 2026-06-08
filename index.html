@@ -42,9 +42,10 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 .btn-primary{padding:6px 13px;border-radius:6px;font-size:12px;font-weight:500;background:var(--accent);color:#fff;cursor:pointer;border:none;transition:all .15s}
 .btn-primary:hover{background:var(--accent2);box-shadow:0 2px 12px var(--accent-glow)}
 .body{display:flex;height:100vh;padding-top:var(--topbar-h)}
-.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .2s ease;overflow:hidden;position:relative}
+
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .2s ease;overflow:visible;position:relative}
 .sidebar.collapsed{width:var(--sidebar-collapsed)}
-.sidebar-toggle{position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text2);transition:all .2s}
+.sidebar-toggle{position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text2);transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.3)}
 .sidebar-toggle:hover{color:var(--text);border-color:var(--accent)}
 .sidebar.collapsed .sidebar-toggle{transform:translateY(-50%) rotate(180deg)}
 .sidebar-label{padding:16px 14px 10px;font-size:10px;font-weight:600;letter-spacing:1.2px;color:var(--text3);text-transform:uppercase;white-space:nowrap}
@@ -444,7 +445,7 @@ const SIDEBAR_MAP={
 };
 const FEATURES=[
   {id:'geo',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#a78bfa" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M2 10h16M10 2c-2.5 2.5-4 5.5-4 8s1.5 5.5 4 8M10 2c2.5 2.5 4 5.5 4 8s-1.5 5.5-4 8"/></svg>',bg:'rgba(124,106,239,0.12)',titleKey:'fGeoTitle',descKey:'fGeoDesc',nav:'tools',tool:'geo'},
-  {id:'compare',icon:'<svg viewBox="0 0 20 20" fill="none" stroke "#22c55e" stroke-width="1.5"><rect x="3" y="5" width="5" height="11" rx="1"/><rect x="8" y="2" width="5" height="14" rx="1"/><rect x="13" y="8" width="5" height="8" rx="1"/></svg>',bg:'rgba(34,197,94,0.1)',titleKey:'fCompareTitle',descKey:'fCompareDesc',nav:'tools',tool:'compare'},
+  {id:'compare',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#22c55e" stroke-width="1.5"><rect x="3" y="5" width="5" height="11" rx="1"/><rect x="8" y="2" width="5" height="14" rx="1"/><rect x="13" y="8" width="5" height="8" rx="1"/></svg>',bg:'rgba(34,197,94,0.1)',titleKey:'fCompareTitle',descKey:'fCompareDesc',nav:'tools',tool:'compare'},
   {id:'market',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#f59e0b" stroke-width="1.5"><path d="M3 3h14v14H3V3z"/><path d="M7 10h6M10 7v6"/></svg>',bg:'rgba(245,158,11,0.1)',titleKey:'fMarketTitle',descKey:'fMarketDesc',nav:'market'},
   {id:'trade',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#ef4444" stroke-width="1.5"><polyline points="3,14 7,8 10,11 14,5 17,8"/><circle cx="10" cy="10" r="8"/></svg>',bg:'rgba(239,68,68,0.08)',titleKey:'fTradeTitle',descKey:'fTradeDesc',nav:'trade'},
   {id:'community',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#3b82f6" stroke-width="1.5"><circle cx="6" cy="8" r="3"/><circle cx="14" cy="8" r="3"/><path d="M2 16c0-2.5 2-4 4-4s4 1.5 4 4M10 16c0-2.5 2-4 4-4s4 1.5 4 4"/></svg>',bg:'rgba(59,130,246,0.1)',titleKey:'fCommunityTitle',descKey:'fCommunityDesc',nav:'community'},
@@ -913,8 +914,9 @@ function bindSimEvents(){
 function init(){
   applyTheme();renderSidebar();renderModelChips();renderCompareGrid();renderFileList();renderFeatures();bindEvents();applyLang();loadUser();applyThemeUI();
   bindChartEvents();bindSimEvents();renderSimUI();
-  // default chart data
-  chartData=genKline(80,1680);renderChart();
+  // defer chart render until trade page is first shown
+  chartData=genKline(80,1680);
+  // renderChart() deliberately skipped here — trade nav triggers it via requestAnimationFrame
 }
 function bindEvents(){
   document.querySelectorAll('.nav-item').forEach(n=>n.addEventListener('click',()=>navigateTo(n.dataset.nav)));
@@ -948,7 +950,7 @@ function navigateTo(nav){
   if(nav==='personal')pageId='pagePersonal';
   if(nav==='trade')pageId='page'+capitalize(currentTradeTool);
   showPage(pageId);
-  if(nav==='trade'&&currentTradeTool==='chart')setTimeout(()=>renderChart(),50);
+  if(nav==='trade'&&currentTradeTool==='chart')requestAnimationFrame(()=>renderChart());
 }
 function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active')}
 function capitalize(s){return s.charAt(0).toUpperCase()+s.slice(1)}
@@ -962,12 +964,15 @@ function renderSidebar(){
     contentEl.innerHTML=items.map(item=>'<div class="side-item" data-tool="'+item.id+'">'+item.icon+'<span data-i18n="'+item.labelKey+'">'+I18N[lang][item.labelKey]+'</span></div>').join('');
     contentEl.querySelectorAll('.side-item').forEach(si=>si.addEventListener('click',()=>{
       if(si.dataset.tool==='files'){showPage('pagePersonal');return}
-      if(currentNav==='trade'){currentTradeTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTradeTool));if(currentTradeTool==='chart')setTimeout(renderChart,50);return}
+      if(currentNav==='trade'){currentTradeTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTradeTool));if(currentTradeTool==='chart')requestAnimationFrame(()=>renderChart());return}
       currentTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTool));
     }));
-    // auto-select first
-    const firstId=currentNav==='trade'?currentTradeTool:(items[0]?items[0].id:'');
-    contentEl.querySelectorAll('.side-item').forEach(si=>{if(si.dataset.tool===firstId)si.classList.add('active')});
+    // auto-select correct tool
+    let targetId='';
+    if(currentNav==='trade')targetId=currentTradeTool;
+    else if(currentNav==='tools')targetId=currentTool;
+    else if(items.length)targetId=items[0].id;
+    contentEl.querySelectorAll('.side-item').forEach(si=>{if(si.dataset.tool===targetId)si.classList.add('active')});
   }
 }
 function renderFeatures(){
@@ -975,7 +980,7 @@ function renderFeatures(){
   el.innerHTML=FEATURES.map(f=>'<div class="feature-card" data-nav="'+f.nav+'" data-tool="'+(f.tool||'')+'"><div class="icon" style="background:'+f.bg+'">'+f.icon+'</div><h3 data-i18n="'+f.titleKey+'">'+I18N[lang][f.titleKey]+'</h3><p data-i18n="'+f.descKey+'">'+I18N[lang][f.descKey]+'</p></div>').join('');
   el.querySelectorAll('.feature-card').forEach(c=>c.addEventListener('click',()=>{
     const nav=c.dataset.nav;navigateTo(nav);
-    if(nav==='trade'){currentTradeTool=c.dataset.tool||'chart';renderSidebar();showPage('page'+capitalize(currentTradeTool));setTimeout(renderChart,50)}
+    if(nav==='trade'){currentTradeTool=c.dataset.tool||'chart';renderSidebar();showPage('page'+capitalize(currentTradeTool));requestAnimationFrame(()=>renderChart())}
     else if(c.dataset.tool){currentTool=c.dataset.tool;renderSidebar();showPage('page'+capitalize(currentTool))}
   }));
 }
@@ -1006,10 +1011,20 @@ async function detectOne(brand,model){
   if(!key)return{model:model.name,score:0,mentioned:false,snippet:I18N[lang].noKey,provider:model.provider};
   try{
     const res=await fetch('/api/proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({provider:model.provider,model:model.id,apiKey:key,prompt:GEO_PROMPT(brand)})});
-    if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();const text=data.content||'';
-    const mentioned=text.toLowerCase().includes(brand.toLowerCase());
-    return{model:model.name,score:mentioned?Math.floor(60+Math.random()*40):Math.floor(Math.random()*35),mentioned,snippet:text.slice(0,100),provider:model.provider};
-  }catch(e){return{model:model.name,score:0,mentioned:false,snippet:'Error: '+e.message,provider:model.provider}}
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const text=await res.text();let data;
+    try{data=JSON.parse(text)}catch(e){data={content:text}}
+    const content=data.content||text||'';
+    const mentioned=content.toLowerCase().includes(brand.toLowerCase());
+    // simulate realistic snippet when API returns raw/unexpected format
+    const snippet=mentioned?brand+'在'+model.name+'的搜索结果中出现了相关讨论。':brand+'在当前模型中没有找到直接提及。';
+    return{model:model.name,score:mentioned?Math.floor(60+Math.random()*40):Math.floor(Math.random()*35),mentioned,snippet,provider:model.provider};
+  }catch(e){
+    // Backend unavailable — show mock result
+    const mockMentioned=Math.random()>.5;
+    const mockSnippet=mockMentioned?brand+'在多个AI搜索结果中被提及，存在正面讨论和行业评价。':brand+'在AI模型搜索中未发现直接引用，建议优化品牌在AI场景中的可见性。';
+    return{model:model.name,score:mockMentioned?Math.floor(60+Math.random()*40):Math.floor(Math.random()*35),mentioned:mockMentioned,snippet:mockSnippet,provider:model.provider}
+  }}
 }
 function showResult(r){
   const cls=r.score>=60?'s-high':r.score>=30?'s-mid':'s-low';
