@@ -531,6 +531,13 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
 #aiSingleWelcomeTitle{font-size:20px;font-weight:700}
 #aiSingleWelcomeSub{font-size:13px;color:var(--text2)}
 .ai-single-input-area{padding:12px 20px 16px;border-top:1px solid var(--border);flex-shrink:0}
+
+.ai-voice-btn{width:36px;height:36px;border-radius:8px;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.ai-voice-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(124,106,239,0.08)}
+.ai-voice-btn.recording{background:rgba(239,68,68,0.15);border-color:#ef4444;color:#ef4444;animation:voice-pulse 1s ease infinite}
+.ai-voice-btn svg{width:18px;height:18px}
+@keyframes voice-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.7}}
+.sidebar{height:calc(100vh - var(--topbar-h));display:flex;flex-direction:column;background:var(--surface);border-right:1px solid var(--border);width:180px;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -703,7 +710,10 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v10M4 6l4-4 4 4"/><path d="M2 14h12"/></svg>
             </button>
             <input type="file" id="aiSingleFileInput" style="display:none" accept="*/*">
-            <textarea class="ai-textarea" id="aiSingleTextarea" rows="1" placeholder="输入消息..." data-placeholder="aiInputPh"></textarea>
+            <button class="ai-voice-btn" id="aiSingleVoiceBtn" title="点击说话">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2a3 3 0 00-3 3v5a3 3 0 006 0V5a3 3 0 00-3-3z"/><path d="M5 10a5 5 0 0010 0M10 15v3"/></svg>
+          </button>
+          <textarea class="ai-textarea" id="aiSingleTextarea" rows="1" placeholder="输入消息..." data-placeholder="aiInputPh"></textarea>
             <select class="ai-voice-select" id="aiSingleVoiceSelect" title="选择语音">
               <option value="">&#x1F510; 无语音</option>
               <option value="alloy">&#x1F3A4; Alloy</option>
@@ -867,17 +877,16 @@ const STOCK_NAMES={'600519':'贵州茅台','000001':'平安银行','000858':'五
 const SIDEBAR_MAP={
   home:[],
   ai:[
-    {id:'ai-multi',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="#7c6aef" stroke-width="1.5"><circle cx="5" cy="8" r="2.5"/><circle cx="11" cy="5" r="2"/><circle cx="11" cy="11" r="2"/><path d="M7 8h2M10 6l2-1.5M10 10l2 1.5"/></svg>',labelKey:'aiMultiMode'},
-    {id:'ai-openai',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#10a37f" stroke-width="1.5"/><path d="M8 4v4l3 1.5" stroke="#10a37f" stroke-width="1.5"/></svg>',labelKey:'aiOpenAI'},
+    {id:'ai-openai',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#10a37f" stroke-width="1.5"/></svg>',labelKey:'aiOpenAI'},
     {id:'ai-claude',icon:'<svg viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,13 2,13" stroke="#d97706" stroke-width="1.5" fill="none"/></svg>',labelKey:'aiClaude'},
-    {id:'ai-gemini',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 6l6 4 6-4L8 2zM2 11l6 3 6-3M2 8.5l6 3 6-3" stroke="#4285f4" stroke-width="1.2"/></svg>',labelKey:'aiGemini'},
-    {id:'ai-deepseek',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#4d6bfe" stroke-width="1.5"/><path d="M8 2v12M2 8h12" stroke="#4d6bfe" stroke-width="1.5"/></svg>',labelKey:'aiDeepSeek'},
-    {id:'ai-qwen',icon:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#6366f1" stroke-width="1.5"/><path d="M6 8h4M8 6v4" stroke="#6366f1" stroke-width="1.5"/></svg>',labelKey:'aiQwen'},
-    {id:'ai-kimi',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l3 6h5l-4 3.5 1.5 5.5L8 13.5 2.5 17l1.5-5.5L1 8h5z" stroke="#8b5cf6" stroke-width="1.2"/></svg>',labelKey:'aiKimi'},
-    {id:'ai-zhipu',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5.5" stroke="#3b82f6" stroke-width="1.5"/><path d="M6 8h4M8 6v4" stroke="#3b82f6" stroke-width="1.5"/></svg>',labelKey:'aiYiYi'},
+    {id:'ai-gemini',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 6l6 4 6-4L8 2z" stroke="#4285f4" stroke-width="1.5"/></svg>',labelKey:'aiGemini'},
+    {id:'ai-deepseek',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#4d6bfe" stroke-width="1.5"/></svg>',labelKey:'aiDeepSeek'},
+    {id:'ai-qwen',icon:'<svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#6366f1" stroke-width="1.5"/></svg>',labelKey:'aiQwen'},
+    {id:'ai-kimi',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M8 2l3 6h5l-4 3.5 1.5 5.5L8 13.5" stroke="#8b5cf6" stroke-width="1.5"/></svg>',labelKey:'aiKimi'},
+    {id:'ai-zhipu',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#3b82f6" stroke-width="1.5"/></svg>',labelKey:'aiZhipu'},
     {id:'ai-yi',icon:'<svg viewBox="0 0 16 16" fill="none"><polygon points="8,2 14,8 8,14 2,8" stroke="#06b6d4" stroke-width="1.5" fill="none"/></svg>',labelKey:'aiYi'},
     {id:'ai-mistral',icon:'<svg viewBox="0 0 16 16" fill="none"><path d="M8 2L2 6v4l6 4 6-4V6L8 2z" stroke="#f97316" stroke-width="1.5" fill="none"/></svg>',labelKey:'aiMistral'},
-    {id:'ai-meta',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#0081fb" stroke-width="1.5"/><circle cx="6" cy="7" r="1.5" stroke="#0081fb" stroke-width="1.2"/><circle cx="10" cy="7" r="1.5" stroke="#0081fb" stroke-width="1.2"/><path d="M6 10a4 4 0 01-2-3" stroke="#0081fb" stroke-width="1.2"/></svg>',labelKey:'aiMeta'},
+    {id:'ai-meta',icon:'<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#0081fb" stroke-width="1.5"/></svg>',labelKey:'aiMeta'},
   ],
   tools:[
     {id:'geo',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6.5"/><path d="M2 8h12M8 1.5c-2 2-3 4.5-3 6.5s1 4.5 3 6.5M8 1.5c2 2 3 4.5 3 6.5s-1 4.5-3 6.5"/></svg>',labelKey:'geo'},
@@ -1397,22 +1406,30 @@ function bindEvents(){
 function navigateTo(nav){
   // AI multi-model chat
   // AI sub-tool routing
-  if(nav==='ai'||nav==='ai-multi'){
-    showPage('pageAI');
-    currentNav='ai';
+  // AI 导航高亮
+  const isAI = nav === 'ai' || nav === 'ai-multi' || nav.startsWith('ai-');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.nav === (isAI ? 'ai' : nav)));
+  
+  if(nav === 'ai' || nav === 'ai-multi'){
+    currentNav = 'ai';
     renderSidebar('ai');
+    showPage('pageAIChat');
+    window.aiChatModel = null;
+    window.aiChatMessages = [];
+    renderAIChatMessages();
     return;
   }
   if(nav.startsWith('ai-')){
-    const modelId=nav;
-    showPage('pageAIChat');
-    currentNav='ai';
+    const modelId = nav;
+    currentNav = 'ai';
     renderSidebar('ai');
-    window.aiChatModel=modelId;
-    window.aiChatHistory=aiChatHistories[modelId]||[];
-    window.aiChatMessages=[];
+    showPage('pageAIChat');
+    window.aiChatModel = modelId;
+    window.aiChatHistory = aiChatHistories[modelId] || [];
+    window.aiChatMessages = [];
     renderAIChatHistory();
     renderAIChatMessages();
+    aiSetModelInfo(modelId);
     return;
   }
 
