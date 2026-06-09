@@ -408,6 +408,12 @@ html,body{height:100%;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-
       </div>
       <div class="file-list" id="fileList"></div>
     </div>
+
+    <div class="page" id="pageApiKeys">
+      <div class="hero" style="margin-bottom:14px"><h1 style="font-size:20px" data-i18n="apiKeyMgmt">API 密钥</h1><p style="font-size:13px" data-i18n="apiKeySub">管理您的 AI 模型 API 密钥，用于 GEO 检测等功能。</p></div>
+      <div class="apikey-hint" style="font-size:12px;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 16 16" fill="none" stroke="var(--text3)" stroke-width="1.5" style="width:14px;height:14px;flex-shrink:0"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v2M8 9.5v.01"/></svg><span data-i18n="apiKeyHint">密钥仅存储在您的浏览器本地，不会上传到服务器。</span></div>
+      <div id="apiKeyList"></div>
+    </div>
   </div>
 </div>
 
@@ -442,7 +448,7 @@ const SIDEBAR_MAP={
     {id:'simulate',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l4-4 3 3 5-5"/><path d="M12 3h3v3"/></svg>',labelKey:'simulate'},
   ],
   community:[],
-  personal:[{id:'files',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>',labelKey:'fileManage'}],
+  personal:[{id:'files',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 2h12v9H9l-3 3v-3H2V2z"/></svg>',labelKey:'fileManage'},{id:'apikeys',icon:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.5 1.5l3 3L6 13H3v-3z"/><path d="M9 5l2 2"/></svg>',labelKey:'apiKeyMgmt'}],
 };
 const FEATURES=[
   {id:'geo',icon:'<svg viewBox="0 0 20 20" fill="none" stroke="#a78bfa" stroke-width="1.5"><circle cx="10" cy="10" r="8"/><path d="M2 10h16M10 2c-2.5 2.5-4 5.5-4 8s1.5 5.5 4 8M10 2c2.5 2.5 4 5.5 4 8s-1.5 5.5-4 8"/></svg>',bg:'rgba(124,106,239,0.12)',titleKey:'fGeoTitle',descKey:'fGeoDesc',nav:'tools',tool:'geo'},
@@ -453,8 +459,8 @@ const FEATURES=[
 ];
 
 const I18N={
-  zh:{navHome:'首页',navAI:'AI',navTools:'工具',navMarket:'市场',navTrade:'交易',navCommunity:'社区',navPersonal:'个人',subTools:'子工具',login:'登录',register:'注册',logout:'退出',chatTitle:'智能AI助手',chatPh:'输入您的问题，按回车发送...',send:'发送',fGeoTitle:'GEO可见性检测',fGeoDesc:'检测品牌在主流AI模型中的提及率与可见性评分',fCompareTitle:'AI模型比价',fCompareDesc:'对比16+模型价格与性能，智能推荐最优选择',fMarketTitle:'AI服务市场',fMarketDesc:'一站式采购各类AI能力与工具服务',fTradeTitle:'量化交易',fTradeDesc:'K线分析、策略回测、模拟交易一体化',fCommunityTitle:'AI开发者社区',fCommunityDesc:'交流经验、分享项目、协作创新',geoTitle:'GEO可见性检测',geoSub:'输入品牌，选择模型，检测AI搜索提及情况。',brandLabel:'品牌名称',brandPh:'例如：华为、特斯拉',modelLabel:'选择模型（可多选）',startBtn:'开始检测',detecting:'检测中…',compareTitle:'AI模型比价',compareSub:'选择最多6个模型进行全方位对比。',selectModels:'选择模型对比',suggestions:'模型定位与建议',geo:'GEO检测',compare:'AI比价',fileManage:'文件管理',chart:'行情图表',backtest:'策略回测',simulate:'模拟交易',mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',userPh:'用户名',passPh:'密码',noAccount:'还没有账号？',newFile:'新建文件',importFile:'导入文件',wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',wpThemeDark:'切换浅色',wpThemeLight:'切换深色',aiTitle:'AI智能体',aiSub:'AI大栏目内容，敬请期待。',marketTitle:'市场',marketSub:'市场大栏目内容，敬请期待。',communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',personalTitle:'个人中心',personalSub:'管理您的文件和账户。',stockPh:'输入股票代码 如 600519',loadData:'加载数据',indicators:'技术指标',aiSignal:'AI 信号',btTitle:'策略回测',btSub:'配置策略参数，验证历史表现。',btStock:'股票代码',btStrategy:'策略',btStart:'起始日期',btEnd:'结束日期',btCapital:'初始资金(万)',btParam:'策略参数',btRun:'开始回测',btDate:'日期',btType:'类型',btPrice:'价格',btQty:'数量',btPnl:'盈亏',simTitle:'模拟交易',simSub:'虚拟资金实战演练，零风险体验交易。',simTotalAsset:'总资产',simAvailCash:'可用资金',simHoldVal:'持仓市值',simPnl:'总盈亏',simPnlPct:'收益率',simStock:'股票代码',simPrice:'价格',simQty:'数量(手)',buy:'买入',sell:'卖出',simReset:'重置资金',simCode:'代码',simName:'名称',simQty2:'持仓',simCost:'成本',simCur:'现价',simPnl2:'盈亏',simPnlPct2:'盈亏率',simTime:'时间',simType2:'类型',simCode2:'代码',simPrice2:'价格',simQty3:'数量',simAmount:'金额'},
-  en:{navHome:'Home',navAI:'AI',navTools:'Tools',navMarket:'Market',navTrade:'Trade',navCommunity:'Community',navPersonal:'Personal',subTools:'Sub Tools',login:'Login',register:'Register',logout:'Logout',chatTitle:'AI Assistant',chatPh:'Type your question, press Enter...',send:'Send',fGeoTitle:'GEO Visibility',fGeoDesc:'Check brand mentions across AI models',fCompareTitle:'AI Model Compare',fCompareDesc:'Compare 16+ models pricing & performance',fMarketTitle:'AI Service Market',fMarketDesc:'One-stop AI capabilities marketplace',fTradeTitle:'Quant Trading',fTradeDesc:'K-line analysis, backtesting, paper trading',fCommunityTitle:'AI Developer Community',fCommunityDesc:'Share, collaborate, innovate together',geoTitle:'GEO Visibility Detection',geoSub:'Enter brand, select models, detect AI mentions.',brandLabel:'Brand Name',brandPh:'e.g. Huawei, Tesla',modelLabel:'Select Models (multi-select)',startBtn:'Start Detection',detecting:'Detecting…',compareTitle:'AI Model Pricing',compareSub:'Select up to 6 models for comparison.',selectModels:'Select Models',suggestions:'Model Positioning & Advice',geo:'GEO Detect',compare:'Compare',fileManage:'File Manager',chart:'K-Line Chart',backtest:'Backtest',simulate:'Paper Trading',mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',userPh:'Username',passPh:'Password',noAccount:"Don't have an account?",newFile:'New File',importFile:'Import File',wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',wpThemeDark:'Switch to Light',wpThemeLight:'Switch to Dark',aiTitle:'AI Agents',aiSub:'AI section coming soon.',marketTitle:'Market',marketSub:'Market section coming soon.',communityTitle:'Community',communitySub:'Community section coming soon.',personalTitle:'Personal Center',personalSub:'Manage your files and account.',stockPh:'Stock code e.g. 600519',loadData:'Load Data',indicators:'Indicators',aiSignal:'AI Signals',btTitle:'Strategy Backtest',btSub:'Configure strategy, verify with history.',btStock:'Stock Code',btStrategy:'Strategy',btStart:'Start Date',btEnd:'End Date',btCapital:'Capital(10K)',btParam:'Params',btRun:'Run Backtest',btDate:'Date',btType:'Type',btPrice:'Price',btQty:'Qty',btPnl:'P&L',simTitle:'Paper Trading',simSub:'Practice with virtual funds, zero risk.',simTotalAsset:'Total Asset',simAvailCash:'Available Cash',simHoldVal:'Holdings Value',simPnl:'Total P&L',simPnlPct:'Return',simStock:'Stock Code',simPrice:'Price',simQty:'Qty(lots)',buy:'Buy',sell:'Sell',simReset:'Reset',simCode:'Code',simName:'Name',simQty2:'Holding',simCost:'Cost',simCur:'Current',simPnl2:'P&L',simPnlPct2:'P&L%',simTime:'Time',simType2:'Type',simCode2:'Code',simPrice2:'Price',simQty3:'Qty',simAmount:'Amount'}
+  zh:{navHome:'首页',navAI:'AI',navTools:'工具',navMarket:'市场',navTrade:'交易',navCommunity:'社区',navPersonal:'个人',subTools:'子工具',login:'登录',register:'注册',logout:'退出',chatTitle:'智能AI助手',chatPh:'输入您的问题，按回车发送...',send:'发送',fGeoTitle:'GEO可见性检测',fGeoDesc:'检测品牌在主流AI模型中的提及率与可见性评分',fCompareTitle:'AI模型比价',fCompareDesc:'对比16+模型价格与性能，智能推荐最优选择',fMarketTitle:'AI服务市场',fMarketDesc:'一站式采购各类AI能力与工具服务',fTradeTitle:'量化交易',fTradeDesc:'K线分析、策略回测、模拟交易一体化',fCommunityTitle:'AI开发者社区',fCommunityDesc:'交流经验、分享项目、协作创新',geoTitle:'GEO可见性检测',geoSub:'输入品牌，选择模型，检测AI搜索提及情况。',brandLabel:'品牌名称',brandPh:'例如：华为、特斯拉',modelLabel:'选择模型（可多选）',startBtn:'开始检测',detecting:'检测中…',compareTitle:'AI模型比价',compareSub:'选择最多6个模型进行全方位对比。',selectModels:'选择模型对比',suggestions:'模型定位与建议',geo:'GEO检测',compare:'AI比价',fileManage:'文件管理',apiKeyMgmt:'API 密钥',apiKeySub:'管理您的 AI 模型 API 密钥，用于 GEO 检测等功能。',apiKeyProvider:'平台',apiKeyStatus:'状态',apiKeyAction:'操作',apiKeyInput:'输入 API Key',apiKeySave:'保存',apiKeyDelete:'删除',apiKeySaved:'已配置',apiKeyNone:'未配置',apiKeyHint:'密钥仅存储在您的浏览器本地，不会上传到服务器。',chart:'行情图表',backtest:'策略回测',simulate:'模拟交易',mentioned:'提及',notMentioned:'未提及',noKey:'未配置Key',userPh:'用户名',passPh:'密码',noAccount:'还没有账号？',newFile:'新建文件',importFile:'导入文件',wpContact:'联系客服',wpFeedback:'意见反馈',wpMessage:'站内消息',wpNotice:'系统公告',wpLang:'语言切换',wpThemeDark:'切换浅色',wpThemeLight:'切换深色',aiTitle:'AI智能体',aiSub:'AI大栏目内容，敬请期待。',marketTitle:'市场',marketSub:'市场大栏目内容，敬请期待。',communityTitle:'社区',communitySub:'社区大栏目内容，敬请期待。',personalTitle:'个人中心',personalSub:'管理您的文件和账户。',stockPh:'输入股票代码 如 600519',loadData:'加载数据',indicators:'技术指标',aiSignal:'AI 信号',btTitle:'策略回测',btSub:'配置策略参数，验证历史表现。',btStock:'股票代码',btStrategy:'策略',btStart:'起始日期',btEnd:'结束日期',btCapital:'初始资金(万)',btParam:'策略参数',btRun:'开始回测',btDate:'日期',btType:'类型',btPrice:'价格',btQty:'数量',btPnl:'盈亏',simTitle:'模拟交易',simSub:'虚拟资金实战演练，零风险体验交易。',simTotalAsset:'总资产',simAvailCash:'可用资金',simHoldVal:'持仓市值',simPnl:'总盈亏',simPnlPct:'收益率',simStock:'股票代码',simPrice:'价格',simQty:'数量(手)',buy:'买入',sell:'卖出',simReset:'重置资金',simCode:'代码',simName:'名称',simQty2:'持仓',simCost:'成本',simCur:'现价',simPnl2:'盈亏',simPnlPct2:'盈亏率',simTime:'时间',simType2:'类型',simCode2:'代码',simPrice2:'价格',simQty3:'数量',simAmount:'金额'},
+  en:{navHome:'Home',navAI:'AI',navTools:'Tools',navMarket:'Market',navTrade:'Trade',navCommunity:'Community',navPersonal:'Personal',subTools:'Sub Tools',login:'Login',register:'Register',logout:'Logout',chatTitle:'AI Assistant',chatPh:'Type your question, press Enter...',send:'Send',fGeoTitle:'GEO Visibility',fGeoDesc:'Check brand mentions across AI models',fCompareTitle:'AI Model Compare',fCompareDesc:'Compare 16+ models pricing & performance',fMarketTitle:'AI Service Market',fMarketDesc:'One-stop AI capabilities marketplace',fTradeTitle:'Quant Trading',fTradeDesc:'K-line analysis, backtesting, paper trading',fCommunityTitle:'AI Developer Community',fCommunityDesc:'Share, collaborate, innovate together',geoTitle:'GEO Visibility Detection',geoSub:'Enter brand, select models, detect AI mentions.',brandLabel:'Brand Name',brandPh:'e.g. Huawei, Tesla',modelLabel:'Select Models (multi-select)',startBtn:'Start Detection',detecting:'Detecting…',compareTitle:'AI Model Pricing',compareSub:'Select up to 6 models for comparison.',selectModels:'Select Models',suggestions:'Model Positioning & Advice',geo:'GEO Detect',compare:'Compare',fileManage:'File Manager',apiKeyMgmt:'API Keys',apiKeySub:'Manage your AI model API keys for GEO detection and other features.',apiKeyProvider:'Provider',apiKeyStatus:'Status',apiKeyAction:'Action',apiKeyInput:'Enter API Key',apiKeySave:'Save',apiKeyDelete:'Delete',apiKeySaved:'Configured',apiKeyNone:'Not set',apiKeyHint:'Keys are stored locally in your browser and never uploaded to any server.',chart:'K-Line Chart',backtest:'Backtest',simulate:'Paper Trading',mentioned:'Mentioned',notMentioned:'Not mentioned',noKey:'No API Key',userPh:'Username',passPh:'Password',noAccount:"Don't have an account?",newFile:'New File',importFile:'Import File',wpContact:'Contact Support',wpFeedback:'Feedback',wpMessage:'Messages',wpNotice:'Announcements',wpLang:'Language',wpThemeDark:'Switch to Light',wpThemeLight:'Switch to Dark',aiTitle:'AI Agents',aiSub:'AI section coming soon.',marketTitle:'Market',marketSub:'Market section coming soon.',communityTitle:'Community',communitySub:'Community section coming soon.',personalTitle:'Personal Center',personalSub:'Manage your files and account.',stockPh:'Stock code e.g. 600519',loadData:'Load Data',indicators:'Indicators',aiSignal:'AI Signals',btTitle:'Strategy Backtest',btSub:'Configure strategy, verify with history.',btStock:'Stock Code',btStrategy:'Strategy',btStart:'Start Date',btEnd:'End Date',btCapital:'Capital(10K)',btParam:'Params',btRun:'Run Backtest',btDate:'Date',btType:'Type',btPrice:'Price',btQty:'Qty',btPnl:'P&L',simTitle:'Paper Trading',simSub:'Practice with virtual funds, zero risk.',simTotalAsset:'Total Asset',simAvailCash:'Available Cash',simHoldVal:'Holdings Value',simPnl:'Total P&L',simPnlPct:'Return',simStock:'Stock Code',simPrice:'Price',simQty:'Qty(lots)',buy:'Buy',sell:'Sell',simReset:'Reset',simCode:'Code',simName:'Name',simQty2:'Holding',simCost:'Cost',simCur:'Current',simPnl2:'P&L',simPnlPct2:'P&L%',simTime:'Time',simType2:'Type',simCode2:'Code',simPrice2:'Price',simQty3:'Qty',simAmount:'Amount'}
 };
 
 // ── State ──
@@ -965,6 +971,7 @@ function renderSidebar(){
     contentEl.innerHTML=items.map(item=>'<div class="side-item" data-tool="'+item.id+'">'+item.icon+'<span data-i18n="'+item.labelKey+'">'+I18N[lang][item.labelKey]+'</span></div>').join('');
     contentEl.querySelectorAll('.side-item').forEach(si=>si.addEventListener('click',()=>{
       if(si.dataset.tool==='files'){showPage('pagePersonal');return}
+      if(si.dataset.tool==='apikeys'){showPage('pageApiKeys');renderApiKeyList();return}
       if(currentNav==='trade'){currentTradeTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTradeTool));if(currentTradeTool==='chart')requestAnimationFrame(()=>renderChart());return}
       currentTool=si.dataset.tool;document.querySelectorAll('.side-item').forEach(x=>x.classList.remove('active'));si.classList.add('active');showPage('page'+capitalize(currentTool));
     }));
@@ -1104,6 +1111,58 @@ function applyLang(){
   const t=I18N[lang];
   document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n;if(t[key])el.textContent=t[key]});
   document.querySelectorAll('[data-placeholder]').forEach(el=>{const key=el.dataset.placeholder;if(t[key])el.placeholder=t[key]});
+}
+
+function renderApiKeyList(){
+  const t=I18N[lang];
+  const list=document.getElementById('apiKeyList');
+  if(!list)return;
+  list.innerHTML=Object.entries(PROVIDERS).map(([id,p])=>{
+    const saved=localStorage.getItem('key_'+id);
+    const masked=saved?saved.slice(0,4)+'****'+saved.slice(-4):'';
+    const status=saved?`<span style="color:var(--green)">${t.apiKeySaved}</span>`:`<span style="color:var(--text3)">${t.apiKeyNone}</span>`;
+    return `<div class="apikey-row" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface2);border-radius:10px;margin-bottom:8px;border:1px solid var(--border)">
+      <div style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:14px;font-weight:600;color:var(--text)">${p.name}</div>
+        <div style="font-size:12px;color:var(--text3);margin-top:2px">${saved?masked:t.apiKeyNone}</div>
+      </div>
+      <div style="font-size:12px;margin-right:8px">${status}</div>
+      <button class="btn-ghost" onclick="editApiKey('${id}')" style="font-size:12px;padding:4px 10px">${saved?t.apiKeySave:t.apiKeySave}</button>
+      ${saved?`<button class="btn-ghost" onclick="delApiKey('${id}')" style="font-size:12px;padding:4px 10px;color:var(--red)">${t.apiKeyDelete}</button>`:''}
+    </div>`;
+  }).join('');
+}
+function editApiKey(pid){
+  const p=PROVIDERS[pid];
+  const t=I18N[lang];
+  const cur=localStorage.getItem('key_'+pid)||'';
+  const el=document.getElementById('apiKeyList');
+  // find the row and replace with input
+  const rows=el.querySelectorAll('.apikey-row');
+  const idx=Object.keys(PROVIDERS).indexOf(pid);
+  if(idx<0||!rows[idx])return;
+  const row=rows[idx];
+  row.innerHTML=`<div style="width:10px;height:10px;border-radius:50%;background:${p.color};flex-shrink:0"></div>
+    <div style="flex:1;min-width:0">
+      <div style="font-size:14px;font-weight:600;color:var(--text)">${p.name}</div>
+      <input class="form-input" id="akInput_${pid}" value="${cur}" placeholder="${t.apiKeyInput}" style="margin-top:4px;width:100%;font-size:12px">
+    </div>
+    <button class="btn-primary" onclick="saveApiKey('${pid}')" style="font-size:12px;padding:4px 10px">${t.apiKeySave}</button>
+    <button class="btn-ghost" onclick="renderApiKeyList()" style="font-size:12px;padding:4px 10px">✕</button>`;
+  document.getElementById('akInput_'+pid).focus();
+}
+function saveApiKey(pid){
+  const input=document.getElementById('akInput_'+pid);
+  if(!input)return;
+  const val=input.value.trim();
+  if(val)localStorage.setItem('key_'+pid,val);
+  else localStorage.removeItem('key_'+pid);
+  renderApiKeyList();
+}
+function delApiKey(pid){
+  localStorage.removeItem('key_'+pid);
+  renderApiKeyList();
 }
 
 // responsive chart resize
